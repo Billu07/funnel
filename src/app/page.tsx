@@ -1,10 +1,10 @@
-"use client"; // 👈 Added this so we can use State for the Modal
+"use client";
 import React, { useState } from "react";
 import Image from "next/image";
 import VoiceAgent from "@/components/VoiceAgent";
 import InstaDeck from "@/components/InstaDeck";
 import ProcessFlow from "@/components/ProcessFlow";
-import BookingModal from "@/components/BookingModal"; // 👈 Import the Modal
+import BookingModal from "@/components/BookingModal";
 import {
   CheckCircle,
   XCircle,
@@ -22,12 +22,66 @@ import {
 // 👈 Your Google Calendar Link
 const CALENDAR_LINK = "https://calendar.app.google/1YYTXKxWK5PFaSzV8?gv=true";
 
+// 🔴 REPLACE THIS WITH YOUR N8N WEBHOOK URL
+const N8N_WEBHOOK_URL = "https://walkermusic.app.n8n.cloud/webhook/voicium";
+
 export default function Home() {
   // 👈 State to control the Modal
   const [isBookingOpen, setIsBookingOpen] = useState(false);
 
   // Helper function to open modal
   const openBooking = () => setIsBookingOpen(true);
+
+  // ================= FORM STATE LOGIC (New) =================
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    company: "",
+    volume: "",
+    message: "",
+  });
+  const [formStatus, setFormStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
+
+  const handleFormChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormStatus("loading");
+
+    try {
+      const response = await fetch(N8N_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setFormStatus("success");
+        setFormData({
+          fullName: "",
+          email: "",
+          company: "",
+          volume: "",
+          message: "",
+        }); // Clear form
+
+        // Optional: Reset success message after 5 seconds
+        setTimeout(() => setFormStatus("idle"), 5000);
+      } else {
+        setFormStatus("error");
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      setFormStatus("error");
+    }
+  };
+  // ==========================================================
 
   return (
     <main className="bg-brand-dark text-white min-h-screen font-sans selection:bg-cyan-glow selection:text-brand-dark overflow-x-hidden">
@@ -56,7 +110,7 @@ export default function Home() {
             </span>
           </div>
           <button
-            onClick={openBooking} // 👈 Wired up
+            onClick={openBooking}
             className="hidden md:block bg-gradient-to-r from-cyan-glow to-blue-deep text-white px-6 py-2 rounded-full font-bold hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all transform hover:scale-105"
           >
             Book Strategy Call
@@ -88,7 +142,7 @@ export default function Home() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <button
-                onClick={openBooking} // 👈 Wired up
+                onClick={openBooking}
                 className="bg-white text-brand-dark px-8 py-4 rounded-full text-lg font-bold hover:scale-105 transition-transform shadow-lg shadow-cyan-glow/20"
               >
                 Start Scaling Today
@@ -109,11 +163,9 @@ export default function Home() {
                 loop
                 muted
                 playsInline
-                // Adding a key forces React to reload element if src changes
                 key="hero-video"
               >
                 <source src="/videos/hero-video.mp4" type="video/mp4" />
-                {/* Fallback if video fails */}
                 <div className="flex items-center justify-center h-full w-full bg-brand-primary">
                   <p>Video loading...</p>
                 </div>
@@ -196,7 +248,7 @@ export default function Home() {
           </p>
 
           <div className="grid md:grid-cols-2 gap-8 items-stretch">
-            {/* 1. LIVE DEMO (The New Microphone Component) */}
+            {/* 1. LIVE DEMO */}
             <div className="md:row-span-2 h-full min-h-[300px]">
               <VoiceAgent />
             </div>
@@ -461,37 +513,80 @@ export default function Home() {
               </div>
             </div>
 
-            <form className="space-y-4">
+            {/* NEW CONTROLLED FORM START */}
+            <form onSubmit={handleFormSubmit} className="space-y-4">
               <input
+                name="fullName"
                 type="text"
+                required
+                value={formData.fullName}
+                onChange={handleFormChange}
                 placeholder="Full Name"
-                className="w-full bg-brand-dark p-4 rounded-xl border border-white/10 outline-none focus:border-cyan-glow transition-colors placeholder:text-slate-600"
+                className="w-full bg-brand-dark p-4 rounded-xl border border-white/10 outline-none focus:border-cyan-glow transition-colors placeholder:text-slate-600 text-white"
               />
               <input
+                name="email"
                 type="email"
+                required
+                value={formData.email}
+                onChange={handleFormChange}
                 placeholder="Email Address"
-                className="w-full bg-brand-dark p-4 rounded-xl border border-white/10 outline-none focus:border-cyan-glow transition-colors placeholder:text-slate-600"
+                className="w-full bg-brand-dark p-4 rounded-xl border border-white/10 outline-none focus:border-cyan-glow transition-colors placeholder:text-slate-600 text-white"
               />
               <div className="grid grid-cols-2 gap-4">
                 <input
+                  name="company"
                   type="text"
+                  value={formData.company}
+                  onChange={handleFormChange}
                   placeholder="Company"
-                  className="bg-brand-dark p-4 rounded-xl border border-white/10 outline-none focus:border-cyan-glow transition-colors placeholder:text-slate-600"
+                  className="bg-brand-dark p-4 rounded-xl border border-white/10 outline-none focus:border-cyan-glow transition-colors placeholder:text-slate-600 text-white"
                 />
                 <input
+                  name="volume"
                   type="text"
+                  value={formData.volume}
+                  onChange={handleFormChange}
                   placeholder="Mo. Volume"
-                  className="bg-brand-dark p-4 rounded-xl border border-white/10 outline-none focus:border-cyan-glow transition-colors placeholder:text-slate-600"
+                  className="bg-brand-dark p-4 rounded-xl border border-white/10 outline-none focus:border-cyan-glow transition-colors placeholder:text-slate-600 text-white"
                 />
               </div>
               <textarea
+                name="message"
+                required
+                value={formData.message}
+                onChange={handleFormChange}
                 placeholder="Your Message"
-                className="w-full bg-brand-dark p-4 rounded-xl border border-white/10 outline-none focus:border-cyan-glow transition-colors h-32 resize-none placeholder:text-slate-600"
+                className="w-full bg-brand-dark p-4 rounded-xl border border-white/10 outline-none focus:border-cyan-glow transition-colors h-32 resize-none placeholder:text-slate-600 text-white"
               ></textarea>
-              <button className="w-full bg-white text-brand-dark font-bold py-4 rounded-xl hover:bg-cyan-glow hover:text-white transition-all text-lg shadow-lg">
-                Send Message
+
+              {/* Dynamic Button */}
+              <button
+                type="submit"
+                disabled={formStatus === "loading" || formStatus === "success"}
+                className={`w-full font-bold py-4 rounded-xl transition-all text-lg shadow-lg ${
+                  formStatus === "success"
+                    ? "bg-green-500 text-white hover:bg-green-600"
+                    : formStatus === "loading"
+                      ? "bg-slate-600 text-slate-200 cursor-not-allowed"
+                      : "bg-white text-brand-dark hover:bg-cyan-glow hover:text-white"
+                }`}
+              >
+                {formStatus === "loading"
+                  ? "Sending..."
+                  : formStatus === "success"
+                    ? "Message Sent!"
+                    : "Send Message"}
               </button>
+
+              {/* Error Message */}
+              {formStatus === "error" && (
+                <p className="text-red-400 text-center text-sm mt-2">
+                  Something went wrong. Please try again later.
+                </p>
+              )}
             </form>
+            {/* FORM END */}
           </div>
         </div>
       </section>

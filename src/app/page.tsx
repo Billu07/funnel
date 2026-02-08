@@ -213,7 +213,7 @@ export default function Home() {
                     Real Estate Qualification
                   </div>
                   <div className="text-xs text-slate-400">
-                    Outcome: Booked Meeting (3:09)
+                    Outcome: Booked Meeting (2:07)
                   </div>
                 </div>
                 <audio

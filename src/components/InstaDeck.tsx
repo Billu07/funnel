@@ -29,7 +29,7 @@ const items = [
     location: "Generated Lead Pipeline",
     caption:
       "Numbers don't lie. 📈 Track conversion rates, call volume, and ROI with forensic precision. Complete transparency. #Analytics",
-    src: "/images/dashboard/analytics.png",
+    src: "/images/dashboard/analytics.webp",
     likes: "5,190",
   },
   {
@@ -38,7 +38,7 @@ const items = [
     location: "Call Forensics",
     caption:
       "Listen in. 🎧 Review recordings, read transcripts, and check agent notes for every single interaction. Quality control solved.",
-    src: "/images/dashboard/details.png",
+    src: "/images/dashboard/details.webp",
     likes: "2,844",
   },
 
@@ -48,7 +48,7 @@ const items = [
     location: "Data Import",
     caption:
       "Drag. Drop. Dial. 🚀 Upload 10k+ leads via CSV and let our AI agents start calling immediately. No manual data entry. #GrowthHack",
-    src: "/images/dashboard/upload.png",
+    src: "/images/dashboard/upload.webp",
     likes: "3,502",
   },
 ];

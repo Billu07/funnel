@@ -83,7 +83,7 @@ export default function Home() {
               </span>
             </h1>
             <p className="text-xl text-slate-300 mb-8 leading-relaxed max-w-lg">
-              Scale your outreach with trained AI agents that sound human, book
+              Scale your outreach with Custom AI agents that sound human, book
               meetings, and qualify leads consistently.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">

@@ -77,9 +77,9 @@ export default function Home() {
               AI-Powered Outbound System
             </div>
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-              Turn Cold Calls into <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-glow to-blue-deep text-glow">
-                Revenue
+              Turn Cold Calls <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-glow to-blue-deep text">
+                Into Revenue
               </span>
             </h1>
             <p className="text-xl text-slate-300 mb-8 leading-relaxed max-w-lg">

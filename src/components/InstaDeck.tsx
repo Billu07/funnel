@@ -148,7 +148,7 @@ export default function InstaDeck() {
                 src={activeItem.src}
                 alt={activeItem.caption}
                 fill
-                className="object-cover object-top"
+                className="object-contain object-top"
               />
             </motion.div>
           </AnimatePresence>

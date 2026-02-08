@@ -306,19 +306,21 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ================= HOW IT WORKS (The Circuit Flow) ================= */}
+      {/* ================= HOW IT WORKS (Linked List Flow) ================= */}
       <section className="py-24 bg-brand-primary border-y border-white/5 relative overflow-hidden">
-        <div className="max-w-[1400px] mx-auto px-6">
+        {/* Subtle Background Mesh */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              The Automation Engine
+              The Workflow
             </h2>
             <p className="text-slate-400 text-lg">
-              From raw data to revenue in 8 autonomous steps.
+              A seamless chain of intelligence.
             </p>
           </div>
-
-          {/* New Flow Component */}
+          {/* The New Flow Component */}
           <ProcessFlow />
         </div>
       </section>

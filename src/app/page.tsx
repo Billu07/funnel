@@ -17,6 +17,8 @@ import {
   Play,
   Volume2,
   ArrowRight,
+  Menu,
+  X,
 } from "lucide-react";
 
 // 👈 Your Google Calendar Link
@@ -28,9 +30,15 @@ const N8N_WEBHOOK_URL = "https://walkermusic.app.n8n.cloud/webhook/voicium";
 export default function Home() {
   // 👈 State to control the Modal
   const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Helper function to open modal
-  const openBooking = () => setIsBookingOpen(true);
+  const openBooking = () => {
+    setIsBookingOpen(true);
+    setIsMobileMenuOpen(false); // Close mobile menu if open
+  };
+
+  const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
   // ================= FORM STATE LOGIC (New) =================
   const [formData, setFormData] = useState({
@@ -54,6 +62,7 @@ export default function Home() {
 
   const scrollToContact = () => {
     document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+    setIsMobileMenuOpen(false);
   };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
@@ -121,7 +130,7 @@ export default function Home() {
             </span>
           </a>
 
-          {/* Navigation Links */}
+          {/* Desktop Navigation Links */}
           <div className="hidden md:flex items-center gap-8">
             <a
               href="#features"
@@ -149,35 +158,85 @@ export default function Home() {
             </a>
           </div>
 
+          <div className="hidden md:block">
+            <button
+              onClick={openBooking}
+              className="bg-gradient-to-r from-red-400 to-red-400 text-white px-6 py-2 rounded-full font-bold hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all transform hover:scale-105"
+            >
+              Book Strategy Call
+            </button>
+          </div>
+
+          {/* Mobile Menu Button */}
           <button
-            onClick={openBooking}
-            className="hidden md:block bg-gradient-to-r from-red-400 to-red-400 text-white px-6 py-2 rounded-full font-bold hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all transform hover:scale-105"
+            className="md:hidden text-slate-300 hover:text-white"
+            onClick={toggleMobileMenu}
           >
-            Book Strategy Call
+            {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
+
+        {/* Mobile Menu Overlay */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden absolute top-full left-0 w-full bg-brand-dark/95 backdrop-blur-xl border-b border-white/10 p-6 flex flex-col gap-6 shadow-2xl animate-fade-in-down">
+            <a
+              href="#features"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="text-lg font-medium text-slate-300 hover:text-cyan-glow transition-colors"
+            >
+              Features
+            </a>
+            <a
+              href="#process"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="text-lg font-medium text-slate-300 hover:text-cyan-glow transition-colors"
+            >
+              How it Works
+            </a>
+            <a
+              href="#pricing"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="text-lg font-medium text-slate-300 hover:text-cyan-glow transition-colors"
+            >
+              Pricing
+            </a>
+            <a
+              href="#faq"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="text-lg font-medium text-slate-300 hover:text-cyan-glow transition-colors"
+            >
+              FAQ
+            </a>
+            <button
+              onClick={openBooking}
+              className="w-full bg-gradient-to-r from-red-400 to-red-400 text-white px-6 py-4 rounded-xl font-bold hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all"
+            >
+              Book Strategy Call
+            </button>
+          </div>
+        )}
       </nav>
 
       {/* ================= HERO SECTION (With Video) ================= */}
-      <header className="relative pt-32 pb-20 px-6 overflow-hidden min-h-[90vh] flex items-center">
+      <header className="relative pt-24 md:pt-32 pb-12 md:pb-20 px-6 overflow-hidden min-h-[85vh] md:min-h-[90vh] flex items-center">
         {/* Background Glow Effect */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-cyan-glow/20 blur-[120px] rounded-full pointer-events-none"></div>
 
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center relative z-10 w-full">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-8 md:gap-12 items-center relative z-10 w-full">
           {/* Text Content */}
           <div className="text-left animate-fade-in order-2 lg:order-1">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-cyan-glow/30 bg-cyan-glow/10 text-cyan-glow text-sm font-medium mb-6">
               <span className="animate-pulse-slow h-2 w-2 rounded-full bg-cyan-glow"></span>
               AI-Powered Lead Qualification
             </div>
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-6 leading-tight">
               Stop Calling Dead Leads.
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-glow to-blue-deep text">
                 Talk only to motivated ones.
               </span>
             </h1>
-            <p className="text-xl text-slate-300 mb-8 leading-relaxed max-w-lg">
+            <p className="text-lg md:text-xl text-slate-300 mb-8 leading-relaxed max-w-lg">
               Our AI calls your real estate leads, analyzes every conversation,
               and shows you exactly who to call first.
             </p>
@@ -203,7 +262,7 @@ export default function Home() {
           </div>
 
           {/* Video Container with Masking */}
-          <div className="relative h-[400px] md:h-[600px] w-full order-1 lg:order-2 flex items-center justify-center">
+          <div className="relative h-[300px] md:h-[600px] w-full order-1 lg:order-2 flex items-center justify-center">
             {/* The Mask: Radial gradient fades edges to transparent */}
             <div className="relative w-full h-full [mask-image:radial-gradient(circle_at_center,black_40%,transparent_70%)]">
               <video

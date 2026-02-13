@@ -30,7 +30,7 @@ const steps = [
     icon: <ScanSearch size={20} />,
     color: "text-purple-400",
     bg: "bg-purple-400/10",
-    image: "/images/anals.png", // Placeholder for "Analysis/Report"
+    image: "/images/anals.webp", // Placeholder for "Analysis/Report"
   },
   {
     id: 4,

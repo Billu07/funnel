@@ -70,7 +70,7 @@ const features = [
 
 export default function DashboardFeatures() {
   return (
-    <div className="space-y-24">
+    <div className="space-y-16 md:space-y-24">
       {features.map((feature, index) => (
         <div
           key={index}
@@ -88,7 +88,7 @@ export default function DashboardFeatures() {
                 {feature.title}
               </h3>
             </div>
-            <p className="text-slate-400 text-lg mb-8 leading-relaxed">
+            <p className="text-slate-400 text-base md:text-lg mb-8 leading-relaxed">
               {feature.description}
             </p>
             <ul className="space-y-4">

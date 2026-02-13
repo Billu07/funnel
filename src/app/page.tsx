@@ -271,7 +271,7 @@ export default function Home() {
                 loop
                 muted
                 playsInline
-                poster="/images/frame1.png"
+                poster="/images/frame1.webp"
                 key="hero-video"
               >
                 <source src="/videos/hero-video2.mp4" type="video/mp4" />
@@ -409,9 +409,9 @@ export default function Home() {
               className="w-full h-full object-cover"
               controls
               playsInline
-              poster="/images/frame2.png"
+              poster="/images/frame2.webp"
             >
-              <source src="/videos/hero-video 2.mp4" type="video/mp4" />
+              <source src="/videos/hero-video-2.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           </div>

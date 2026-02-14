@@ -230,9 +230,12 @@ export default function Home() {
               AI-Powered Lead Qualification
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-6 leading-tight">
-              Stop Calling Dead Leads.
-              <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-glow to-blue-deep text">
+              Stop Calling{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-rose-500 text">
+                Dead
+              </span>{" "}
+              Leads,
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-cyan-500 text">
                 Talk only to motivated ones.
               </span>
             </h1>
@@ -289,7 +292,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">
             Real Estate Teams Waste Hours <br />
-            <span className="text-red-400">Calling The Wrong People</span>
+            <span className="text-rose-500">Calling The Wrong People</span>
           </h2>
 
           <div className="grid md:grid-cols-3 gap-6">

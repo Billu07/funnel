@@ -21,8 +21,8 @@ import {
   X,
 } from "lucide-react";
 
-// 👈 Your Google Calendar Link
-const CALENDAR_LINK = "https://calendar.app.google/1YYTXKxWK5PFaSzV8?gv=true";
+// 👈 Your Cal.com Link
+const CALENDAR_LINK = "https://cal.com/autolinium-bd6vkq";
 
 // 🔴 REPLACE THIS WITH YOUR N8N WEBHOOK URL
 const N8N_WEBHOOK_URL = "https://walkermusic.app.n8n.cloud/webhook/voicium";
@@ -292,7 +292,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">
             Real Estate Teams Waste Hours <br />
-            <span className="text-rose-500">Calling The Wrong People</span>
+            <span className="text-red-400">Calling The Wrong People</span>
           </h2>
 
           <div className="grid md:grid-cols-3 gap-6">

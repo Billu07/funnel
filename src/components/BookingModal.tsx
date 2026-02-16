@@ -45,7 +45,7 @@ export default function BookingModal({
                 </button>
               </div>
 
-              {/* Google Calendar Iframe */}
+              {/* Calendar Iframe */}
               <iframe
                 src={calendarUrl}
                 className="w-full h-full border-none bg-white" // bg-white ensures calendar looks correct

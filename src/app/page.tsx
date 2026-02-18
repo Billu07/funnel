@@ -15,6 +15,8 @@ import {
   ArrowRight,
   Menu,
   X,
+  Mail,
+  Linkedin,
 } from "lucide-react";
 
 // 👈 Your Cal.com Link
@@ -878,15 +880,34 @@ export default function Home() {
       {/* ================= FOOTER ================= */}
       <footer className="py-12 border-t border-white/10 bg-black text-center">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-slate-500 text-sm">
-            <div className="text-left">
-              <p className="mb-1">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 text-slate-500 text-sm">
+            
+            {/* Left: Branding & Contact */}
+            <div className="text-left space-y-2">
+              <p className="font-medium text-slate-400">
                 &copy; 2026 Autolinium. All rights reserved.
               </p>
               <p>AI-Powered Outbound Automation.</p>
+              <a 
+                href="mailto:office@autolinium.com" 
+                className="flex items-center gap-2 hover:text-cyan-glow transition-colors mt-2"
+              >
+                <Mail size={16} />
+                <span>office@autolinium.com</span>
+              </a>
             </div>
 
-            <div className="flex gap-8">
+            {/* Center: Links */}
+            <div className="flex flex-wrap gap-6 md:gap-8 justify-center">
+              <a
+                href="https://www.linkedin.com/company/autolinium/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 hover:text-cyan-glow transition-colors"
+              >
+                <Linkedin size={16} />
+                <span>LinkedIn</span>
+              </a>
               <a
                 href="/privacy"
                 className="hover:text-cyan-glow transition-colors"
@@ -901,6 +922,7 @@ export default function Home() {
               </a>
             </div>
 
+            {/* Right: Credits */}
             <div className="text-right">
               <p>
                 Built by{" "}

@@ -3,18 +3,14 @@ import React, { useState } from "react";
 import Image from "next/image";
 import VoiceAgent from "@/components/VoiceAgent";
 import DashboardFeatures from "@/components/DashboardFeatures";
+import ClientTrustBlock from "@/components/ClientTrustBlock";
 import ProcessFlow from "@/components/ProcessFlow";
 import BookingModal from "@/components/BookingModal";
 import {
   CheckCircle,
-  XCircle,
-  TrendingUp,
   Users,
   Target,
   BarChart3,
-  Phone,
-  Zap,
-  Play,
   Volume2,
   ArrowRight,
   Menu,
@@ -286,6 +282,9 @@ export default function Home() {
           </div>
         </div>
       </header>
+
+      {/* ================= TRUST BLOCK SECTION ================= */}
+      <ClientTrustBlock />
 
       {/* ================= 2. PROBLEM SECTION ================= */}
       <section className="py-24 bg-brand-primary border-y border-white/5">

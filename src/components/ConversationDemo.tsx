@@ -15,7 +15,7 @@ const DEMO_CALLS = [
   {
     id: 2,
     title: "Corporate Lease Company",
-    aiImage: "/images/agent2.png",
+    aiImage: "/images/agent3.png",
     humanImage: "/images/person2.png",
     audioSrc: "/audio/lease.wav",
   },

@@ -559,9 +559,7 @@ export default function Home() {
             <div className="p-8 rounded-3xl bg-brand-card border border-white/5 flex flex-col hover:border-white/20 transition-colors">
               <h3 className="text-xl font-bold text-slate-300">Starter Plan</h3>
               <div className="text-3xl font-bold mt-4 mb-2">$990/mo</div>
-              <p className="text-sm text-slate-500 mb-8">
-                ($1980 one-time setup)
-              </p>
+              <p className="text-sm text-slate-500 mb-8">(No Setup Charge)</p>
               <ul className="text-slate-300 space-y-4 mb-8 text-sm flex-1">
                 <li className="flex gap-2">
                   <CheckCircle size={16} className="text-cyan-glow" /> AI
@@ -595,7 +593,7 @@ export default function Home() {
               </h3>
               <div className="text-4xl font-bold mt-4 mb-2">$1770/mo</div>
               <p className="text-sm text-cyan-glow/80 mb-8">
-                ($3980 one-time setup)
+                (No Setup Charge)
               </p>
               <ul className="text-white space-y-4 mb-8 text-sm flex-1">
                 <li className="flex gap-2">

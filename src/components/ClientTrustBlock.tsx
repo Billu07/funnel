@@ -1,11 +1,12 @@
 "use client";
 import React from "react";
+import Image from "next/image";
 
 const CLIENTS = [
-  { name: "SmallBayFlex", logo: null }, // Placeholder for logo if available
-  { name: "AgentWorkForce", logo: null },
-  { name: "RjSellsCheap", logo: null },
-  { name: "Ken Joslin", logo: null }, // Context: Create Conference Call for Ken Joslin
+  { name: "SmallBayFlex", logo: "/images/smallbay.webp" },
+  { name: "AgentWorkForce", logo: "/images/agentWorkforce.png" },
+  { name: "Diamond Equity", logo: "/images/diamond%20equity.png" },
+  { name: "CrowdCopia", logo: "/images/crowdcopia.png" },
 ];
 
 // Duplicate the array to create the seamless loop effect
@@ -29,12 +30,20 @@ export default function ClientTrustBlock() {
           {MARQUEE_ITEMS.map((client, index) => (
             <div
               key={index}
-              className="flex items-center justify-center mx-12 md:mx-16 min-w-[200px]"
+              className="flex items-center justify-center mx-12 md:mx-16 min-w-[150px] relative h-16 grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all duration-300"
             >
-              {/* If we had logos, we would use Image here. For now, stylized text. */}
-              <span className="text-2xl md:text-3xl font-bold text-slate-400 hover:text-cyan-glow transition-colors cursor-default whitespace-nowrap opacity-70 hover:opacity-100">
-                {client.name}
-              </span>
+              {client.logo ? (
+                <Image
+                  src={client.logo}
+                  alt={client.name}
+                  fill
+                  className="object-contain"
+                />
+              ) : (
+                <span className="text-2xl md:text-3xl font-bold text-slate-400 hover:text-cyan-glow transition-colors cursor-default whitespace-nowrap">
+                  {client.name}
+                </span>
+              )}
             </div>
           ))}
         </div>

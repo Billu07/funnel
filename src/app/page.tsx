@@ -4,6 +4,7 @@ import Image from "next/image";
 import VoiceAgent from "@/components/VoiceAgent";
 import DashboardFeatures from "@/components/DashboardFeatures";
 import ClientTrustBlock from "@/components/ClientTrustBlock";
+import ConversationDemo from "@/components/ConversationDemo";
 import ProcessFlow from "@/components/ProcessFlow";
 import BookingModal from "@/components/BookingModal";
 import {
@@ -11,7 +12,6 @@ import {
   Users,
   Target,
   BarChart3,
-  Volume2,
   ArrowRight,
   Menu,
   X,
@@ -381,6 +381,9 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ================= CONVERSATION DEMO SECTION ================= */}
+      <ConversationDemo />
+
       {/* ================= 4. DASHBOARD FEATURES SECTION ================= */}
       <section
         id="features"
@@ -439,60 +442,11 @@ export default function Home() {
             Experience the Intelligence
           </h2>
           <p className="text-slate-400 mb-12">
-            Talk to our AI live, or listen to past success stories.
+            Talk to our AI live, or get an instant call to your phone.
           </p>
 
-          <div className="grid md:grid-cols-2 gap-8 items-stretch">
-            {/* 1. LIVE DEMO */}
-            <div className="md:row-span-2 h-full min-h-[300px]">
-              <VoiceAgent />
-            </div>
-
-            {/* 2. RECORDED CALLS COLUMN */}
-            <div className="flex flex-col gap-6 h-full justify-center">
-              {/* Call 1 */}
-              <div className="bg-brand-card border border-white/10 p-6 rounded-2xl flex flex-col md:flex-row items-center gap-6 hover:border-cyan-glow/30 transition-all">
-                <div className="bg-slate-700 p-3 rounded-full text-slate-300">
-                  <Volume2 size={20} />
-                </div>
-                <div className="text-left flex-1 w-full">
-                  <div className="font-bold text-white">
-                    Real Estate Qualification
-                  </div>
-                  <div className="text-xs text-slate-400">
-                    Outcome: Booked Meeting (2:07)
-                  </div>
-                </div>
-                <audio
-                  controls
-                  className="w-full md:w-[200px] h-8 rounded-full opacity-90 accent-cyan-500"
-                >
-                  <source src="/audio/demo-call-1.wav" type="audio/mpeg" />
-                </audio>
-              </div>
-
-              {/* Call 2 */}
-              <div className="bg-brand-card border border-white/10 p-6 rounded-2xl flex flex-col md:flex-row items-center gap-6 hover:border-cyan-glow/30 transition-all">
-                <div className="bg-slate-700 p-3 rounded-full text-slate-300">
-                  <Volume2 size={20} />
-                </div>
-                <div className="text-left flex-1 w-full">
-                  <div className="font-bold text-white">
-                    Real Estate Qualification 2
-                  </div>
-                  <div className="text-xs text-slate-400">
-                    Outcome: Qualified Lead (4:13)
-                  </div>
-                </div>
-                <audio
-                  controls
-                  className="w-full md:w-[200px] h-8 rounded-full opacity-90 accent-cyan-500"
-                >
-                  <source src="/audio/demo-call-2.wav" type="audio/mpeg" />
-                </audio>
-              </div>
-            </div>
-          </div>
+          {/* New Side-by-Side Layout handled inside VoiceAgent */}
+          <VoiceAgent />
         </div>
       </section>
 
@@ -881,15 +835,14 @@ export default function Home() {
       <footer className="py-12 border-t border-white/10 bg-black text-center">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 text-slate-500 text-sm">
-            
             {/* Left: Branding & Contact */}
             <div className="text-left space-y-2">
               <p className="font-medium text-slate-400">
                 &copy; 2026 Autolinium. All rights reserved.
               </p>
               <p>AI-Powered Outbound Automation.</p>
-              <a 
-                href="mailto:office@autolinium.com" 
+              <a
+                href="mailto:office@autolinium.com"
                 className="flex items-center gap-2 hover:text-cyan-glow transition-colors mt-2"
               >
                 <Mail size={16} />

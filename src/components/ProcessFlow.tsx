@@ -50,7 +50,7 @@ export default function ProcessFlow() {
       <div className="absolute left-[27px] md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-transparent via-cyan-glow/50 to-transparent z-0">
         {/* Animated Pulse moving down the line */}
         <motion.div
-          className="w-full h-[150px] bg-gradient-to-b from-transparent via-cyan-400 to-transparent blur-sm"
+          className="w-full h-[150px] bg-gradient-to-b from-transparent via-rose-600 to-transparent blur-sm"
           animate={{ y: ["-100%", "1000%"] }}
           transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
         />

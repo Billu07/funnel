@@ -8,7 +8,7 @@ import ConversationDemo from "@/components/ConversationDemo";
 import ProcessFlow from "@/components/ProcessFlow";
 import BookingModal from "@/components/BookingModal";
 import {
-  CheckCircle,
+  Check,
   Users,
   Target,
   BarChart3,
@@ -23,7 +23,25 @@ import {
 const CALENDAR_LINK = "https://cal.com/autolinium-bd6vkq";
 
 // 🔴 REPLACE THIS WITH YOUR N8N WEBHOOK URL
-const N8N_WEBHOOK_URL = "https://walkermusic.app.n8n.cloud/webhook/voicium";
+// Floating animation component
+function FloatingElement({
+  children,
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  delay?: number;
+}) {
+  return (
+    <div
+      className="animate-float"
+      style={{
+        animationDelay: `${delay}s`,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
 
 export default function Home() {
   // 👈 State to control the Modal
@@ -456,46 +474,48 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-16 items-center">
             {/* MASKED IMAGE: Robot Lady */}
             <div className="relative h-[500px] w-full group">
-              {/* Linear Gradient Mask to fade bottom into background */}
-              <div className="relative w-full h-full [mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)]">
-                <Image
-                  src="/images/solution-robot.webp"
-                  alt="Smart Calling Agent"
-                  fill
-                  className="object-cover rounded-3xl"
-                />
-              </div>
+              <FloatingElement>
+                {/* Linear Gradient Mask to fade bottom into background */}
+                <div className="relative w-full h-[500px] [mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)]">
+                  <Image
+                    src="/images/solution-robot.png"
+                    alt="Smart Calling Agent"
+                    fill
+                    className="object-cover rounded-3xl"
+                  />
+                </div>
+              </FloatingElement>
               {/* Extra overlay at bottom just in case */}
               <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-brand-dark to-transparent"></div>
             </div>
 
-            <div>
-              <div className="text-cyan-glow font-bold mb-2 uppercase tracking-widest text-sm">
-                The Outcome
-              </div>
-              <h2 className="text-4xl font-bold mb-6">
-                What Changes After Using This
+            <div className="flex-1">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
+                What Changes After{" "}
+                <span className="text-cyan-400">Using This</span>
               </h2>
-              <p className="text-xl text-slate-300 mb-8 italic border-l-4 border-cyan-glow pl-4">
-                "We sell results, not just software."
+              <p className="text-lg text-slate-300 mb-8">
+                &quot;We sell results, not just software.&quot;
               </p>
 
-              <ul className="space-y-5">
+              <div className="space-y-4">
                 {[
                   "No more cold calling all day",
                   "Only real conversations with interested leads",
                   "Clear pipeline. Real data. More deals.",
                   "Automated follow-up sequences",
-                ].map((text, i) => (
-                  <li
-                    key={i}
-                    className="flex items-center gap-4 bg-brand-card p-4 rounded-xl border border-white/5 hover:border-cyan-glow/30 transition-colors"
-                  >
-                    <CheckCircle className="text-cyan-glow size-6 shrink-0" />
-                    <span className="text-lg font-medium">{text}</span>
-                  </li>
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-3">
+                    <div className="w-6 h-6 bg-cyan-400 rounded-full flex items-center justify-center flex-shrink-0">
+                      <Check
+                        className="w-4 h-4 text-[#0a0a0a]"
+                        strokeWidth={3}
+                      />
+                    </div>
+                    <span className="text-lg text-white">{item}</span>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -507,28 +527,34 @@ export default function Home() {
         className="py-24 px-6 bg-brand-primary border-t border-white/5"
       >
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-16">
-            Scalable Pricing
-          </h2>
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
+              Scalable <span className="text-cyan-400">Pricing</span>
+            </h2>
+          </div>
           <div className="grid md:grid-cols-3 gap-8">
             {/* Starter */}
-            <div className="p-8 rounded-3xl bg-brand-card border border-white/5 flex flex-col hover:border-white/20 transition-colors">
+            <div className="p-8 rounded-3xl bg-slate-900/50 border border-white/5 flex flex-col hover:border-cyan-400/30 transition-colors">
               <h3 className="text-xl font-bold text-slate-300">Starter Plan</h3>
-              <div className="text-3xl font-bold mt-4 mb-2">$990/mo</div>
+              <div className="text-3xl font-bold mt-4 mb-2 text-white">
+                $990
+                <span className="text-lg font-normal text-slate-400">/mo</span>
+              </div>
               <p className="text-sm text-slate-500 mb-8">(No Setup Charge)</p>
-              <ul className="text-slate-300 space-y-4 mb-8 text-sm flex-1">
-                <li className="flex gap-2">
-                  <CheckCircle size={16} className="text-cyan-glow" /> AI
-                  Calling Engine
-                </li>
-                <li className="flex gap-2">
-                  <CheckCircle size={16} className="text-cyan-glow" /> Unlimited
-                  Calls (Mon-Sat)
-                </li>
-                <li className="flex gap-2">
-                  <CheckCircle size={16} className="text-cyan-glow" /> Daily
-                  Transcription Reports
-                </li>
+              <ul className="space-y-4 mb-8 text-sm flex-1">
+                {[
+                  "AI Calling Engine",
+                  "Unlimited Calls (Mon-Sat)",
+                  "Daily Transcription Reports",
+                ].map((text, i) => (
+                  <li
+                    key={i}
+                    className="flex items-center gap-2 text-slate-300"
+                  >
+                    <Check className="w-4 h-4 text-cyan-400" strokeWidth={3} />
+                    {text}
+                  </li>
+                ))}
               </ul>
               <button
                 onClick={openBooking}
@@ -539,66 +565,61 @@ export default function Home() {
             </div>
 
             {/* Growth */}
-            <div className="p-8 rounded-3xl bg-gradient-to-b from-brand-card to-brand-primary border-2 border-cyan-glow relative transform md:-translate-y-6 shadow-[0_0_40px_rgba(6,182,212,0.15)] flex flex-col">
-              <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-cyan-glow to-blue-deep mx-8"></div>
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-cyan-glow text-brand-dark text-xs font-bold px-4 py-1 rounded-full uppercase tracking-wider">
+            <div className="p-8 rounded-3xl bg-slate-900 border-2 border-cyan-400 relative transform md:-translate-y-6 shadow-[0_0_40px_rgba(6,182,212,0.15)] flex flex-col">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-cyan-400 text-[#0a0a0a] text-xs font-bold px-4 py-1 rounded-full uppercase tracking-wider">
                 Most Popular
               </div>
               <h3 className="text-2xl font-bold text-white mt-2">
                 Growth Plan
               </h3>
-              <div className="text-4xl font-bold mt-4 mb-2">$1770/mo</div>
-              <p className="text-sm text-cyan-glow/80 mb-8">
-                (No Setup Charge)
-              </p>
-              <ul className="text-white space-y-4 mb-8 text-sm flex-1">
-                <li className="flex gap-2">
-                  <CheckCircle size={16} className="text-cyan-glow" />{" "}
-                  Everything in Starter
-                </li>
-                <li className="flex gap-2">
-                  <CheckCircle size={16} className="text-cyan-glow" /> Lead
-                  Scoring + Dashboard
-                </li>
-                <li className="flex gap-2">
-                  <CheckCircle size={16} className="text-cyan-glow" /> CRM +
-                  Analytics
-                </li>
-                <li className="flex gap-2">
-                  <CheckCircle size={16} className="text-cyan-glow" /> Full
-                  Automation Workflow
-                </li>
+              <div className="text-4xl font-bold mt-4 mb-2 text-white">
+                $1770
+                <span className="text-lg font-normal text-slate-400">/mo</span>
+              </div>
+              <p className="text-sm text-cyan-400/80 mb-8">(No Setup Charge)</p>
+              <ul className="space-y-4 mb-8 text-sm flex-1">
+                {[
+                  "Everything in Starter",
+                  "Lead Scoring + Dashboard",
+                  "CRM + Analytics",
+                  "Full Automation Workflow",
+                ].map((text, i) => (
+                  <li key={i} className="flex items-center gap-2 text-white">
+                    <Check className="w-4 h-4 text-cyan-400" strokeWidth={3} />
+                    {text}
+                  </li>
+                ))}
               </ul>
               <button
                 onClick={scrollToContact}
-                className="w-full py-4 bg-gradient-to-r from-cyan-glow to-blue-deep text-white rounded-xl font-bold hover:shadow-lg transition-all"
+                className="w-full py-4 bg-cyan-400 text-[#0a0a0a] rounded-xl font-bold hover:bg-cyan-300 transition-all"
               >
                 Start 2-Day Free Trial
               </button>
             </div>
 
             {/* Scale */}
-            <div className="p-8 rounded-3xl bg-brand-card border border-white/5 flex flex-col hover:border-white/20 transition-colors">
+            <div className="p-8 rounded-3xl bg-slate-900/50 border border-white/5 flex flex-col hover:border-cyan-400/30 transition-colors">
               <h3 className="text-xl font-bold text-slate-300">Enterprise</h3>
-              <div className="text-3xl font-bold mt-4 mb-2">Custom</div>
+              <div className="text-3xl font-bold mt-4 mb-2 text-white">
+                Custom
+              </div>
               <p className="text-sm text-slate-500 mb-8">For large teams</p>
-              <ul className="text-slate-300 space-y-4 mb-8 text-sm flex-1">
-                <li className="flex gap-2">
-                  <CheckCircle size={16} className="text-cyan-glow" /> Custom
-                  Workflows
-                </li>
-                <li className="flex gap-2">
-                  <CheckCircle size={16} className="text-cyan-glow" /> Dedicated
-                  Setup
-                </li>
-                <li className="flex gap-2">
-                  <CheckCircle size={16} className="text-cyan-glow" />{" "}
-                  Multi-team Usage
-                </li>
-                <li className="flex gap-2">
-                  <CheckCircle size={16} className="text-cyan-glow" /> Priority
-                  Support
-                </li>
+              <ul className="space-y-4 mb-8 text-sm flex-1">
+                {[
+                  "Custom Workflows",
+                  "Dedicated Setup",
+                  "Multi-team Usage",
+                  "Priority Support",
+                ].map((text, i) => (
+                  <li
+                    key={i}
+                    className="flex items-center gap-2 text-slate-300"
+                  >
+                    <Check className="w-4 h-4 text-cyan-400" strokeWidth={3} />
+                    {text}
+                  </li>
+                ))}
               </ul>
               <button
                 onClick={openBooking}
@@ -608,6 +629,37 @@ export default function Home() {
               </button>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ================= FINAL CTA SECTION ================= */}
+      <section className="py-24 px-6 border-t border-white/5 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-cyan-glow/5 to-transparent pointer-events-none" />
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <div className="relative w-full max-w-3xl mx-auto h-[300px] md:h-[500px] mb-12">
+            {/* The Mask: Exact same settings as the successful hero section */}
+            <div className="relative w-full h-full [mask-image:radial-gradient(circle_at_center,black_40%,transparent_70%)]">
+              <Image
+                src="/images/voicium_ad_3.png"
+                alt="Flip Your Funnel"
+                fill
+                className="object-contain opacity-90"
+              />
+            </div>
+          </div>
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-8">
+            Ready to <span className="text-cyan-400">Flip Your Funnel?</span>
+          </h2>
+          <p className="text-xl text-slate-400 mb-10 max-w-2xl mx-auto">
+            Stop losing leads to slow follow-ups. Join the future of real estate
+            sales with AI-powered calling.
+          </p>
+          <button
+            onClick={scrollToContact}
+            className="bg-white text-brand-dark px-12 py-5 rounded-full text-xl font-bold hover:scale-105 transition-transform shadow-2xl shadow-cyan-glow/20"
+          >
+            Start Your Free Trial
+          </button>
         </div>
       </section>
 
@@ -685,9 +737,9 @@ export default function Home() {
               </span>
             </h2>
             <p className="text-slate-400 text-lg mb-8">
-              Fill out the form, and we'll build a demo agent specifically for
-              your business. We'll email you a link to talk to it live within 24
-              hours.
+              Fill out the form, and we&apos;ll build a demo agent specifically
+              for your business. We&apos;ll email you a link to talk to it live
+              within 24 hours.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <button

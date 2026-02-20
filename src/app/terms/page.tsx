@@ -15,8 +15,8 @@ export default function TermsOfService() {
               1. Acceptance of Terms
             </h2>
             <p>
-              By accessing and using Voicium ("Service"), provided by Autolinium
-              ("we," "our," or "us"), you agree to be bound by these Terms of
+              By accessing and using Voicium (&quot;Service&quot;), provided by Autolinium
+              (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;), you agree to be bound by these Terms of
               Service. If you do not agree to these terms, please do not use our
               Service.
             </p>

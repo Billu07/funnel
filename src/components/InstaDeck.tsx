@@ -9,8 +9,6 @@ import {
   Bookmark,
   MoreHorizontal,
   Verified,
-  ChevronLeft,
-  ChevronRight,
 } from "lucide-react";
 
 const items = [
@@ -58,14 +56,6 @@ export default function InstaDeck() {
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
-  // Auto-play logic (Like Instagram Stories)
-  useEffect(() => {
-    const timer = setInterval(() => {
-      handleNext();
-    }, 5000); // 5 seconds per slide
-    return () => clearInterval(timer);
-  }, [currentIndex]);
-
   const handleNext = () => {
     setCurrentIndex((prev) => (prev + 1) % items.length);
     setIsLiked(false); // Reset like for next slide
@@ -75,6 +65,15 @@ export default function InstaDeck() {
     setCurrentIndex((prev) => (prev - 1 + items.length) % items.length);
     setIsLiked(false);
   };
+
+  // Auto-play logic (Like Instagram Stories)
+  useEffect(() => {
+    const timer = setInterval(() => {
+      handleNext();
+    }, 5000); // 5 seconds per slide
+    return () => clearInterval(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentIndex, handleNext]);
 
   const activeItem = items[currentIndex];
 

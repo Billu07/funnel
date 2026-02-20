@@ -38,11 +38,6 @@ export default function ConversationDemo() {
   const currentCall = DEMO_CALLS[currentIndex];
 
   useEffect(() => {
-    setIsPlaying(false);
-    setProgress(0);
-  }, [currentIndex]);
-
-  useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
@@ -92,12 +87,16 @@ export default function ConversationDemo() {
 
   const nextSlide = () => {
     setCurrentIndex((prev) => (prev + 1) % DEMO_CALLS.length);
+    setIsPlaying(false);
+    setProgress(0);
   };
 
   const prevSlide = () => {
     setCurrentIndex(
       (prev) => (prev - 1 + DEMO_CALLS.length) % DEMO_CALLS.length,
     );
+    setIsPlaying(false);
+    setProgress(0);
   };
 
   return (
@@ -278,7 +277,11 @@ export default function ConversationDemo() {
             {DEMO_CALLS.map((_, idx) => (
               <button
                 key={idx}
-                onClick={() => setCurrentIndex(idx)}
+                onClick={() => {
+                  setCurrentIndex(idx);
+                  setIsPlaying(false);
+                  setProgress(0);
+                }}
                 className={`h-2 rounded-full transition-all duration-300 ${
                   idx === currentIndex
                     ? "bg-blue-500 w-10 shadow-[0_0_20px_rgba(59,130,246,0.3)]"

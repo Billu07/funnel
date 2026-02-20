@@ -15,7 +15,7 @@ export default function PrivacyPolicy() {
               1. Introduction
             </h2>
             <p>
-              Welcome to Voicium ("we," "our," or "us"). We are committed to
+              Welcome to Voicium (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;). We are committed to
               protecting your privacy and ensuring the security of your personal
               information. This Privacy Policy explains how we collect, use,
               disclose, and safeguard your information when you use our
@@ -132,7 +132,7 @@ export default function PrivacyPolicy() {
             <p>
               We may update this Privacy Policy from time to time. We will
               notify you of any changes by posting the new policy on this page
-              and updating the "Last Updated" date.
+              and updating the &quot;Last Updated&quot; date.
             </p>
           </section>
 

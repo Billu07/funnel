@@ -23,6 +23,8 @@ import {
 const CALENDAR_LINK = "https://cal.com/autolinium-bd6vkq";
 
 // 🔴 REPLACE THIS WITH YOUR N8N WEBHOOK URL
+const N8N_WEBHOOK_URL = "https://walkermusic.app.n8n.cloud/webhook/demo"; // Fallback demo webhook, adjust as necessary
+
 // Floating animation component
 function FloatingElement({
   children,

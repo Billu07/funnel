@@ -3,13 +3,9 @@ import React from "react";
 import Image from "next/image";
 import {
   UploadCloud,
-  Phone,
-  FileText,
   BarChart3,
-  Database,
   LayoutDashboard,
   Search,
-  Eye,
 } from "lucide-react";
 
 const features = [

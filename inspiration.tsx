@@ -706,7 +706,7 @@ export default function VoiciumFunnel() {
                 <span className="text-cyan-400">Using This</span>
               </h2>
               <p className="text-lg text-slate-300 mb-8">
-                "We sell results, not just software."
+                &quot;We sell results, not just software.&quot;
               </p>
 
               <div className="space-y-4">

@@ -20,6 +20,7 @@ export default function VoiceAgent() {
 
   useEffect(() => {
     const vapiInstance = new Vapi(process.env.NEXT_PUBLIC_VAPI_PUBLIC_KEY || "");
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setVapi(vapiInstance);
 
     vapiInstance.on("call-start", () => {
@@ -31,7 +32,7 @@ export default function VoiceAgent() {
       setCallStatus("idle");
     });
 
-    vapiInstance.on("error", (e: any) => {
+    vapiInstance.on("error", (e: unknown) => {
       console.error("Vapi Error:", e);
       setCallStatus("idle");
       if (JSON.stringify(e).includes("NotReadableError") || JSON.stringify(e).includes("audio source")) {
@@ -51,12 +52,13 @@ export default function VoiceAgent() {
     try {
       await navigator.mediaDevices.getUserMedia({ audio: true });
       await vapi.start(process.env.NEXT_PUBLIC_VAPI_ASSISTANT_ID || "");
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Connection Failed:", err);
       setCallStatus("idle");
-      if (err.name === "NotReadableError" || err.message?.includes("Could not start audio source")) {
+      const errorObj = err as { name?: string; message?: string };
+      if (errorObj.name === "NotReadableError" || errorObj.message?.includes("Could not start audio source")) {
         setErrorMessage("Microphone is busy or blocked by Windows.");
-      } else if (err.name === "NotAllowedError") {
+      } else if (errorObj.name === "NotAllowedError") {
         setErrorMessage("Microphone permission denied.");
       } else {
         setErrorMessage("Failed to connect. Check console.");
@@ -173,7 +175,7 @@ export default function VoiceAgent() {
                     key={i}
                     animate={{ height: [8, 32, 8] }}
                     transition={{
-                      duration: 0.5 + Math.random() * 0.5,
+                      duration: 0.5 + i * 0.1,
                       repeat: Infinity,
                       ease: "easeInOut",
                     }}
@@ -199,7 +201,7 @@ export default function VoiceAgent() {
           
           <div className="text-center mb-6 relative z-10">
             <h3 className="text-2xl font-bold text-white mb-2">Get a Phone Call</h3>
-            <p className="text-slate-400 text-sm">We'll call your mobile number instantly.</p>
+            <p className="text-slate-400 text-sm">We&apos;ll call your mobile number instantly.</p>
           </div>
 
           <form onSubmit={handlePhoneSubmit} className="space-y-4 relative z-10 w-full max-w-sm mx-auto">

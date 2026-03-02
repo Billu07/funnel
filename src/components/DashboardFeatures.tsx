@@ -32,7 +32,7 @@ const features = [
       "Automatic status updates",
       "Zero manual entry required",
     ],
-    image: "/images/dashboard/analytics.png",
+    image: "/images/dashboard/analytics.webp",
     icon: <LayoutDashboard className="text-slate-900" size={24} />,
     iconBg: "bg-slate-50 border-slate-200",
     align: "right",
@@ -46,7 +46,7 @@ const features = [
       "Read full transcripts",
       "View AI motivation scores",
     ],
-    image: "/images/dashboard/details.png",
+    image: "/images/dashboard/details.webp",
     icon: <Search className="text-slate-900" size={24} />,
     iconBg: "bg-slate-50 border-slate-200",
     align: "left",
@@ -61,7 +61,7 @@ const features = [
       "Automatic list sanitization",
       "Campaign source tracking",
     ],
-    image: "/images/dashboard/upload.png",
+    image: "/images/dashboard/upload.webp",
     icon: <UploadCloud className="text-slate-900" size={24} />,
     iconBg: "bg-slate-50 border-slate-200",
     align: "right",
@@ -82,23 +82,23 @@ export default function DashboardFeatures() {
           >
             <div className="flex flex-col mb-8">
               <div className="flex items-center gap-3 mb-4">
-                 <div className="w-10 h-px bg-blue-500" />
-                 <span className="text-xs uppercase tracking-[0.3em] font-bold text-blue-600">Enterprise Feature</span>
+                <div className="w-10 h-px bg-blue-500" />
+                <span className="text-xs uppercase tracking-[0.3em] font-bold text-blue-600">Enterprise Feature</span>
               </div>
               <h3 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 leading-tight">
                 {feature.title}
               </h3>
             </div>
-            
+
             <p className="text-slate-600 text-lg md:text-xl mb-10 leading-relaxed font-light">
               {feature.description}
             </p>
-            
+
             <div className="grid grid-cols-1 gap-4">
               {feature.bullets.map((bullet, i) => (
                 <div key={i} className="flex items-center gap-4 p-4 rounded-xl border border-slate-100 bg-white shadow-sm hover:shadow-md hover:border-blue-100 transition-all duration-300">
                   <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
-                     <div className="w-1.5 h-1.5 rounded-full bg-blue-600" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-blue-600" />
                   </div>
                   <span className="text-slate-800 font-medium">{bullet}</span>
                 </div>
@@ -111,7 +111,7 @@ export default function DashboardFeatures() {
             className={`flex-1 w-full ${feature.align === "right" ? "md:order-1" : "md:order-2"}`}
           >
             <div className="relative group p-4 lg:p-8 bg-slate-50 rounded-[2.5rem] border border-slate-100 shadow-inner">
-              
+
               {/* Outer Blue Glow */}
               <div className="absolute -inset-2 bg-blue-500/5 rounded-[3rem] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
@@ -135,7 +135,7 @@ export default function DashboardFeatures() {
                       fill
                       className="object-contain object-center scale-95 group-hover:scale-100 transition-transform duration-1000 p-2"
                     />
-                    
+
                     {/* Hover Overlay */}
                     <div className="absolute inset-0 bg-blue-900/0 group-hover:bg-blue-900/[0.02] transition-colors duration-700 pointer-events-none" />
                   </div>

@@ -316,6 +316,17 @@ export default function Home() {
         id="process"
         className="pt-12 lg:pt-16 bg-white border-b border-gray-200 relative"
       >
+        {/* Decorative Top-Right Accent - Building Blocks */}
+        <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden z-0">
+          <Image
+            src="https://d2xsxph8kpxj0f.cloudfront.net/310519663063245286/4NbDCkjGg5zEcuxt8PVxUE/svg-accent-building-blocks-EaHmfa6vaxmYj4pkwMC5Gw.webp"
+            alt="Decorative building blocks"
+            width={400}
+            height={400}
+            className="absolute top-20 right-10 animate-[breathe_6s_ease-in-out_infinite_alternate] w-64 h-64 md:w-96 md:h-96"
+          />
+        </div>
+
         <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
           <motion.div
             className="text-center mb-20 lg:mb-24"
@@ -367,9 +378,10 @@ export default function Home() {
       {/* ================= 4. DASHBOARD FEATURES SECTION ================= */}
       <section
         id="features"
-        className="py-32 bg-slate-50 border-y border-[#e5e5ea]"
+        className="py-32 bg-slate-50 border-y border-[#e5e5ea] relative overflow-hidden"
       >
-        <div className="max-w-7xl mx-auto px-6">
+
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="text-center mb-20">
             <p className="text-sm lg:text-base font-semibold text-blue-600 uppercase tracking-wider mb-3">
               Powerful Analytics
@@ -406,9 +418,9 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full items-end pointer-events-none">
             {/* Video Container */}
             <div className="w-full max-w-sm mx-auto md:mx-0 pointer-events-auto">
-              <CustomVideoPlayer 
-                videoSrc="/videos/hero-video-2.mp4" 
-                posterSrc="/images/frame2.webp" 
+              <CustomVideoPlayer
+                videoSrc="/videos/hero-video-2.mp4"
+                posterSrc="/images/frame2.webp"
               />
             </div>
 
@@ -613,42 +625,52 @@ export default function Home() {
       </section>
 
       {/* ================= 10. OBJECTION HANDLING (FAQ) ================= */}
-      <section id="faq" className="py-32 max-w-4xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <p className="text-sm lg:text-base font-semibold text-blue-600 uppercase tracking-wider mb-3">
-            Clear Answers
-          </p>
-          <h2 className="text-4xl lg:text-5xl font-bold tracking-tight text-gray-900">
-            Frequently Asked Questions
-          </h2>
-        </div>
-        <div className="space-y-6">
-          {[
-            {
-              q: "Is this legal in the US?",
-              a: "Yes. The system is designed to follow standard outreach safeguards used by real estate teams. Calling windows are restricted to appropriate hours, opt-out requests are respected, and suppression rules can be applied to prevent further contact when requested. You remain in control of how your outreach is used and which leads are contacted."
-            },
-            {
-              q: "Do I need technical skills to use this?",
-              a: "No technical experience is required. The workflow is simple: upload your leads, choose your settings, and start the automation. The platform handles calling, logging, scoring, and reporting automatically, so your team can focus on conversations and deals instead of setup or technical tasks."
-            },
-            {
-              q: "How quickly can I get started?",
-              a: "Most teams are ready to launch within 24 hours after onboarding. Once your account is set up and your lead list is uploaded, the system can begin calling and populating your dashboard right away."
-            }
-          ].map((faq, i) => (
-            <details key={i} className="group bg-white border border-slate-200 rounded-xl open:border-blue-500/30 transition-all">
-              <summary className="flex items-center justify-between p-8 cursor-pointer font-bold text-lg list-none text-slate-900 font-sans">
-                {faq.q}
-                <span className="transition group-open:rotate-180 text-blue-600">
-                  <ArrowRight className="rotate-90" />
-                </span>
-              </summary>
-              <div className="px-8 pb-8 text-slate-700 leading-relaxed font-medium font-sans">
-                {faq.a}
-              </div>
-            </details>
-          ))}
+      <section id="faq" className="py-32 relative overflow-hidden bg-white">
+        {/* Decorative Right Accent */}
+        <Image
+          src="https://d2xsxph8kpxj0f.cloudfront.net/310519663063245286/4NbDCkjGg5zEcuxt8PVxUE/svg-accent-abstract-nodes-gqMJYkDG3XrGJ6wUYRmAwK.webp"
+          alt="Decorative nodes accent"
+          width={400}
+          height={400}
+          className="absolute top-10 -left-5 animate-[breathe_8s_ease-in-out_infinite_alternate-reverse] pointer-events-none z-0 w-64 h-64 md:w-96 md:h-96"
+        />
+        <div className="max-w-4xl mx-auto px-6 relative z-10">
+          <div className="text-center mb-16">
+            <p className="text-sm lg:text-base font-semibold text-blue-600 uppercase tracking-wider mb-3">
+              Clear Answers
+            </p>
+            <h2 className="text-4xl lg:text-5xl font-bold tracking-tight text-gray-900">
+              Frequently Asked Questions
+            </h2>
+          </div>
+          <div className="space-y-6">
+            {[
+              {
+                q: "Is this legal in the US?",
+                a: "Yes. The system is designed to follow standard outreach safeguards used by real estate teams. Calling windows are restricted to appropriate hours, opt-out requests are respected, and suppression rules can be applied to prevent further contact when requested. You remain in control of how your outreach is used and which leads are contacted."
+              },
+              {
+                q: "Do I need technical skills to use this?",
+                a: "No technical experience is required. The workflow is simple: upload your leads, choose your settings, and start the automation. The platform handles calling, logging, scoring, and reporting automatically, so your team can focus on conversations and deals instead of setup or technical tasks."
+              },
+              {
+                q: "How quickly can I get started?",
+                a: "Most teams are ready to launch within 24 hours after onboarding. Once your account is set up and your lead list is uploaded, the system can begin calling and populating your dashboard right away."
+              }
+            ].map((faq, i) => (
+              <details key={i} className="group bg-white border border-slate-200 rounded-xl open:border-blue-500/30 transition-all">
+                <summary className="flex items-center justify-between p-8 cursor-pointer font-bold text-lg list-none text-slate-900 font-sans">
+                  {faq.q}
+                  <span className="transition group-open:rotate-180 text-blue-600">
+                    <ArrowRight className="rotate-90" />
+                  </span>
+                </summary>
+                <div className="px-8 pb-8 text-slate-700 leading-relaxed font-medium font-sans">
+                  {faq.a}
+                </div>
+              </details>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -657,7 +679,16 @@ export default function Home() {
         id="contact"
         className="py-32 bg-slate-50 relative overflow-hidden"
       >
-        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center">
+        {/* Decorative Bottom Accent - Structural Framework */}
+        <Image
+          src="https://d2xsxph8kpxj0f.cloudfront.net/310519663063245286/4NbDCkjGg5zEcuxt8PVxUE/svg-accent-structural-framework-jr7Hx5UibBvkmRA3Gvrmqr.webp"
+          alt="Decorative structural framework"
+          width={600}
+          height={200}
+          className="absolute bottom-5 -left-15 animate-[breathe_7s_ease-in-out_infinite_alternate] pointer-events-none z-0 w-full md:w-1/2 object-cover"
+        />
+
+        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center relative z-10">
           {/* Left: CTA Text */}
           <div className="text-left">
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-blue-500/20 bg-blue-500/5 text-blue-600 text-sm font-bold mb-8 font-sans">

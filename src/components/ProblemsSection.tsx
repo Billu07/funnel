@@ -76,8 +76,15 @@ const cardVariants = {
 
 export default function ProblemsSection( ) {
   return (
-    <section className="w-full pt-24 lg:pt-32 pb-12 lg:pb-16 bg-white">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+    <section className="w-full pt-24 lg:pt-32 pb-12 lg:pb-16 bg-white relative overflow-hidden">
+      {/* Decorative Left Accent - Brick Pattern */}
+      <img
+        src="https://d2xsxph8kpxj0f.cloudfront.net/310519663063245286/4NbDCkjGg5zEcuxt8PVxUE/svg-accent-brick-pattern-5Zc85zQmGUB8whjirStcYx.webp"
+        alt="Decorative brick pattern"
+        className="absolute top-0 -left-10 opacity-30 pointer-events-none z-0 w-64 h-64 md:w-96 md:h-96 animate-[breathe_7s_ease-in-out_infinite_alternate]"
+      />
+
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
         {/* Section Header */}
         <motion.div
           className="text-center mb-20 lg:mb-24"

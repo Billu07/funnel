@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display, Poppins } from "next/font/google";
+import CustomCursor from "@/components/CustomCursor";
 import "./globals.css";
 
 const inter = Inter({
@@ -33,6 +34,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${playfair.variable} ${poppins.variable} antialiased`}
       >
+        <CustomCursor />
         {children}
       </body>
     </html>

@@ -2,16 +2,16 @@ import React from "react";
 
 export default function PrivacyPolicy() {
   return (
-    <main className="bg-brand-dark text-white min-h-screen font-sans selection:bg-cyan-glow selection:text-brand-dark py-20 px-6">
+    <main className="bg-brand-dark text-slate-900 min-h-screen font-sans selection:bg-cyan-glow selection:text-brand-dark py-20 px-6">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8 text-cyan-glow">
+        <h1 className="text-4xl font-bold mb-10 text-cyan-glow">
           Privacy Policy
         </h1>
-        <p className="text-slate-400 mb-8">Last Updated: February 13, 2026</p>
+        <p className="text-slate-700 mb-10">Last Updated: February 13, 2026</p>
 
-        <div className="space-y-8 text-slate-300 leading-relaxed">
+        <div className="space-y-8 text-slate-700 leading-loose">
           <section>
-            <h2 className="text-2xl font-bold text-white mb-4">
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">
               1. Introduction
             </h2>
             <p>
@@ -24,7 +24,7 @@ export default function PrivacyPolicy() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-white mb-4">
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">
               2. Information We Collect
             </h2>
             <p className="mb-4">
@@ -53,7 +53,7 @@ export default function PrivacyPolicy() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-white mb-4">
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">
               3. How We Use Your Information
             </h2>
             <p className="mb-4">
@@ -75,7 +75,7 @@ export default function PrivacyPolicy() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-white mb-4">
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">
               4. Data Sharing and Disclosure
             </h2>
             <p className="mb-4">
@@ -101,7 +101,7 @@ export default function PrivacyPolicy() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-white mb-4">
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">
               5. Data Security
             </h2>
             <p>
@@ -114,7 +114,7 @@ export default function PrivacyPolicy() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-white mb-4">
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">
               6. Your Rights and Choices
             </h2>
             <p>
@@ -126,7 +126,7 @@ export default function PrivacyPolicy() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-white mb-4">
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">
               7. Changes to This Policy
             </h2>
             <p>
@@ -137,7 +137,7 @@ export default function PrivacyPolicy() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-white mb-4">
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">
               8. Contact Us
             </h2>
             <p>

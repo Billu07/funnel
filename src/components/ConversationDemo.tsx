@@ -100,27 +100,25 @@ export default function ConversationDemo() {
   };
 
   return (
-    <section className="py-24 bg-brand-dark border-y border-white/5 relative overflow-hidden">
+    <section className="py-32 bg-white border-b border-slate-200 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 text-center">
-        <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white tracking-tight">
+        <h2 className="text-4xl md:text-5xl font-serif font-medium tracking-tight mb-6 text-slate-900">
           Hear the Difference
         </h2>
-        <p className="text-slate-400 mb-16 max-w-2xl mx-auto text-lg">
+        <p className="text-slate-700 mb-20 max-w-2xl mx-auto text-lg">
           Listen to real conversations between our AI and actual leads.
         </p>
 
         {/* MAIN MONITOR CONTAINER */}
         <div className="relative max-w-5xl mx-auto">
-          <div className="relative bg-[#1a1a1a] p-4 md:p-8 pb-12 md:pb-16 rounded-[2.5rem] shadow-[0_0_100px_rgba(0,0,0,0.5)] border-t-2 border-white/10 border-l-2 border-r-2 border-b-[12px] border-[#222]">
+          <div className="relative bg-slate-50 p-4 md:p-8 pb-12 md:pb-16 rounded-sm shadow-sm border border-slate-200">
             {/* SCREEN AREA */}
-            <div className="relative bg-[#050505] rounded-xl overflow-hidden aspect-[16/10] md:aspect-[16/9] border-4 border-black">
-              {/* Scanline Effect */}
-              <div className="absolute inset-0 pointer-events-none z-40 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%] opacity-15" />
+            <div className="relative bg-white rounded-sm overflow-hidden aspect-[16/10] md:aspect-[16/9] border border-slate-200 shadow-inner">
 
               {/* LIVE Badge */}
               <div className="absolute top-6 left-1/2 -translate-x-1/2 z-50">
-                <div className="bg-[#E02424] text-white px-4 py-1.5 rounded flex items-center gap-2 font-black text-sm tracking-[0.2em] shadow-[0_0_20px_rgba(224,36,36,0.5)]">
-                  <div className="w-2.5 h-2.5 bg-white rounded-full animate-pulse" />
+                <div className="bg-slate-500 text-white px-4 py-1.5 rounded-none flex items-center gap-2 font-bold text-xs tracking-wider shadow-sm">
+                  <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
                   LIVE CALL
                 </div>
               </div>
@@ -128,20 +126,20 @@ export default function ConversationDemo() {
               {/* SLIDER CONTROLS */}
               <button
                 onClick={prevSlide}
-                className="absolute left-4 top-[40%] -translate-y-1/2 z-50 bg-white/5 hover:bg-white/20 text-white p-3 rounded-full backdrop-blur-md transition-all hover:scale-110 border border-white/10 group"
+                className="absolute left-4 top-[40%] -translate-y-1/2 z-50 bg-white/80 hover:bg-white text-slate-900 p-3 rounded-none backdrop-blur-md transition-all hover:scale-110 border border-slate-200 shadow-sm group"
               >
                 <ChevronLeft
                   size={28}
-                  className="group-hover:-translate-x-0.5 transition-transform"
+                  className="group-hover:-translate-x-0.5 transition-"
                 />
               </button>
               <button
                 onClick={nextSlide}
-                className="absolute right-4 top-[40%] -translate-y-1/2 z-50 bg-white/5 hover:bg-white/20 text-white p-3 rounded-full backdrop-blur-md transition-all hover:scale-110 border border-white/10 group"
+                className="absolute right-4 top-[40%] -translate-y-1/2 z-50 bg-white/80 hover:bg-white text-slate-900 p-3 rounded-none backdrop-blur-md transition-all hover:scale-110 border border-slate-200 shadow-sm group"
               >
                 <ChevronRight
                   size={28}
-                  className="group-hover:translate-x-0.5 transition-transform"
+                  className="group-hover:translate-x-0.5 transition-"
                 />
               </button>
 
@@ -156,7 +154,7 @@ export default function ConversationDemo() {
                 >
                   {/* LEFT: VIRTUAL AGENT */}
                   <div className="relative flex flex-col">
-                    <div className="flex-1 relative rounded-lg overflow-hidden border-4 border-[#3B82F6] shadow-[0_0_30px_rgba(59,130,246,0.3)] bg-slate-900">
+                    <div className="flex-1 relative rounded-sm overflow-hidden border border-slate-200 bg-slate-50 shadow-sm">
                       <Image
                         src={currentCall.aiImage}
                         alt="AI Agent"
@@ -167,14 +165,14 @@ export default function ConversationDemo() {
                         }}
                       />
                       <div className="absolute inset-0 flex items-center justify-center -z-10">
-                        <User size={64} className="text-blue-500/50" />
+                        <User size={64} className="text-slate-300" />
                       </div>
                       {isPlaying && (
                         <div className="absolute bottom-4 right-4 flex items-end gap-1 h-8">
                           {[1, 2, 3, 4].map((i) => (
                             <motion.div
                               key={i}
-                              className="w-1.5 bg-blue-400 rounded-full"
+                              className="w-1.5 bg-slate-900 rounded-full"
                               animate={{ height: [8, 24, 12, 28, 8] }}
                               transition={{
                                 duration: 0.8,
@@ -186,19 +184,19 @@ export default function ConversationDemo() {
                         </div>
                       )}
                     </div>
-                    <div className="mt-2 bg-[#245097] text-white font-black text-center py-2 md:py-3 rounded-md text-[10px] md:text-xs tracking-wider uppercase">
+                    <div className="mt-3 bg-slate-900 text-white font-bold text-center py-2 rounded-lg text-xs tracking-wider uppercase shadow-sm">
                       VIRTUAL ACQUISITION AGENT
                     </div>
                   </div>
 
                   {/* RIGHT: REAL OWNER (Human Icon only) */}
                   <div className="relative flex flex-col">
-                    <div className="flex-1 relative rounded-lg overflow-hidden border-4 border-[#22C55E] shadow-[0_0_30px_rgba(34,197,94,0.3)] bg-slate-900 flex items-center justify-center">
+                    <div className="flex-1 relative rounded-sm overflow-hidden border border-slate-200 bg-slate-50 shadow-sm flex items-center justify-center">
                       <div className="flex flex-col items-center gap-4">
-                        <div className="p-8 rounded-full bg-green-500/10 border-2 border-green-500/20">
-                          <User size={80} className="text-green-500" />
+                        <div className="p-8 rounded-none bg-slate-900 border border-slate-200">
+                          <User size={64} className="text-slate-900" />
                         </div>
-                        <span className="text-green-500/50 font-bold text-[10px] uppercase tracking-widest">
+                        <span className="text-slate-900 font-bold text-[10px] uppercase tracking-widest">
                           Privacy Protected
                         </span>
                       </div>
@@ -207,7 +205,7 @@ export default function ConversationDemo() {
                           {[1, 2, 3, 4].map((i) => (
                             <motion.div
                               key={i}
-                              className="w-1.5 bg-green-400 rounded-full"
+                              className="w-1.5 bg-slate-500 rounded-full"
                               animate={{ height: [12, 8, 28, 16, 12] }}
                               transition={{
                                 duration: 1,
@@ -219,7 +217,7 @@ export default function ConversationDemo() {
                         </div>
                       )}
                     </div>
-                    <div className="mt-2 bg-[#22C55E] text-white font-black text-center py-2 md:py-3 rounded-md text-[10px] md:text-xs tracking-wider uppercase">
+                    <div className="mt-3 bg-slate-500 text-white font-bold text-center py-2 rounded-lg text-xs tracking-wider uppercase shadow-sm">
                       REAL HOME OWNER
                     </div>
                   </div>
@@ -227,11 +225,11 @@ export default function ConversationDemo() {
               </AnimatePresence>
 
               {/* INTEGRATED LOWER THIRD / CONTROL BAR */}
-              <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-black via-black/90 to-transparent z-50 flex flex-col justify-end px-8 pb-6">
+              <div className="absolute bottom-0 inset-x-0 h-24 bg-white border-t border-slate-100 flex flex-col justify-end px-8 pb-6">
                 <div className="flex items-center gap-6">
                   <button
                     onClick={togglePlay}
-                    className="flex-shrink-0 w-12 h-12 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 transition-transform"
+                    className="flex-shrink-0 w-12 h-12 rounded-none bg-slate-900 text-white flex items-center justify-center  transition- shadow-sm"
                   >
                     {isPlaying ? (
                       <Pause size={20} fill="currentColor" />
@@ -242,10 +240,10 @@ export default function ConversationDemo() {
 
                   <div className="flex-1 flex flex-col gap-2">
                     <div className="flex justify-between items-end">
-                      <span className="text-white font-black text-sm tracking-widest uppercase truncate">
+                      <span className="text-slate-900 font-bold text-sm tracking-wide uppercase truncate">
                         DEMO: {currentCall.title}
                       </span>
-                      <span className="text-[10px] font-bold text-slate-500">
+                      <span className="text-xs font-bold text-slate-400">
                         {Math.round(progress)}%
                       </span>
                     </div>
@@ -253,27 +251,23 @@ export default function ConversationDemo() {
                     <div
                       ref={progressBarRef}
                       onClick={handleSeek}
-                      className="h-1.5 bg-white/10 rounded-full overflow-hidden cursor-pointer relative group"
+                      className="h-2 bg-slate-100 rounded-none overflow-hidden cursor-pointer relative group"
                     >
                       <motion.div
-                        className="h-full bg-blue-500 relative"
+                        className="h-full bg-slate-500 relative"
                         style={{ width: `${progress}%` }}
                       >
-                        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-none shadow-sm opacity-0 group-hover:opacity-100 transition-opacity" />
                       </motion.div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-
-            {/* MONITOR STAND */}
-            <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-48 h-10 bg-[#222] rounded-b-xl shadow-2xl -z-10" />
-            <div className="absolute -bottom-14 left-1/2 -translate-x-1/2 w-64 h-4 bg-[#1a1a1a] rounded-full shadow-2xl -z-20" />
           </div>
 
           {/* Pagination Dots (Below Block) */}
-          <div className="mt-8 flex justify-center gap-3">
+          <div className="mt-8 flex justify-center gap-3 relative z-10">
             {DEMO_CALLS.map((_, idx) => (
               <button
                 key={idx}
@@ -282,10 +276,10 @@ export default function ConversationDemo() {
                   setIsPlaying(false);
                   setProgress(0);
                 }}
-                className={`h-2 rounded-full transition-all duration-300 ${
+                className={`h-2 rounded-none transition-all duration-300 ${
                   idx === currentIndex
-                    ? "bg-blue-500 w-10 shadow-[0_0_20px_rgba(59,130,246,0.3)]"
-                    : "bg-slate-700 w-2 hover:bg-slate-600"
+                    ? "bg-slate-900 w-10"
+                    : "bg-slate-300 w-2 hover:bg-slate-400"
                 }`}
               />
             ))}

@@ -110,12 +110,12 @@ export default function VoiceAgent() {
       <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-start max-w-5xl mx-auto">
         
         {/* === LEFT CARD: WEB CALL (Mic) === */}
-        <div className="bg-brand-card/50 border border-white/5 rounded-3xl p-8 flex flex-col items-center justify-center min-h-[400px] relative overflow-hidden group hover:border-cyan-glow/30 transition-all">
-          <div className="absolute inset-0 bg-gradient-to-b from-cyan-glow/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+        <div className="bg-white border border-slate-200 rounded-sm p-8 flex flex-col items-center justify-center min-h-[400px] relative overflow-hidden shadow-sm shadow-slate-200/50 hover:shadow-slate-300/50 transition-all">
+          <div className="absolute inset-0 bg-gradient-to-b from-blue-50/50 to-transparent pointer-events-none" />
           
-          <div className="text-center mb-8 relative z-10">
-            <h3 className="text-2xl font-bold text-white mb-2">Talk to AI Now</h3>
-            <p className="text-slate-400 text-sm">Use your microphone to chat instantly.</p>
+          <div className="text-center mb-10 relative z-10">
+            <h3 className="text-2xl font-serif font-medium tracking-tight text-slate-900 mb-2">Talk to AI Now</h3>
+            <p className="text-slate-700 text-sm">Use your microphone to chat instantly.</p>
           </div>
 
           <div className="relative z-10">
@@ -123,9 +123,9 @@ export default function VoiceAgent() {
               {callStatus === "active" && (
                 <motion.div
                   initial={{ opacity: 0, scale: 1 }}
-                  animate={{ opacity: [0.5, 0], scale: 1.5 }}
+                  animate={{ opacity: [0.3, 0], scale: 1.5 }}
                   transition={{ duration: 1.5, repeat: Infinity }}
-                  className="absolute inset-0 rounded-full bg-red-500"
+                  className="absolute inset-0 rounded-none bg-slate-500"
                 />
               )}
             </AnimatePresence>
@@ -135,9 +135,9 @@ export default function VoiceAgent() {
                 onClick={handleHangUp}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="relative z-10 w-24 h-24 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(239,68,68,0.6)] bg-red-600 border-4 border-red-400"
+                className="relative z-10 w-24 h-24 rounded-none flex items-center justify-center shadow-sm bg-slate-500 text-white border-4 border-slate-200"
               >
-                <PhoneOff className="w-10 h-10 text-white fill-current" />
+                <PhoneOff className="w-10 h-10 fill-current" />
               </motion.button>
             ) : (
               <motion.button
@@ -146,21 +146,23 @@ export default function VoiceAgent() {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 className={`
-                  relative z-10 w-24 h-24 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(6,182,212,0.4)] border-4 border-white/10 transition-colors
-                  ${callStatus === "connecting" ? "bg-slate-700 cursor-wait" : "bg-cyan-glow hover:bg-cyan-400"}
+                  relative z-10 w-24 h-24 rounded-none flex items-center justify-center shadow-sm border-4 transition-colors
+                  ${callStatus === "connecting" 
+                    ? "bg-slate-100 border-slate-200 cursor-wait text-slate-400" 
+                    : "bg-slate-900 hover:bg-black border-slate-200 text-white"}
                 `}
               >
                 {callStatus === "connecting" ? (
-                  <Loader2 className="w-10 h-10 animate-spin text-white" />
+                  <Loader2 className="w-10 h-10 animate-spin" />
                 ) : (
-                  <Mic className="w-10 h-10 text-brand-dark" />
+                  <Mic className="w-10 h-10" />
                 )}
               </motion.button>
             )}
           </div>
 
           {errorMessage && (
-            <div className="mt-6 flex items-center gap-2 text-red-400 bg-red-950/30 px-4 py-2 rounded-lg border border-red-500/20 relative z-10">
+            <div className="mt-6 flex items-center gap-2 text-red-600 bg-slate-50 px-4 py-2 rounded-lg border border-slate-200 relative z-10">
               <AlertCircle size={16} />
               <span className="text-sm font-medium">{errorMessage}</span>
             </div>
@@ -179,15 +181,15 @@ export default function VoiceAgent() {
                       repeat: Infinity,
                       ease: "easeInOut",
                     }}
-                    className="w-1.5 bg-red-500 rounded-full shadow-[0_0_10px_rgba(239,68,68,0.8)]"
+                    className="w-1.5 bg-slate-500 rounded-full"
                   />
                 ))
               ) : callStatus === "connecting" ? (
-                <div className="text-cyan-glow text-sm animate-pulse">
+                <div className="text-slate-900 text-sm font-medium animate-pulse">
                   Connecting...
                 </div>
               ) : (
-                <div className="text-slate-600 text-xs uppercase tracking-[0.2em] font-medium">
+                <div className="text-slate-400 text-xs uppercase tracking-widest font-medium">
                   Ready
                 </div>
               )}
@@ -196,21 +198,21 @@ export default function VoiceAgent() {
         </div>
 
         {/* === RIGHT CARD: PHONE CALL FORM === */}
-        <div className="bg-brand-card/50 border border-white/5 rounded-3xl p-8 min-h-[400px] relative overflow-hidden group hover:border-cyan-glow/30 transition-all flex flex-col justify-center">
-          <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+        <div className="bg-white border border-slate-200 rounded-sm p-8 min-h-[400px] relative overflow-hidden shadow-sm shadow-slate-200/50 hover:shadow-slate-300/50 transition-all flex flex-col justify-center">
+          <div className="absolute inset-0 bg-gradient-to-b from-blue-50/50 to-transparent pointer-events-none" />
           
           <div className="text-center mb-6 relative z-10">
-            <h3 className="text-2xl font-bold text-white mb-2">Get a Phone Call</h3>
-            <p className="text-slate-400 text-sm">We&apos;ll call your mobile number instantly.</p>
+            <h3 className="text-2xl font-serif font-medium tracking-tight text-slate-900 mb-2">Get a Phone Call</h3>
+            <p className="text-slate-700 text-sm">We&apos;ll call your mobile number instantly.</p>
           </div>
 
           <form onSubmit={handlePhoneSubmit} className="space-y-4 relative z-10 w-full max-w-sm mx-auto">
             <div>
-              <label className="text-xs uppercase tracking-wider text-slate-500 font-semibold block mb-1">
+              <label className="text-xs uppercase tracking-widest text-slate-700 font-semibold block mb-1">
                 Your Name
               </label>
               <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
                 <input
                   type="text"
                   name="name"
@@ -218,17 +220,17 @@ export default function VoiceAgent() {
                   placeholder="John Doe"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className="w-full bg-brand-dark border border-white/10 rounded-lg pl-10 pr-4 py-3 text-white focus:outline-none focus:border-cyan-glow transition-colors placeholder:text-slate-600 font-sans text-sm"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-10 pr-4 py-3 text-slate-900 focus:outline-none focus:border-slate-200 focus:ring-1 focus:ring-blue-500 transition-all placeholder:text-slate-400 text-sm"
                 />
               </div>
             </div>
 
             <div>
-              <label className="text-xs uppercase tracking-wider text-slate-500 font-semibold block mb-1">
+              <label className="text-xs uppercase tracking-widest text-slate-700 font-semibold block mb-1">
                 Address (for context)
               </label>
               <div className="relative">
-                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
+                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
                 <input
                   type="text"
                   name="address"
@@ -236,24 +238,24 @@ export default function VoiceAgent() {
                   placeholder="123 Main St"
                   value={formData.address}
                   onChange={handleInputChange}
-                  className="w-full bg-brand-dark border border-white/10 rounded-lg pl-10 pr-4 py-3 text-white focus:outline-none focus:border-cyan-glow transition-colors placeholder:text-slate-600 font-sans text-sm"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-10 pr-4 py-3 text-slate-900 focus:outline-none focus:border-slate-200 focus:ring-1 focus:ring-blue-500 transition-all placeholder:text-slate-400 text-sm"
                 />
               </div>
             </div>
 
             <div>
-              <label className="text-xs uppercase tracking-wider text-slate-500 font-semibold block mb-1">
+              <label className="text-xs uppercase tracking-widest text-slate-700 font-semibold block mb-1">
                 Phone Number
               </label>
               <div className="relative">
-                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
+                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
                 <input
                   type="text"
                   name="phone"
                   required
                   value={formData.phone}
                   onChange={handleInputChange}
-                  className="w-full bg-brand-dark border border-white/10 rounded-lg pl-10 pr-4 py-3 text-white focus:outline-none focus:border-cyan-glow transition-colors placeholder:text-slate-600 font-mono text-sm"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-10 pr-4 py-3 text-slate-900 focus:outline-none focus:border-slate-200 focus:ring-1 focus:ring-blue-500 transition-all placeholder:text-slate-400 font-mono text-sm"
                 />
               </div>
             </div>
@@ -261,10 +263,10 @@ export default function VoiceAgent() {
             <button
               type="submit"
               disabled={phoneCallStatus === "sending" || phoneCallStatus === "success"}
-              className={`w-full py-3 rounded-lg font-bold text-sm shadow-lg transition-all flex items-center justify-center gap-2 mt-2
+              className={`w-full py-3 rounded-lg font-bold text-sm shadow-sm transition-all flex items-center justify-center gap-2 mt-2
                 ${phoneCallStatus === "success" 
-                  ? "bg-green-500 text-white cursor-default" 
-                  : "bg-gradient-to-r from-cyan-glow to-blue-deep text-white hover:shadow-cyan-glow/20 hover:scale-[1.02]"
+                  ? "bg-slate-500 text-white cursor-default" 
+                  : "bg-slate-900 text-white hover:bg-slate-800 hover:scale-[1.02]"
                 }
                 disabled:opacity-70 disabled:cursor-not-allowed
               `}
@@ -283,7 +285,7 @@ export default function VoiceAgent() {
             </button>
 
             {phoneCallStatus === "error" && (
-              <p className="text-red-400 text-xs text-center mt-2">Submission failed. Please try again.</p>
+              <p className="text-slate-900 text-xs text-center mt-2 font-medium">Submission failed. Please try again.</p>
             )}
           </form>
         </div>

@@ -2,56 +2,67 @@
 import React from "react";
 import Image from "next/image";
 
+import { Star } from "lucide-react";
+
 const CLIENTS = [
   { name: "SmallBayFlex", logo: "/images/smallbay.webp" },
   { name: "AgentWorkForce", logo: "/images/agentWorkforce.png" },
-  { name: "Diamond Equity", logo: "/images/diamond%20equity.png" },
+  { name: "Diamond Equity", logo: "/images/diamond equity.png" },
   { name: "CrowdCopia", logo: "/images/crowdcopia.png" },
 ];
 
-// Duplicate the array to create the seamless loop effect
-const MARQUEE_ITEMS = [...CLIENTS, ...CLIENTS, ...CLIENTS, ...CLIENTS];
-
 export default function ClientTrustBlock() {
   return (
-    <section className="py-12 bg-brand-dark border-b border-white/5 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 mb-8 text-center">
-        <p className="text-sm font-medium text-slate-500 uppercase tracking-widest">
-          Trusted by Real Estate Business Owners
+    <section className="py-16 bg-white border-b border-slate-200 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 mb-12 flex flex-col items-center">
+        {/* Trendy Trust Badge */}
+        <div className="flex flex-col sm:flex-row items-center gap-4 mb-6">
+          <div className="flex gap-1">
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} className="w-5 h-5 fill-blue-600 text-blue-600" />
+            ))}
+          </div>
+          <div className="text-slate-800 font-medium">
+            <span className="font-bold">4.9/5</span> Rating by Top Brokerages
+          </div>
+        </div>
+        
+        <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em]">
+          Powering the Pipeline For Elite Real Estate Teams
         </p>
       </div>
 
       <div className="relative flex overflow-x-hidden group">
-        {/* Gradient Masks for smooth fade edges */}
-        <div className="absolute top-0 bottom-0 left-0 w-24 z-10 bg-gradient-to-r from-brand-dark to-transparent pointer-events-none"></div>
-        <div className="absolute top-0 bottom-0 right-0 w-24 z-10 bg-gradient-to-l from-brand-dark to-transparent pointer-events-none"></div>
+        {/* Gradients for smooth fade edges - Updated for light background */}
+        <div className="absolute top-0 bottom-0 left-0 w-32 z-10 bg-gradient-to-r from-white to-transparent pointer-events-none"></div>
+        <div className="absolute top-0 bottom-0 right-0 w-32 z-10 bg-gradient-to-l from-white to-transparent pointer-events-none"></div>
 
-        <div className="flex animate-[scroll-x_40s_linear_infinite] hover:[animation-play-state:paused] w-max">
-          {MARQUEE_ITEMS.map((client, index) => (
-            <div
-              key={index}
-              className="flex items-center justify-center mx-12 md:mx-16 min-w-[150px] relative h-16 grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all duration-300"
-            >
-              {client.logo ? (
-                <Image
-                  src={client.logo}
-                  alt={client.name}
-                  fill
-                  className="object-contain"
-                />
-              ) : (
-                <span className="text-2xl md:text-3xl font-bold text-slate-400 hover:text-cyan-glow transition-colors cursor-default whitespace-nowrap">
-                  {client.name}
-                </span>
-              )}
+        {/* Scrolling track */}
+        <div className="flex w-max animate-[scroll-x_40s_linear_infinite] group-hover:[animation-play-state:paused]">
+          {[...Array(4)].map((_, setIndex) => (
+            <div key={setIndex} className="flex items-center shrink-0">
+              {CLIENTS.map((client, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-center mx-12 md:mx-20 min-w-[150px] relative h-16 opacity-50 hover:opacity-100 transition-all duration-500 cursor-default"
+                >
+                  {client.logo ? (
+                    <Image
+                      src={client.logo}
+                      alt={client.name}
+                      fill
+                      className="object-contain"
+                    />
+                  ) : (
+                    <span className="text-xl md:text-2xl font-serif tracking-[0.1em] text-slate-700 whitespace-nowrap">
+                      {client.name}
+                    </span>
+                  )}
+                </div>
+              ))}
             </div>
           ))}
         </div>
-
-        {/* Second identical track for seamless loop (if needed, but repeating the array is often simpler for pure CSS) 
-            Actually, repeating the array inside the single flex container is usually enough if the content width > screen width.
-            To be safe for very wide screens, I've repeated the items 4 times above.
-        */}
       </div>
     </section>
   );

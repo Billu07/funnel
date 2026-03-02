@@ -33,13 +33,13 @@ export default function BookingModal({
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-4xl h-[85vh] bg-brand-card border border-white/10 rounded-2xl shadow-2xl overflow-hidden pointer-events-auto"
+              className="relative w-full max-w-4xl h-[85vh] bg-brand-card border border-slate-300 rounded-sm shadow-sm overflow-hidden pointer-events-auto"
             >
               {/* Header / Close Button */}
               <div className="absolute top-0 right-0 p-4 z-10">
                 <button
                   onClick={onClose}
-                  className="bg-brand-dark/50 hover:bg-red-500/80 hover:text-white text-slate-400 p-2 rounded-full transition-colors backdrop-blur-md"
+                  className="bg-brand-dark/50 hover:bg-slate-500/80 hover:text-slate-900 text-slate-700 p-2 rounded-none transition-colors backdrop-blur-md"
                 >
                   <X size={20} />
                 </button>

@@ -1,15 +1,28 @@
 @import "tailwindcss";
 
 @theme {
-  /* Brand Colors extracted from your Logo */
-  --color-brand-dark: #020617; /* Almost Black/Deep Blue */
-  --color-brand-primary: #0f172a; /* Slate 900 */
-  --color-brand-card: #1e293b; /* Slate 800 */
+  /* Brand Colors extracted from your Logo - Updated for Light Theme */
+  --color-brand-dark: #f8fafc;
+  --color-brand-primary: #f1f5f9;
+  --color-brand-card: #ffffff;
 
-  --color-cyan-glow: #06b6d4; /* Cyan 500 - Matching the logo's light part */
-  --color-blue-deep: #3b82f6; /* Blue 500 - Matching the logo's dark part */
+  --color-cyan-glow: #0ea5e9; /* Sky Blue - Brighter */ /* Cyan 600 - Adjusted for better contrast on light */
+  --color-blue-deep: #2563eb; /* Standard Brand Blue #2563eb */
 
-  --font-sans: "Inter", system-ui, sans-serif;
+  /* Inspiration Brand Colors */
+  --color-navy: #003375;
+  --color-red-accent: #FF1322;
+  --color-blue-accent: #0000FF;
+
+  /* Theme color mappings for @apply */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-poppins), "Mediator", var(--font-inter), "Inter", system-ui, sans-serif;
+  --font-serif: var(--font-playfair), "Playfair Display", serif;
+  --font-poppins: var(--font-poppins);
 
   --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   --animate-float: float 6s ease-in-out infinite;
@@ -36,12 +49,30 @@
   }
 }
 
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.235 0.015 65);
+  --border: oklch(0.92 0.004 286.32);
+  --ring: oklch(0.623 0.214 259.815);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    font-family: var(--font-poppins), sans-serif;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-poppins), sans-serif;
+  }
+}
+
 @layer utilities {
   .text-glow {
-    text-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
+    text-shadow: 0 0 20px rgba(8, 145, 178, 0.3);
   }
   .bg-glass {
-    background: rgba(30, 41, 59, 0.7);
+    background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(10px);
   }
   .scrollbar-hide {
@@ -50,5 +81,9 @@
   }
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
+  }
+  .bg-clip-inherit {
+    background-clip: inherit;
+    -webkit-background-clip: inherit;
   }
 }

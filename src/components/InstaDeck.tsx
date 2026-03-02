@@ -80,29 +80,29 @@ export default function InstaDeck() {
   return (
     <div className="w-full flex justify-center py-10">
       {/* PHONE/CARD CONTAINER */}
-      <div className="relative w-full max-w-md md:max-w-xl bg-black border border-white/10 rounded-[2.5rem] overflow-hidden shadow-2xl shadow-cyan-900/20">
+      <div className="relative w-full max-w-md md:max-w-xl bg-slate-50 border border-slate-300 rounded-sm overflow-hidden shadow-sm shadow-cyan-900/20">
         {/* --- HEADER --- */}
-        <div className="flex items-center justify-between p-4 bg-brand-card/80 backdrop-blur-md z-20 relative border-b border-white/5">
+        <div className="flex items-center justify-between p-4 bg-brand-card/80 backdrop-blur-md z-20 relative border-b border-slate-200">
           <div className="flex items-center gap-3">
             {/* Avatar Gradient Ring */}
-            <div className="p-[2px] rounded-full bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500">
-              <div className="bg-black p-0.5 rounded-full">
-                <div className="w-8 h-8 bg-cyan-glow rounded-full flex items-center justify-center text-brand-dark font-bold text-xs">
+            <div className="p-[2px] rounded-none bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500">
+              <div className="bg-slate-50 p-0.5 rounded-none">
+                <div className="w-8 h-8 bg-cyan-glow rounded-none flex items-center justify-center text-brand-dark font-bold text-xs">
                   AI
                 </div>
               </div>
             </div>
             <div>
               <div className="flex items-center gap-1">
-                <span className="text-white font-bold text-sm">
+                <span className="text-slate-900 font-bold text-sm">
                   {activeItem.username}
                 </span>
-                <Verified size={12} className="text-blue-500" />
+                <Verified size={12} className="text-slate-900" />
               </div>
-              <p className="text-xs text-slate-400">{activeItem.location}</p>
+              <p className="text-xs text-slate-700">{activeItem.location}</p>
             </div>
           </div>
-          <MoreHorizontal className="text-white cursor-pointer" />
+          <MoreHorizontal className="text-slate-900 cursor-pointer" />
         </div>
 
         {/* --- PROGRESS BARS (Story Style) --- */}
@@ -110,7 +110,7 @@ export default function InstaDeck() {
           {items.map((_, idx) => (
             <div
               key={idx}
-              className="h-1 bg-white/20 flex-1 rounded-full overflow-hidden"
+              className="h-1 bg-white/20 flex-1 rounded-none overflow-hidden"
             >
               <motion.div
                 initial={{ width: "0%" }}
@@ -173,7 +173,7 @@ export default function InstaDeck() {
               >
                 <Heart
                   size={100}
-                  className="fill-white text-white drop-shadow-2xl opacity-90"
+                  className="fill-white text-slate-900 drop-shadow-sm opacity-90"
                 />
               </motion.div>
             )}
@@ -192,18 +192,18 @@ export default function InstaDeck() {
                   size={26}
                   className={
                     isLiked
-                      ? "fill-red-500 text-red-500"
-                      : "text-white hover:text-gray-300"
+                      ? "fill-red-500 text-slate-900"
+                      : "text-slate-900 hover:text-gray-300"
                   }
                 />
               </motion.button>
               <MessageCircle
                 size={26}
-                className="text-white hover:text-gray-300 -rotate-90"
+                className="text-slate-900 hover:text-gray-300 -rotate-90"
               />
               <Send
                 size={26}
-                className="text-white hover:text-gray-300 -rotate-12"
+                className="text-slate-900 hover:text-gray-300 -rotate-12"
               />
             </div>
             <motion.button
@@ -214,8 +214,8 @@ export default function InstaDeck() {
                 size={26}
                 className={
                   isSaved
-                    ? "fill-white text-white"
-                    : "text-white hover:text-gray-300"
+                    ? "fill-white text-slate-900"
+                    : "text-slate-900 hover:text-gray-300"
                 }
               />
             </motion.button>
@@ -223,14 +223,14 @@ export default function InstaDeck() {
 
           {/* --- LIKES & CAPTION --- */}
           <div className="space-y-2">
-            <p className="text-white text-sm font-bold">
+            <p className="text-slate-900 text-sm font-bold">
               {activeItem.likes} likes
             </p>
-            <p className="text-white text-sm leading-relaxed">
+            <p className="text-slate-900 text-sm leading-loose">
               <span className="font-bold mr-2">{activeItem.username}</span>
               {activeItem.caption}
             </p>
-            <p className="text-slate-500 text-xs uppercase pt-2">
+            <p className="text-slate-700 text-xs uppercase pt-2">
               View all 12 comments
             </p>
           </div>

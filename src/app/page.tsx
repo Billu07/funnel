@@ -8,17 +8,13 @@ import ConversationDemo from "@/components/ConversationDemo";
 import ProcessFlow from "@/components/ProcessFlow";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import BookingModal from "@/components/BookingModal";
-import AnimatedHeader from "@/components/AnimatedHeader";
-import ParallaxPhotoCard from "@/components/ParallaxPhotoCard";
-import ProblemCard from "@/components/ProblemCard";
+import ProblemsSection from "@/components/ProblemsSection";
 import FloatingElement from "@/components/FloatingElement";
-import TypewriterText from "@/components/TypewriterText";
+import AnimatedDemoBg from "@/components/AnimatedDemoBg";
+import CustomVideoPlayer from "@/components/CustomVideoPlayer";
 import { motion } from "framer-motion";
 import {
   Check,
-  Users,
-  Target,
-  BarChart3,
   ArrowRight,
   Menu,
   X,
@@ -237,7 +233,7 @@ export default function Home() {
       </nav>
 
       {/* ================= HERO SECTION ================= */}
-      <header 
+      <header
         className="relative w-full min-h-screen flex items-center justify-center overflow-hidden"
       >
         {/* Background Image from Inspiration - Now using local copy to bypass remotePatterns config issue */}
@@ -312,60 +308,22 @@ export default function Home() {
         </motion.div>
       </header>
 
-      {/* ================= TRUST BLOCK SECTION ================= */}
-      <ClientTrustBlock />
-
       {/* ================= 2. PROBLEM SECTION ================= */}
-      <section className="py-32 bg-[#0a192f] border-b border-white/5 relative">
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <div className="grid md:grid-cols-2 gap-16 lg:gap-32 items-start">
-            {/* Left Column: Static Text */}
-            <div className="md:sticky md:top-0 md:h-screen flex flex-col justify-center">
-              <div className="flex items-center gap-3 mb-8">
-                <div className="w-12 h-px bg-blue-500/50" />
-                <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-blue-400">The Core Challenge</span>
-              </div>
-
-              <h2 className="text-4xl md:text-5xl lg:text-7xl font-serif font-medium tracking-tight text-white mb-10 leading-[1.1]">
-                Real estate teams dial <br />
-                <span className="text-blue-500">50+ numbers</span> <br />
-                to find just <br />
-                <span className="text-white">3 prospects.</span>
-              </h2>
-            </div>
-
-            {/* Right Column: Scrolling Cards */}
-            <div className="relative py-20 lg:py-40">
-              <ProblemCard
-                imageSrc="/parallax 1.jpg"
-                title="Agent Burnout"
-                desc="Frustration grows when top talent is forced to dial for hours without a single meaningful connection."
-                index={0}
-              />
-              <ProblemCard
-                imageSrc="/parallax 2.jpg"
-                title="Expensive Guesswork"
-                desc="Scaling a brokerage without verified intent data is an expensive gamble with your marketing budget."
-                index={1}
-              />
-              <ProblemCard
-                imageSrc="/parallax 3.jpg"
-                title="Lead Decay"
-                desc="Opportunities rot when they aren't contacted immediately. Speed to lead is the only metric that matters."
-                index={2}
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+      <ProblemsSection />
 
       {/* ================= 3. HOW IT WORKS (ProcessFlow - The Solution) ================= */}
       <section
         id="process"
-        className="pt-32 bg-white border-b border-slate-200 relative"
+        className="pt-12 lg:pt-16 bg-white border-b border-gray-200 relative"
       >
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <div className="text-center mb-20">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
+          <motion.div
+            className="text-center mb-20 lg:mb-24"
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
             {/* Voicium Logo in "What we have brought" section */}
             <a
               href="https://autolinium.com"
@@ -379,22 +337,26 @@ export default function Home() {
                 className="object-contain"
               />
             </a>
-            <AnimatedHeader
-              text="Our Offered Solution"
-              className="text-4xl md:text-5xl font-serif font-medium tracking-tight mb-6 text-transparent bg-clip-text bg-gradient-to-r from-[#003375] to-[#0000FF]"
-            />
-            <p className="text-slate-700 text-xl max-w-3xl mx-auto font-light leading-loose">
-              We completely flip the funnel. Instead of you calling 50 cold leads to find 3
-              prospects,{" "}
-              <span className="text-cyan-600 font-bold">
+            <p className="text-sm lg:text-base font-semibold text-blue-600 uppercase tracking-wider mb-3">
+              Our Offered Solution
+            </p>
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-8 leading-tight">
+              We completely flip the funnel.
+            </h2>
+            <p className="text-lg lg:text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
+              Instead of you calling 50 cold leads to find 3 prospects,{" "}
+              <span className="text-blue-600 font-bold">
                 our AI handles the 50, so you only talk to the 3.
               </span>
             </p>
-          </div>
+          </motion.div>
         </div>
         {/* The New Flow Component */}
         <ProcessFlow />
       </section>
+
+      {/* ================= TRUST BLOCK SECTION ================= */}
+      <ClientTrustBlock />
 
       {/* ================= TESTIMONIALS SECTION ================= */}
       <TestimonialsSection />
@@ -409,10 +371,12 @@ export default function Home() {
       >
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-20">
-            <AnimatedHeader
-              text="Everything In One Dashboard"
-              className="text-4xl font-serif font-medium tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#003375] to-[#0000FF]"
-            />
+            <p className="text-sm lg:text-base font-semibold text-blue-600 uppercase tracking-wider mb-3">
+              Powerful Analytics
+            </p>
+            <h2 className="text-4xl lg:text-5xl font-bold tracking-tight mb-4 text-gray-900">
+              Everything In One Dashboard
+            </h2>
             <p className="text-slate-700">
               Upload leads, see motivation scores, and track your pipeline.
             </p>
@@ -423,34 +387,34 @@ export default function Home() {
       </section>
 
       {/* ================= 5. DEMO VIDEO SECTION ================= */}
-      <section className="py-32 bg-slate-50 border-y border-[#e5e5ea]">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <AnimatedHeader
-            text="See How It Works"
-            className="text-4xl font-serif font-medium tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#003375] to-[#0000FF]"
-          />
-          <p className="text-slate-700 mb-12">
-            Watch how our AI handles lead qualification in real-time.
-          </p>
+      <section className="py-24 lg:py-32 bg-slate-50 border-y border-gray-200 relative overflow-hidden min-h-[1000px] lg:min-h-[800px] flex flex-col justify-center">
+        {/* Responsive Animated SVG Background */}
+        <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
+          <AnimatedDemoBg onBook={openBooking} />
+        </div>
 
-          <div className="relative aspect-[9/16] max-w-sm mx-auto rounded-sm overflow-hidden border border-[#d2d2d7] shadow-sm shadow-slate-200/50 mb-12">
-            <video
-              className="w-full h-full object-cover"
-              controls
-              playsInline
-              poster="/images/frame2.webp"
-            >
-              <source src="/videos/hero-video-2.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 w-full pointer-events-none">
+          <div className="text-center mb-16 pointer-events-auto">
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+              See How It Works
+            </h2>
+            <p className="text-lg lg:text-xl text-gray-700 leading-relaxed max-w-3xl mx-auto">
+              Watch how our AI handles lead qualification in real-time.
+            </p>
           </div>
 
-          <button
-            onClick={openBooking}
-            className="bg-slate-900 text-white px-10 py-4 rounded-none text-sm font-sans font-semibold uppercase tracking-widest hover:bg-slate-800 shadow-sm transition-all  "
-          >
-            Then Book Your Demo
-          </button>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full items-end pointer-events-none">
+            {/* Video Container */}
+            <div className="w-full max-w-sm mx-auto md:mx-0 pointer-events-auto">
+              <CustomVideoPlayer 
+                videoSrc="/videos/hero-video-2.mp4" 
+                posterSrc="/images/frame2.webp" 
+              />
+            </div>
+
+            {/* Empty Right Column - Button is now animated over the buildings in the background! */}
+            <div className="w-full"></div>
+          </div>
         </div>
       </section>
 
@@ -460,7 +424,10 @@ export default function Home() {
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
 
         <div className="max-w-6xl mx-auto px-6 text-center relative z-10">
-          <h2 className="text-3xl font-serif font-medium tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#003375] to-[#0000FF]">
+          <p className="text-sm lg:text-base font-semibold text-blue-600 uppercase tracking-wider mb-3">
+            Interactive Agent
+          </p>
+          <h2 className="text-4xl lg:text-5xl font-bold tracking-tight mb-4 text-gray-900">
             Experience the Intelligence
           </h2>
           <p className="text-slate-700 mb-12">
@@ -506,7 +473,10 @@ export default function Home() {
             </div>
 
             <div className="flex-1">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-medium tracking-tight mb-6 text-transparent bg-clip-text bg-gradient-to-r from-[#003375] to-[#0000FF]">
+              <p className="text-sm lg:text-base font-semibold text-blue-600 uppercase tracking-wider mb-3">
+                The Transformation
+              </p>
+              <h2 className="text-4xl lg:text-5xl font-bold tracking-tight mb-6 text-gray-900">
                 What Changes After Using This
               </h2>
               <p className="text-lg text-slate-700 mb-10">
@@ -543,10 +513,12 @@ export default function Home() {
       >
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
-            <AnimatedHeader
-              text="Scalable Pricing"
-              className="text-4xl md:text-5xl font-serif font-medium tracking-tight mb-6 text-transparent bg-clip-text bg-gradient-to-r from-[#003375] to-[#0000FF]"
-            />
+            <p className="text-sm lg:text-base font-semibold text-blue-600 uppercase tracking-wider mb-3">
+              Simple Plans
+            </p>
+            <h2 className="text-4xl lg:text-5xl font-bold tracking-tight mb-6 text-gray-900">
+              Scalable Pricing
+            </h2>
           </div>
           <div className="grid md:grid-cols-3 gap-8 items-stretch">
             {/* Starter */}
@@ -642,9 +614,14 @@ export default function Home() {
 
       {/* ================= 10. OBJECTION HANDLING (FAQ) ================= */}
       <section id="faq" className="py-32 max-w-4xl mx-auto px-6">
-        <h2 className="text-4xl font-serif font-medium tracking-tight text-center mb-16 text-transparent bg-clip-text bg-gradient-to-r from-[#003375] to-[#0000FF]">
-          Frequently Asked Questions
-        </h2>
+        <div className="text-center mb-16">
+          <p className="text-sm lg:text-base font-semibold text-blue-600 uppercase tracking-wider mb-3">
+            Clear Answers
+          </p>
+          <h2 className="text-4xl lg:text-5xl font-bold tracking-tight text-gray-900">
+            Frequently Asked Questions
+          </h2>
+        </div>
         <div className="space-y-6">
           {[
             {
@@ -687,9 +664,9 @@ export default function Home() {
               <span className="animate-pulse h-2.5 w-2.5 rounded-full bg-blue-600 shadow-[0_0_10px_rgba(37,99,235,0.4)]"></span>
               2-Day Free Trial
             </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-medium tracking-tight mb-8 leading-[1.1] text-transparent bg-clip-text bg-gradient-to-r from-[#003375] to-[#0000FF]">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-8 leading-[1.1] text-gray-900">
               Get Your Custom <br />
-              <span className="text-[#0000FF]">AI Demo Agent.</span>
+              <span className="text-blue-600">AI Demo Agent.</span>
             </h2>
             <p className="text-slate-700 text-xl mb-10 leading-relaxed font-light font-sans">
               Fill out the form, and we&apos;ll build a demo agent specifically
@@ -708,7 +685,7 @@ export default function Home() {
 
           {/* Right: Contact Form */}
           <div className="bg-white border border-slate-200 p-10 rounded-2xl shadow-2xl relative z-10">
-            <h3 className="text-3xl font-serif font-medium tracking-tight mb-8 text-slate-900">
+            <h3 className="text-3xl font-bold tracking-tight mb-8 text-gray-900">
               Claim Your Free Trial
             </h3>
             <form onSubmit={handleFormSubmit} className="space-y-6">

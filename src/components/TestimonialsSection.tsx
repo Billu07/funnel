@@ -116,7 +116,7 @@ export default function TestimonialsSection() {
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-2xl md:text-4xl font-serif font-medium tracking-tight text-transparent bg-clip-text bg-linear-to-r from-navy to-blue-accent"
+            className="text-2xl md:text-4xl font-bold tracking-tight text-gray-900"
           >
             What Our Customers Say
           </motion.h2>

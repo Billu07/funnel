@@ -97,12 +97,12 @@ export default function ProcessFlow() {
 
   if (isMobile) {
     return (
-      <div className="w-full px-6 py-12 space-y-16">
+      <div className="w-full px-6 lg:px-12 py-12 space-y-16">
         {steps.map((step, i) => (
-          <div key={step.id} className="flex flex-col gap-8 border-b border-slate-100 pb-16 last:border-0">
+          <div key={step.id} className="flex flex-col gap-8 border-b border-gray-100 pb-16 last:border-0">
              {/* Phase Number Watermark */}
              <div className="relative">
-                <div className="absolute -top-10 -left-4 text-[80px] font-serif font-bold text-slate-50 leading-none select-none pointer-events-none">
+                <div className="absolute -top-10 -left-4 text-[80px] font-sans font-bold text-gray-100 leading-none select-none pointer-events-none">
                   0{i + 1}
                 </div>
                 <div className="relative z-10">
@@ -110,7 +110,7 @@ export default function ProcessFlow() {
                     <div className="w-8 h-px bg-blue-500" />
                     <span className="text-xs uppercase tracking-widest font-bold text-blue-600">Step {i + 1}</span>
                   </div>
-                  <h3 className="text-3xl font-serif font-medium tracking-tight text-slate-900 mb-4">
+                  <h3 className="text-3xl font-bold tracking-tight text-gray-900 mb-4">
                     {step.title}
                   </h3>
                 </div>
@@ -126,12 +126,12 @@ export default function ProcessFlow() {
              </div>
 
              <div className="space-y-6">
-                <p className="text-lg text-slate-600 leading-relaxed font-light">
+                <p className="text-base text-gray-700 leading-relaxed">
                   {step.desc}
                 </p>
-                <div className="p-4 border border-slate-100 bg-slate-50 rounded-lg">
+                <div className="p-4 border border-gray-100 bg-gray-50 rounded-lg">
                   <span className="text-[10px] uppercase tracking-widest font-bold text-blue-600 block mb-1">Strategic Advantage</span>
-                  <p className="text-sm text-slate-700 font-medium italic italic">
+                  <p className="text-sm text-gray-700 font-medium italic">
                     &quot;{step.insight}&quot;
                   </p>
                 </div>
@@ -148,7 +148,7 @@ export default function ProcessFlow() {
       <div className="sticky top-0 w-full h-screen flex flex-col items-center justify-center bg-white overflow-hidden">
         
         {/* Main Content Area */}
-        <div className="relative w-full max-w-7xl mx-auto px-6 lg:px-20 h-full flex items-center">
+        <div className="relative w-full max-w-7xl mx-auto px-6 lg:px-12 h-full flex items-center">
           <AnimatePresence initial={false} custom={direction} mode="wait">
             <motion.div
               key={index}
@@ -169,7 +169,7 @@ export default function ProcessFlow() {
               <div className="lg:col-span-5 flex flex-col justify-center order-2 lg:order-1 relative">
                 {/* Repositioned Phase Number - Behind text as a subtle watermark */}
                 <div className="absolute -top-16 -left-8 lg:-top-24 lg:-left-12 z-0 select-none pointer-events-none">
-                  <div className="text-[120px] lg:text-[180px] font-serif font-bold text-slate-50 leading-none">
+                  <div className="text-[120px] lg:text-[180px] font-sans font-bold text-gray-100 leading-none">
                     0{index + 1}
                   </div>
                 </div>
@@ -180,17 +180,17 @@ export default function ProcessFlow() {
                     <span className="text-xs uppercase tracking-widest font-bold text-blue-600">Workflow Step {index + 1}</span>
                   </div>
                   
-                  <h3 className="text-4xl lg:text-6xl font-serif font-medium tracking-tight text-slate-900 mb-8 leading-[1.1]">
+                  <h3 className="text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 mb-8 leading-[1.1]">
                     {steps[index].title}
                   </h3>
-                  <p className="text-lg lg:text-xl text-slate-600 leading-relaxed font-light mb-12 max-w-lg">
+                  <p className="text-lg lg:text-xl text-gray-700 leading-relaxed mb-12 max-w-lg">
                     {steps[index].desc}
                   </p>
                   
-                  <div className="flex items-start gap-4 p-6 border border-slate-100 bg-slate-50/50 w-full lg:max-w-md rounded-xl shadow-sm">
+                  <div className="flex items-start gap-4 p-6 border border-gray-100 bg-gray-50/50 w-full lg:max-w-md rounded-xl shadow-sm">
                     <div className="flex flex-col gap-1">
                         <span className="text-[10px] uppercase tracking-widest font-bold text-blue-600">Strategic Advantage</span>
-                        <p className="text-sm text-slate-700 font-medium italic">
+                        <p className="text-sm text-gray-700 font-medium italic">
                           &quot;{steps[index].insight}&quot;
                         </p>
                     </div>
@@ -243,9 +243,9 @@ export default function ProcessFlow() {
         </div>
 
         {/* Floating Navigation Hint - Discrete */}
-        <div className="absolute bottom-10 left-0 w-full flex justify-center lg:justify-start lg:px-20">
+        <div className="absolute bottom-10 left-0 w-full flex justify-center lg:justify-start lg:px-12 max-w-7xl mx-auto">
            <div className="flex items-center gap-4">
-              <span className="text-[10px] uppercase tracking-[0.8em] font-bold text-slate-300">
+              <span className="text-[10px] uppercase tracking-[0.8em] font-bold text-gray-400">
                 SCROLL TO NAVIGATE
               </span>
            </div>
@@ -260,7 +260,7 @@ export default function ProcessFlow() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setIsMaximized(false)}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/90 backdrop-blur-xl p-6 lg:p-20 cursor-zoom-out"
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-gray-950/90 backdrop-blur-xl p-6 lg:p-12 cursor-zoom-out"
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}

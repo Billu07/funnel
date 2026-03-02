@@ -85,7 +85,7 @@ export default function DashboardFeatures() {
                  <div className="w-10 h-px bg-blue-500" />
                  <span className="text-xs uppercase tracking-[0.3em] font-bold text-blue-600">Enterprise Feature</span>
               </div>
-              <h3 className="text-4xl md:text-5xl font-serif font-medium tracking-tight text-slate-900 leading-tight">
+              <h3 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 leading-tight">
                 {feature.title}
               </h3>
             </div>

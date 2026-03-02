@@ -102,7 +102,10 @@ export default function ConversationDemo() {
   return (
     <section className="py-32 bg-white border-b border-slate-200 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 text-center">
-        <h2 className="text-4xl md:text-5xl font-serif font-medium tracking-tight mb-6 text-slate-900">
+        <p className="text-sm lg:text-base font-semibold text-blue-600 uppercase tracking-wider mb-3">
+          Interactive Demo
+        </p>
+        <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 text-gray-900">
           Hear the Difference
         </h2>
         <p className="text-slate-700 mb-20 max-w-2xl mx-auto text-lg">

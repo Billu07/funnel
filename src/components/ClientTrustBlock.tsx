@@ -54,7 +54,7 @@ export default function ClientTrustBlock() {
                       className="object-contain"
                     />
                   ) : (
-                    <span className="text-xl md:text-2xl font-serif tracking-[0.1em] text-slate-700 whitespace-nowrap">
+                    <span className="text-xl md:text-2xl font-bold tracking-wider text-gray-500 whitespace-nowrap uppercase">
                       {client.name}
                     </span>
                   )}

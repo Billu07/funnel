@@ -114,7 +114,7 @@ export default function VoiceAgent() {
           <div className="absolute inset-0 bg-gradient-to-b from-blue-50/50 to-transparent pointer-events-none" />
           
           <div className="text-center mb-10 relative z-10">
-            <h3 className="text-2xl font-serif font-medium tracking-tight text-slate-900 mb-2">Talk to AI Now</h3>
+            <h3 className="text-2xl font-bold tracking-tight text-gray-900 mb-2">Talk to AI Now</h3>
             <p className="text-slate-700 text-sm">Use your microphone to chat instantly.</p>
           </div>
 
@@ -202,7 +202,7 @@ export default function VoiceAgent() {
           <div className="absolute inset-0 bg-gradient-to-b from-blue-50/50 to-transparent pointer-events-none" />
           
           <div className="text-center mb-6 relative z-10">
-            <h3 className="text-2xl font-serif font-medium tracking-tight text-slate-900 mb-2">Get a Phone Call</h3>
+            <h3 className="text-2xl font-bold tracking-tight text-gray-900 mb-2">Get a Phone Call</h3>
             <p className="text-slate-700 text-sm">We&apos;ll call your mobile number instantly.</p>
           </div>
 

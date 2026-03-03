@@ -8,6 +8,7 @@ import Image from "next/image";
 interface Testimonial {
   id: number;
   company: string;
+  website: string;
   logoUrl?: string;
   text: string;
   author: string;
@@ -18,6 +19,7 @@ const testimonials: Testimonial[] = [
   {
     id: 1,
     company: "SmallBayFlex",
+    website: "smallbayflex.com",
     logoUrl: "/images/smallbay.webp",
     text: "Voicium has completely transformed how we handle inbound leads. We no longer waste time on dead numbers.",
     author: "Sarah Chen",
@@ -26,6 +28,7 @@ const testimonials: Testimonial[] = [
   {
     id: 2,
     company: "AgentWorkForce",
+    website: "agentworkforce.io",
     logoUrl: "/images/agentWorkforce.png",
     text: "The AI lead qualification is incredibly accurate. It feels like having a 24/7 sales assistant.",
     author: "Marcus Johnson",
@@ -34,6 +37,7 @@ const testimonials: Testimonial[] = [
   {
     id: 3,
     company: "Diamond Equity",
+    website: "diamondequity.com",
     logoUrl: "/images/diamond equity.png",
     text: "Our conversion rates have tripled since we started using Voicium. The ROI was almost immediate.",
     author: "Elena Rodriguez",
@@ -42,6 +46,7 @@ const testimonials: Testimonial[] = [
   {
     id: 4,
     company: "CrowdCopia",
+    website: "crowdcopia.com",
     logoUrl: "/images/crowdcopia.png",
     text: "The integration was seamless. We were up and running in less than 24 hours as promised.",
     author: "James Wilson",
@@ -62,6 +67,21 @@ export default function TestimonialsSection() {
   const [isMobile, setIsMobile] = useState(false);
   const selectedTestimonial = testimonials.find((t) => t.id === selectedId);
 
+  // Auto-cycle logic
+  useEffect(() => {
+    if (hoveredId !== null) return;
+
+    const interval = setInterval(() => {
+      setSelectedId((current) => {
+        const currentIndex = testimonials.findIndex((t) => t.id === current);
+        const nextIndex = (currentIndex + 1) % testimonials.length;
+        return testimonials[nextIndex].id;
+      });
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [hoveredId]);
+
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
@@ -69,18 +89,15 @@ export default function TestimonialsSection() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Highly compact positions
   const logoPositions = useMemo(() => {
     const positions: Record<number, LogoPosition> = {};
-    
-    // Multiplier for mobile responsiveness
     const m = isMobile ? 0.5 : 1;
 
     const positionData = [
-      { x: -160 * m, y: -100 * m },   // Top left
-      { x: 160 * m, y: -100 * m },    // Top right
-      { x: -220 * m, y: 20 * m },     // Middle Left
-      { x: 220 * m, y: 20 * m },      // Middle Right
+      { x: -160 * m, y: -100 * m },
+      { x: 160 * m, y: -100 * m },
+      { x: -220 * m, y: 20 * m },
+      { x: 220 * m, y: 20 * m },
     ];
 
     testimonials.forEach((testimonial, index) => {
@@ -93,7 +110,6 @@ export default function TestimonialsSection() {
       };
     });
 
-    // Center position for selected
     positions[selectedId] = {
       x: 0,
       y: 0,
@@ -106,11 +122,9 @@ export default function TestimonialsSection() {
 
   return (
     <section className="relative w-full py-4 md:py-8 bg-white overflow-hidden border-y border-slate-200">
-      {/* Grid Background Pattern - Stronger center focus, soft fade at edges */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808025_1px,transparent_1px),linear-gradient(to_bottom,#80808025_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_95%)]"></div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        {/* Header - Very Compact */}
         <div className="text-center mb-2 md:mb-4">
           <motion.h2 
             initial={{ opacity: 0, y: 10 }}
@@ -131,18 +145,14 @@ export default function TestimonialsSection() {
           </motion.p>
         </div>
 
-        {/* Main Testimonial Container - Optimized for Height */}
         <div className="relative flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-8 min-h-[300px] md:min-h-[400px]">
-          {/* Left Column: Logo Circle Layout */}
           <div className="relative w-full lg:w-1/2 h-[250px] md:h-[350px] flex items-center justify-center">
-            {/* Industry Standard Orbits */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none scale-75 md:scale-100">
               <div className="w-[200px] h-[200px] md:w-[280px] md:h-[280px] border border-dashed border-slate-200 rounded-full opacity-50 animate-[spin_60s_linear_infinite]" />
               <div className="w-[350px] h-[350px] md:w-[450px] md:h-[450px] border border-dashed border-slate-100 rounded-full opacity-30 animate-[spin_90s_linear_infinite_reverse]" />
             </div>
 
             <div className="relative w-full h-full flex items-center justify-center">
-              {/* Central glow effect */}
               <motion.div
                 className="absolute w-64 h-64 md:w-80 md:h-80 rounded-full bg-blue-50/40 opacity-0 blur-3xl"
                 animate={{
@@ -151,7 +161,6 @@ export default function TestimonialsSection() {
                 transition={{ duration: 0.6 }}
               />
 
-              {/* Animated Logo Placeholders */}
               <AnimatePresence mode="popLayout">
                 {testimonials.map((testimonial) => {
                   const pos = logoPositions[testimonial.id];
@@ -159,13 +168,12 @@ export default function TestimonialsSection() {
                   const isHovered = hoveredId === testimonial.id;
 
                   return (
-                    <motion.button
+                    <motion.div
                       key={testimonial.id}
                       layout
-                      onClick={() => setSelectedId(testimonial.id)}
                       onMouseEnter={() => setHoveredId(testimonial.id)}
                       onMouseLeave={() => setHoveredId(null)}
-                      className="absolute focus:outline-none rounded-full"
+                      className="absolute rounded-full"
                       animate={{
                         x: pos.x,
                         y: pos.y,
@@ -178,23 +186,29 @@ export default function TestimonialsSection() {
                         damping: 25,
                         mass: 1.2,
                       }}
-                      whileHover={{ scale: pos.scale * 1.1, transition: { duration: 0.2 } }}
                     >
-                      {/* Interaction Hint Tooltip */}
+                      {/* WEBSITE MESSAGE BUBBLE - CLICKABLE LINK */}
                       <AnimatePresence>
-                        {isHovered && !isSelected && (
-                          <motion.div
-                            initial={{ opacity: 0, y: 10, scale: 0.8 }}
-                            animate={{ opacity: 1, y: -10, scale: 1 }}
-                            exit={{ opacity: 0, y: 10, scale: 0.8 }}
-                            className="absolute -top-12 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[10px] px-3 py-1.5 rounded-full font-bold whitespace-nowrap shadow-lg z-[20]"
+                        {(isSelected || isHovered) && (
+                          <motion.a
+                            href={`https://${testimonial.website}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            initial={{ opacity: 0, scale: 0.5, y: -10, x: -10 }}
+                            animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
+                            exit={{ opacity: 0, scale: 0.5, y: -10, x: -10 }}
+                            whileHover={{ scale: 1.05 }}
+                            className="absolute -bottom-2 -right-16 z-30 pointer-events-auto"
+                            onClick={(e) => e.stopPropagation()}
                           >
-                            Read Success Story
-                          </motion.div>
+                            <div className="relative bg-slate-900 text-white text-[10px] px-3 py-1.5 rounded-xl rounded-tl-none font-bold shadow-xl border border-white/20 whitespace-nowrap flex items-center gap-1.5 hover:bg-black transition-colors cursor-pointer">
+                              <div className="w-1 h-1 rounded-full bg-blue-400 animate-pulse" />
+                              {testimonial.website}
+                            </div>
+                          </motion.a>
                         )}
                       </AnimatePresence>
 
-                      {/* Radiating Sparks - Only for selected */}
                       <div className="absolute inset-0 pointer-events-none">
                         {isSelected && [
                           { x: -55, y: -55 }, { x: 55, y: -55 }, { x: -65, y: 15 }, 
@@ -219,44 +233,47 @@ export default function TestimonialsSection() {
                         ))}
                       </div>
 
-                      {/* Outer ring */}
-                      <motion.div
-                        className="absolute inset-0 rounded-full border border-slate-200"
-                        animate={{
-                          opacity: isSelected ? 1 : 0.2,
-                          borderColor: isSelected ? "#0000FF" : "#e2e8f0",
-                        }}
-                        transition={{ duration: 0.3 }}
-                      />
-
-                      {/* Logo container - Smaller */}
-                      <motion.div
-                        className={`w-20 h-20 md:w-28 md:h-28 rounded-full flex items-center justify-center transition-all duration-300 ${
-                          isSelected
-                            ? "bg-white shadow-lg shadow-blue-500/5 border border-blue-50"
-                            : "bg-white/80 shadow-sm border border-slate-100"
-                        }`}
+                      {/* Logo selection area */}
+                      <button
+                        onClick={() => setSelectedId(testimonial.id)}
+                        className="relative focus:outline-none rounded-full group pointer-events-auto"
                       >
-                        {testimonial.logoUrl && (
-                          <div className="relative w-full h-full p-5 md:p-7">
-                            <Image
-                              src={testimonial.logoUrl}
-                              alt={testimonial.company}
-                              fill
-                              className="object-contain p-2"
-                            />
-                          </div>
-                        )}
-                      </motion.div>
-                    </motion.button>
+                        <motion.div
+                          className="absolute inset-0 rounded-full border border-slate-200"
+                          animate={{
+                            opacity: isSelected ? 1 : 0.2,
+                            borderColor: isSelected ? "#0000FF" : "#e2e8f0",
+                          }}
+                          transition={{ duration: 0.3 }}
+                        />
+
+                        <motion.div
+                          className={`w-20 h-20 md:w-28 md:h-28 rounded-full flex items-center justify-center transition-all duration-300 ${
+                            isSelected
+                              ? "bg-white shadow-lg shadow-blue-500/5 border border-blue-50"
+                              : "bg-white/80 shadow-sm border border-slate-100"
+                          }`}
+                          whileHover={{ scale: 1.1 }}
+                        >
+                          {testimonial.logoUrl && (
+                            <div className="relative w-full h-full p-5 md:p-7">
+                              <Image
+                                src={testimonial.logoUrl}
+                                alt={testimonial.company}
+                                fill
+                                className="object-contain p-2"
+                              />
+                            </div>
+                          )}
+                        </motion.div>
+                      </button>
+                    </motion.div>
                   );
                 })}
               </AnimatePresence>
             </div>
           </div>
 
-
-          {/* Right Column: Testimonial Content Card */}
           <div className="w-full lg:w-1/2 max-w-xl mx-auto relative z-20">
             <AnimatePresence mode="wait">
               {selectedTestimonial && (
@@ -269,7 +286,6 @@ export default function TestimonialsSection() {
                   className="bg-white/90 backdrop-blur-sm p-6 md:p-10 border-l-4 border-blue-600 text-left shadow-sm"
                 >
                   <Quote className="w-8 h-8 text-blue-600/10 mb-4" />
-
                   <motion.p
                     className="text-lg md:text-xl text-slate-700 font-sans font-medium mb-8 leading-relaxed italic"
                     initial={{ opacity: 0 }}
@@ -278,7 +294,6 @@ export default function TestimonialsSection() {
                   >
                     &ldquo;{selectedTestimonial.text}&rdquo;
                   </motion.p>
-
                   <div className="flex flex-col items-start">
                     <p className="text-lg font-bold text-slate-900">
                       {selectedTestimonial.author}
@@ -286,7 +301,6 @@ export default function TestimonialsSection() {
                     <p className="text-sm text-slate-500 font-medium mt-0.5">
                       {selectedTestimonial.company}
                     </p>
-
                     <div className="flex justify-start gap-1 mt-4">
                       {Array.from({ length: selectedTestimonial.rating }).map(
                         (_, i) => (

@@ -1,9 +1,30 @@
+"use client";
 import React, { useState, useEffect } from "react";
 import Vapi from "@vapi-ai/web";
 import { Mic, PhoneOff, Loader2, AlertCircle, Phone, ArrowRight, CheckCircle2, User, MapPin } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const N8N_WEBHOOK_URL = "https://walkermusic.app.n8n.cloud/webhook/demo";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6 },
+  },
+};
 
 export default function VoiceAgent() {
   const [vapi, setVapi] = useState<Vapi | null>(null);
@@ -20,7 +41,6 @@ export default function VoiceAgent() {
 
   useEffect(() => {
     const vapiInstance = new Vapi(process.env.NEXT_PUBLIC_VAPI_PUBLIC_KEY || "");
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setVapi(vapiInstance);
 
     vapiInstance.on("call-start", () => {
@@ -106,11 +126,20 @@ export default function VoiceAgent() {
   };
 
   return (
-    <div className="w-full">
+    <motion.div 
+      className="w-full"
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+    >
       <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-start max-w-5xl mx-auto">
         
         {/* === LEFT CARD: WEB CALL (Mic) === */}
-        <div className="bg-white border border-slate-200 rounded-sm p-8 flex flex-col items-center justify-center min-h-[400px] relative overflow-hidden shadow-sm shadow-slate-200/50 hover:shadow-slate-300/50 transition-all">
+        <motion.div 
+          variants={itemVariants}
+          className="bg-white border border-slate-200 rounded-sm p-8 flex flex-col items-center justify-center min-h-[400px] relative overflow-hidden shadow-sm shadow-slate-200/50 hover:shadow-slate-300/50 transition-all"
+        >
           <div className="absolute inset-0 bg-gradient-to-b from-blue-50/50 to-transparent pointer-events-none" />
           
           <div className="text-center mb-10 relative z-10">
@@ -195,10 +224,13 @@ export default function VoiceAgent() {
               )}
             </div>
           )}
-        </div>
+        </motion.div>
 
         {/* === RIGHT CARD: PHONE CALL FORM === */}
-        <div className="bg-white border border-slate-200 rounded-sm p-8 min-h-[400px] relative overflow-hidden shadow-sm shadow-slate-200/50 hover:shadow-slate-300/50 transition-all flex flex-col justify-center">
+        <motion.div 
+          variants={itemVariants}
+          className="bg-white border border-slate-200 rounded-sm p-8 min-h-[400px] relative overflow-hidden shadow-sm shadow-slate-200/50 hover:shadow-slate-300/50 transition-all flex flex-col justify-center"
+        >
           <div className="absolute inset-0 bg-gradient-to-b from-blue-50/50 to-transparent pointer-events-none" />
           
           <div className="text-center mb-6 relative z-10">
@@ -288,9 +320,9 @@ export default function VoiceAgent() {
               <p className="text-slate-900 text-xs text-center mt-2 font-medium">Submission failed. Please try again.</p>
             )}
           </form>
-        </div>
+        </motion.div>
 
       </div>
-    </div>
+    </motion.div>
   );
 }

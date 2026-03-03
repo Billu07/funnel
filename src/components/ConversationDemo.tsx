@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { Play, Pause, ChevronLeft, ChevronRight, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import AnimatedHeader from "./AnimatedHeader";
 
 const DEMO_CALLS = [
   {
@@ -27,6 +28,26 @@ const DEMO_CALLS = [
     audioSrc: "/audio/home2.wav",
   },
 ];
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6 },
+  },
+};
 
 export default function ConversationDemo() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -102,18 +123,33 @@ export default function ConversationDemo() {
   return (
     <section className="py-32 bg-white border-b border-slate-200 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 text-center">
-        <p className="text-sm lg:text-base font-semibold text-blue-600 uppercase tracking-wider mb-3">
-          Interactive Demo
-        </p>
-        <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 text-gray-900">
-          Hear the Difference
-        </h2>
-        <p className="text-slate-700 mb-20 max-w-2xl mx-auto text-lg">
-          Listen to real conversations between our AI and actual leads.
-        </p>
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="mb-20"
+        >
+          <motion.p variants={itemVariants} className="text-sm lg:text-base font-semibold text-blue-600 uppercase tracking-wider mb-3">
+            Interactive Demo
+          </motion.p>
+          <AnimatedHeader 
+            text="Hear the Difference"
+            className="text-4xl md:text-5xl font-bold tracking-tight mb-6 text-gray-900"
+          />
+          <motion.p variants={itemVariants} className="text-slate-700 max-w-2xl mx-auto text-lg">
+            Listen to real conversations between our AI and actual leads.
+          </motion.p>
+        </motion.div>
 
         {/* MAIN MONITOR CONTAINER */}
-        <div className="relative max-w-5xl mx-auto">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="relative max-w-5xl mx-auto"
+        >
           <div className="relative bg-slate-50 p-4 md:p-8 pb-12 md:pb-16 rounded-sm shadow-sm border border-slate-200">
             {/* SCREEN AREA */}
             <div className="relative bg-white rounded-sm overflow-hidden aspect-[16/10] md:aspect-[16/9] border border-slate-200 shadow-inner">
@@ -293,7 +329,7 @@ export default function ConversationDemo() {
             src={currentCall.audioSrc}
             key={currentCall.audioSrc}
           />
-        </div>
+        </motion.div>
       </div>
     </section>
   );

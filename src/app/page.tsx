@@ -13,6 +13,7 @@ import FloatingElement from "@/components/FloatingElement";
 import AnimatedDemoBg from "@/components/AnimatedDemoBg";
 import CustomVideoPlayer from "@/components/CustomVideoPlayer";
 import { motion } from "framer-motion";
+import AnimatedHeader from "@/components/AnimatedHeader";
 import {
   Check,
   ArrowRight,
@@ -258,18 +259,29 @@ export default function Home() {
           animate="visible"
         >
           {/* Headline with Color Highlights */}
-          <motion.div variants={itemVariants} className="mb-8 lg:mb-12">
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold leading-[1.1] text-black text-center tracking-tight">
+          <div className="mb-8 lg:mb-12 overflow-hidden">
+            <motion.h1 
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="text-4xl sm:text-5xl lg:text-7xl font-bold leading-[1.1] text-black text-center tracking-tight"
+            >
               Stop Calling{" "}
               <span className="inline-block bg-[#FF1322] text-white px-4 py-2 rounded-xl mx-1 md:mx-2 rotate-[-1deg] shadow-lg">
                 Dead
               </span>{" "}
               Leads
-              <br className="hidden sm:block" />
+            </motion.h1>
+            <motion.h1 
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+              className="text-4xl sm:text-5xl lg:text-7xl font-bold leading-[1.1] text-black text-center tracking-tight"
+            >
               Talk Only to{" "}
               <span className="text-[#0000FF] font-extrabold">Motivated</span> Ones
-            </h1>
-          </motion.div>
+            </motion.h1>
+          </div>
 
           {/* Subheading */}
           <motion.div variants={itemVariants} className="mb-12 lg:mb-16">
@@ -348,18 +360,25 @@ export default function Home() {
                 className="object-contain"
               />
             </a>
-            <p className="text-sm lg:text-base font-semibold text-blue-600 uppercase tracking-wider mb-3">
+            <motion.p 
+              variants={itemVariants}
+              className="text-sm lg:text-base font-semibold text-blue-600 uppercase tracking-wider mb-3"
+            >
               Our Offered Solution
-            </p>
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-8 leading-tight">
-              We completely flip the funnel.
-            </h2>
-            <p className="text-lg lg:text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
+            </motion.p>
+            <AnimatedHeader 
+              text="We completely flip the funnel."
+              className="text-4xl lg:text-5xl font-bold text-gray-900 mb-8 leading-tight"
+            />
+            <motion.p 
+              variants={itemVariants}
+              className="text-lg lg:text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed"
+            >
               Instead of you calling 50 cold leads to find 3 prospects,{" "}
               <span className="text-blue-600 font-bold">
                 our AI handles the 50, so you only talk to the 3.
               </span>
-            </p>
+            </motion.p>
           </motion.div>
         </div>
         {/* The New Flow Component */}
@@ -382,17 +401,27 @@ export default function Home() {
       >
 
         <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <div className="text-center mb-20">
-            <p className="text-sm lg:text-base font-semibold text-blue-600 uppercase tracking-wider mb-3">
+          <motion.div 
+            className="text-center mb-20"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <motion.p 
+              variants={itemVariants}
+              className="text-sm lg:text-base font-semibold text-blue-600 uppercase tracking-wider mb-3"
+            >
               Powerful Analytics
-            </p>
-            <h2 className="text-4xl lg:text-5xl font-bold tracking-tight mb-4 text-gray-900">
-              Everything In One Dashboard
-            </h2>
-            <p className="text-slate-700">
+            </motion.p>
+            <AnimatedHeader 
+              text="Everything In One Dashboard"
+              className="text-4xl lg:text-5xl font-bold tracking-tight mb-4 text-gray-900"
+            />
+            <motion.p variants={itemVariants} className="text-slate-700">
               Upload leads, see motivation scores, and track your pipeline.
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
 
           <DashboardFeatures />
         </div>
@@ -406,14 +435,21 @@ export default function Home() {
         </div>
 
         <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 w-full pointer-events-none">
-          <div className="text-center mb-16 pointer-events-auto">
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-              See How It Works
-            </h2>
-            <p className="text-lg lg:text-xl text-gray-700 leading-relaxed max-w-3xl mx-auto">
+          <motion.div 
+            className="text-center mb-16 pointer-events-auto"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <AnimatedHeader 
+              text="See How It Works"
+              className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight"
+            />
+            <motion.p variants={itemVariants} className="text-lg lg:text-xl text-gray-700 leading-relaxed max-w-3xl mx-auto">
               Watch how our AI handles lead qualification in real-time.
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full items-end pointer-events-none">
             {/* Video Container */}
@@ -436,15 +472,23 @@ export default function Home() {
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
 
         <div className="max-w-6xl mx-auto px-6 text-center relative z-10">
-          <p className="text-sm lg:text-base font-semibold text-blue-600 uppercase tracking-wider mb-3">
-            Interactive Agent
-          </p>
-          <h2 className="text-4xl lg:text-5xl font-bold tracking-tight mb-4 text-gray-900">
-            Experience the Intelligence
-          </h2>
-          <p className="text-slate-700 mb-12">
-            Talk to our AI live, or get an instant call to your phone.
-          </p>
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <motion.p variants={itemVariants} className="text-sm lg:text-base font-semibold text-blue-600 uppercase tracking-wider mb-3">
+              Interactive Agent
+            </motion.p>
+            <AnimatedHeader 
+              text="Experience the Intelligence"
+              className="text-4xl lg:text-5xl font-bold tracking-tight mb-4 text-gray-900"
+            />
+            <motion.p variants={itemVariants} className="text-slate-700 mb-12">
+              Talk to our AI live, or get an instant call to your phone.
+            </motion.p>
+          </motion.div>
 
           {/* New Side-by-Side Layout handled inside VoiceAgent */}
           <VoiceAgent />
@@ -484,16 +528,23 @@ export default function Home() {
               <div className="absolute -bottom-2 -left-2 w-16 h-16 border-b-2 border-l-2 border-blue-500/20 rounded-bl-3xl" />
             </div>
 
-            <div className="flex-1">
-              <p className="text-sm lg:text-base font-semibold text-blue-600 uppercase tracking-wider mb-3">
+            <motion.div 
+              className="flex-1"
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
+              <motion.p variants={itemVariants} className="text-sm lg:text-base font-semibold text-blue-600 uppercase tracking-wider mb-3">
                 The Transformation
-              </p>
-              <h2 className="text-4xl lg:text-5xl font-bold tracking-tight mb-6 text-gray-900">
-                What Changes After Using This
-              </h2>
-              <p className="text-lg text-slate-700 mb-10">
+              </motion.p>
+              <AnimatedHeader 
+                text="What Changes After Using This"
+                className="text-4xl lg:text-5xl font-bold tracking-tight mb-6 text-gray-900 !text-left"
+              />
+              <motion.p variants={itemVariants} className="text-lg text-slate-700 mb-10">
                 &quot;We sell results, not just software.&quot;
-              </p>
+              </motion.p>
 
               <div className="space-y-4">
                 {[
@@ -502,7 +553,7 @@ export default function Home() {
                   "Clear pipeline. Real data. More deals.",
                   "Automated follow-up sequences",
                 ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-3">
+                  <motion.div key={i} variants={itemVariants} className="flex items-center gap-3">
                     <div className="w-6 h-6 bg-slate-100 rounded-full flex items-center justify-center flex-shrink-0">
                       <Check
                         className="w-4 h-4 text-slate-900"
@@ -510,10 +561,10 @@ export default function Home() {
                       />
                     </div>
                     <span className="text-lg text-slate-900">{item}</span>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -524,17 +575,30 @@ export default function Home() {
         className="py-32 px-6 bg-white border-b border-slate-200"
       >
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-20">
-            <p className="text-sm lg:text-base font-semibold text-blue-600 uppercase tracking-wider mb-3">
+          <motion.div 
+            className="text-center mb-20"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <motion.p variants={itemVariants} className="text-sm lg:text-base font-semibold text-blue-600 uppercase tracking-wider mb-3">
               Simple Plans
-            </p>
-            <h2 className="text-4xl lg:text-5xl font-bold tracking-tight mb-6 text-gray-900">
-              Scalable Pricing
-            </h2>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8 items-stretch">
+            </motion.p>
+            <AnimatedHeader 
+              text="Scalable Pricing"
+              className="text-4xl lg:text-5xl font-bold tracking-tight mb-6 text-gray-900"
+            />
+          </motion.div>
+          <motion.div 
+            className="grid md:grid-cols-3 gap-8 items-stretch"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
             {/* Starter */}
-            <div className="p-10 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col hover:border-blue-500/30 transition-all hover:shadow-xl group">
+            <motion.div variants={itemVariants} className="p-10 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col hover:border-blue-500/30 transition-all hover:shadow-xl group">
               <h3 className="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors font-sans">Starter Plan</h3>
               <div className="text-4xl font-bold mt-6 mb-2 text-slate-900 font-sans">
                 $990
@@ -559,10 +623,10 @@ export default function Home() {
               >
                 Book a Live Demo
               </button>
-            </div>
+            </motion.div>
 
             {/* Growth - Featured */}
-            <div className="p-10 rounded-2xl bg-white border-2 border-[#0000FF] relative transform lg:-translate-y-6 shadow-2xl flex flex-col">
+            <motion.div variants={itemVariants} className="p-10 rounded-2xl bg-white border-2 border-[#0000FF] relative transform lg:-translate-y-6 shadow-2xl flex flex-col">
               <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#0000FF] text-white text-xs font-bold px-6 py-2 rounded-full uppercase tracking-widest font-sans">
                 Most Popular
               </div>
@@ -591,10 +655,10 @@ export default function Home() {
               >
                 Start 2-Day Free Trial
               </button>
-            </div>
+            </motion.div>
 
             {/* Scale */}
-            <div className="p-10 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col hover:border-blue-500/30 transition-all hover:shadow-xl group">
+            <motion.div variants={itemVariants} className="p-10 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col hover:border-blue-500/30 transition-all hover:shadow-xl group">
               <h3 className="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors font-sans">Enterprise</h3>
               <div className="text-4xl font-bold mt-6 mb-2 text-slate-900 font-sans">
                 Custom
@@ -619,8 +683,8 @@ export default function Home() {
               >
                 Contact Sales
               </button>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
@@ -635,15 +699,28 @@ export default function Home() {
           className="absolute top-10 -left-5 animate-[breathe_8s_ease-in-out_infinite_alternate-reverse] pointer-events-none z-0 w-64 h-64 md:w-96 md:h-96"
         />
         <div className="max-w-4xl mx-auto px-6 relative z-10">
-          <div className="text-center mb-16">
-            <p className="text-sm lg:text-base font-semibold text-blue-600 uppercase tracking-wider mb-3">
+          <motion.div 
+            className="text-center mb-16"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <motion.p variants={itemVariants} className="text-sm lg:text-base font-semibold text-blue-600 uppercase tracking-wider mb-3">
               Clear Answers
-            </p>
-            <h2 className="text-4xl lg:text-5xl font-bold tracking-tight text-gray-900">
-              Frequently Asked Questions
-            </h2>
-          </div>
-          <div className="space-y-6">
+            </motion.p>
+            <AnimatedHeader 
+              text="Frequently Asked Questions"
+              className="text-4xl lg:text-5xl font-bold tracking-tight text-gray-900"
+            />
+          </motion.div>
+          <motion.div 
+            className="space-y-6"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
             {[
               {
                 q: "Is this legal in the US?",
@@ -658,7 +735,7 @@ export default function Home() {
                 a: "Most teams are ready to launch within 24 hours after onboarding. Once your account is set up and your lead list is uploaded, the system can begin calling and populating your dashboard right away."
               }
             ].map((faq, i) => (
-              <details key={i} className="group bg-white border border-slate-200 rounded-xl open:border-blue-500/30 transition-all">
+              <motion.details key={i} variants={itemVariants} className="group bg-white border border-slate-200 rounded-xl open:border-blue-500/30 transition-all">
                 <summary className="flex items-center justify-between p-8 cursor-pointer font-bold text-lg list-none text-slate-900 font-sans">
                   {faq.q}
                   <span className="transition group-open:rotate-180 text-blue-600">
@@ -668,9 +745,9 @@ export default function Home() {
                 <div className="px-8 pb-8 text-slate-700 leading-relaxed font-medium font-sans">
                   {faq.a}
                 </div>
-              </details>
+              </motion.details>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -690,32 +767,44 @@ export default function Home() {
 
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center relative z-10">
           {/* Left: CTA Text */}
-          <div className="text-left">
-            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-blue-500/20 bg-blue-500/5 text-blue-600 text-sm font-bold mb-8 font-sans">
+          <motion.div 
+            className="text-left"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <motion.div variants={itemVariants} className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-blue-500/20 bg-blue-500/5 text-blue-600 text-sm font-bold mb-8 font-sans">
               <span className="animate-pulse h-2.5 w-2.5 rounded-full bg-blue-600 shadow-[0_0_10px_rgba(37,99,235,0.4)]"></span>
               2-Day Free Trial
-            </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-8 leading-[1.1] text-gray-900">
-              Get Your Custom <br />
-              <span className="text-blue-600">AI Demo Agent.</span>
-            </h2>
-            <p className="text-slate-700 text-xl mb-10 leading-relaxed font-light font-sans">
+            </motion.div>
+            <AnimatedHeader 
+              text="Get Your Custom AI Demo Agent."
+              className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-8 leading-[1.1] text-gray-900 !text-left"
+            />
+            <motion.p variants={itemVariants} className="text-slate-700 text-xl mb-10 leading-relaxed font-light font-sans">
               Fill out the form, and we&apos;ll build a demo agent specifically
               for your business. We&apos;ll email you a link to talk to it live
               within 24 hours.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-6">
+            </motion.p>
+            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-6">
               <button
                 onClick={openBooking}
                 className="bg-slate-900 text-white px-10 py-5 rounded-lg text-lg font-bold hover:bg-slate-800 transition-all shadow-xl hover:shadow-2xl font-sans"
               >
                 Book a Live Demo
               </button>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Right: Contact Form */}
-          <div className="bg-white border border-slate-200 p-10 rounded-2xl shadow-2xl relative z-10">
+          <motion.div 
+            className="bg-white border border-slate-200 p-10 rounded-2xl shadow-2xl relative z-10"
+            variants={itemVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
             <h3 className="text-3xl font-bold tracking-tight mb-8 text-gray-900">
               Claim Your Free Trial
             </h3>
@@ -842,7 +931,7 @@ export default function Home() {
                 </p>
               )}
             </form>
-          </div>
+          </motion.div>
         </div>
       </section>
 

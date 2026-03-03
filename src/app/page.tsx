@@ -325,7 +325,7 @@ export default function Home() {
 
       {/* ================= 3. HOW IT WORKS (ProcessFlow - The Solution) ================= */}
       <section
-        id="process"
+        id="howitworks"
         className="pt-12 lg:pt-16 bg-white border-b border-gray-200 relative"
       >
         {/* Decorative Top-Right Accent - Building Blocks */}

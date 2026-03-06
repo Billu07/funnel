@@ -38,6 +38,7 @@ export default function Home() {
   // 👈 State to control the Modal
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showAllFaqs, setShowAllFaqs] = useState(false);
 
   // Helper function to open modal
   const openBooking = () => {
@@ -861,7 +862,7 @@ export default function Home() {
                 q: "Can I cancel anytime and get my data back?",
                 a: "Yes. Our plans are month-to-month with no long-term contracts. If you decide to cancel, you can export all your leads, call recordings, and transcriptions at any time before your account closes.",
               },
-            ].map((faq, i) => (
+            ].slice(0, showAllFaqs ? 99 : 5).map((faq, i) => (
               <motion.details
                 key={i}
                 variants={itemVariants}
@@ -878,6 +879,22 @@ export default function Home() {
                 </div>
               </motion.details>
             ))}
+
+            {/* See More Button */}
+            <motion.div variants={itemVariants} className="pt-8 flex justify-center">
+              <button
+                onClick={() => setShowAllFaqs(!showAllFaqs)}
+                className="group flex items-center gap-2 px-8 py-4 bg-white border-2 border-slate-200 rounded-xl font-bold text-slate-900 hover:border-blue-600 hover:text-blue-600 transition-all duration-300"
+              >
+                {showAllFaqs ? "Show Less" : "See More Questions"}
+                <motion.div
+                  animate={{ rotate: showAllFaqs ? 180 : 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <ArrowRight size={20} className={showAllFaqs ? "-rotate-90" : "rotate-90"} />
+                </motion.div>
+              </button>
+            </motion.div>
           </motion.div>
         </div>
       </section>

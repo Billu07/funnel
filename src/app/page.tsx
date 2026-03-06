@@ -480,18 +480,16 @@ export default function Home() {
             >
               <AnimatedHeader
                 text="Call your Qualified Sellers within 24 Hours. Need Clarity?"
-                className="text-4xl lg:text-5xl font-bold tracking-tight mb-8 text-gray-900 leading-tight"
+                className="text-4xl lg:text-5xl font-bold tracking-tight mb-12 text-gray-900 leading-tight"
               />
 
-              <motion.div variants={itemVariants}>
-                <a 
-                  href={CALENDAR_LINK}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-3 px-10 py-5 bg-slate-900 text-white rounded-xl text-lg font-bold hover:bg-slate-800 transition-all shadow-xl hover:shadow-2xl flex items-center justify-center"
+              <motion.div variants={itemVariants} className="flex justify-center w-full">
+                <button 
+                  onClick={openBooking}
+                  className="inline-flex items-center justify-center gap-3 px-10 py-5 bg-slate-900 text-white rounded-xl text-lg font-bold hover:bg-slate-800 transition-all shadow-xl hover:shadow-2xl group"
                 >
-                  Let&apos;s have a talk <ArrowRight size={20} />
-                </a>
+                  Let&apos;s have a talk <ArrowRight size={20} className="transition-transform group-hover:translate-x-1" />
+                </button>
               </motion.div>
             </motion.div>
 

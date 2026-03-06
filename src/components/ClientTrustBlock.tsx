@@ -44,7 +44,7 @@ export default function ClientTrustBlock() {
               {CLIENTS.map((client, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-center mx-12 md:mx-20 min-w-[150px] relative h-16 opacity-50 hover:opacity-100 transition-all duration-500 cursor-default"
+                  className="flex items-center justify-center mx-12 md:mx-20 min-w-[150px] relative h-16 opacity-100 transition-all duration-500 cursor-default"
                 >
                   {client.logo ? (
                     <Image

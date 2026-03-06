@@ -31,7 +31,7 @@ const testimonials: Testimonial[] = [
     website: "agentworkforce.io",
     logoUrl: "/images/agentWorkforce.png",
     text: "The AI lead qualification is incredibly accurate. It feels like having a 24/7 sales assistant.",
-    author: "Marcus Johnson",
+    author: "Walker Music",
     rating: 5,
   },
   {
@@ -40,7 +40,7 @@ const testimonials: Testimonial[] = [
     website: "diamondequity.com",
     logoUrl: "/images/diamond equity.png",
     text: "Our conversion rates have tripled since we started using Voicium. The ROI was almost immediate.",
-    author: "Elena Rodriguez",
+    author: "Dan Breslin",
     rating: 5,
   },
   {
@@ -49,7 +49,7 @@ const testimonials: Testimonial[] = [
     website: "crowdcopia.com",
     logoUrl: "/images/crowdcopia.png",
     text: "The integration was seamless. We were up and running in less than 24 hours as promised.",
-    author: "James Wilson",
+    author: "Bil Wilson",
     rating: 5,
   },
 ];
@@ -126,7 +126,7 @@ export default function TestimonialsSection() {
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="text-center mb-2 md:mb-4">
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -134,14 +134,15 @@ export default function TestimonialsSection() {
           >
             What Our Customers Say
           </motion.h2>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
             className="text-xs md:text-sm text-slate-500 max-w-xl mx-auto leading-relaxed font-light"
           >
-            See how elite real estate teams are transforming their workflow with Voicium.
+            See how elite real estate teams are transforming their workflow with
+            Voicium.
           </motion.p>
         </div>
 
@@ -178,7 +179,7 @@ export default function TestimonialsSection() {
                         x: pos.x,
                         y: pos.y,
                         scale: pos.scale,
-                        zIndex: isSelected ? 10 : (isHovered ? 5 : 1),
+                        zIndex: isSelected ? 10 : isHovered ? 5 : 1,
                       }}
                       transition={{
                         type: "spring",
@@ -210,27 +211,32 @@ export default function TestimonialsSection() {
                       </AnimatePresence>
 
                       <div className="absolute inset-0 pointer-events-none">
-                        {isSelected && [
-                          { x: -55, y: -55 }, { x: 55, y: -55 }, { x: -65, y: 15 }, 
-                          { x: 65, y: 15 }, { x: 0, y: 65 }, { x: 0, y: -70 }
-                        ].map((spark, i) => (
-                          <motion.div
-                            key={i}
-                            initial={{ opacity: 0, scale: 0 }}
-                            animate={{ 
-                              opacity: [0.2, 0.8, 0.2],
-                              scale: [1, 1.3, 1],
-                              x: spark.x,
-                              y: spark.y
-                            }}
-                            transition={{
-                              duration: 1.2 + i * 0.2,
-                              repeat: Infinity,
-                              ease: "easeInOut"
-                            }}
-                            className="absolute left-1/2 top-1/2 w-1 h-1 bg-blue-600 rounded-sm"
-                          />
-                        ))}
+                        {isSelected &&
+                          [
+                            { x: -55, y: -55 },
+                            { x: 55, y: -55 },
+                            { x: -65, y: 15 },
+                            { x: 65, y: 15 },
+                            { x: 0, y: 65 },
+                            { x: 0, y: -70 },
+                          ].map((spark, i) => (
+                            <motion.div
+                              key={i}
+                              initial={{ opacity: 0, scale: 0 }}
+                              animate={{
+                                opacity: [0.2, 0.8, 0.2],
+                                scale: [1, 1.3, 1],
+                                x: spark.x,
+                                y: spark.y,
+                              }}
+                              transition={{
+                                duration: 1.2 + i * 0.2,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                              }}
+                              className="absolute left-1/2 top-1/2 w-1 h-1 bg-blue-600 rounded-sm"
+                            />
+                          ))}
                       </div>
 
                       {/* Logo selection area */}
@@ -309,7 +315,7 @@ export default function TestimonialsSection() {
                             className="w-4 h-4 fill-blue-600 text-blue-600"
                             strokeWidth={0}
                           />
-                        )
+                        ),
                       )}
                     </div>
                   </div>

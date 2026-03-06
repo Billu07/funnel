@@ -133,17 +133,17 @@ export default function VoiceAgent() {
       whileInView="visible"
       viewport={{ once: true }}
     >
-      <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-start max-w-5xl mx-auto">
+      <div className="grid md:grid-cols-2 gap-6 md:gap-12 items-start max-w-5xl mx-auto">
         
         {/* === LEFT CARD: WEB CALL (Mic) === */}
         <motion.div 
           variants={itemVariants}
-          className="bg-white border border-slate-200 rounded-sm p-8 flex flex-col items-center justify-center min-h-[400px] relative overflow-hidden shadow-sm shadow-slate-200/50 hover:shadow-slate-300/50 transition-all"
+          className="bg-white border border-slate-200 rounded-sm p-6 md:p-8 flex flex-col items-center justify-center min-h-[350px] md:min-h-[400px] relative overflow-hidden shadow-sm shadow-slate-200/50 hover:shadow-slate-300/50 transition-all"
         >
           <div className="absolute inset-0 bg-gradient-to-b from-blue-50/50 to-transparent pointer-events-none" />
           
-          <div className="text-center mb-10 relative z-10">
-            <h3 className="text-2xl font-bold tracking-tight text-gray-900 mb-2">Talk to AI Now</h3>
+          <div className="text-center mb-8 md:mb-10 relative z-10">
+            <h3 className="text-xl md:text-2xl font-bold tracking-tight text-gray-900 mb-2">Talk to AI Now</h3>
             <p className="text-slate-700 text-sm">Use your microphone to chat instantly.</p>
           </div>
 

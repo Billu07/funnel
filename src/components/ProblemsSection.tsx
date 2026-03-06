@@ -21,34 +21,7 @@ function ProgressiveLightReveal({
   delay?: number;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const mouseX = useMotionValue(0);
-  const [containerWidth, setContainerWidth] = useState(0);
   const isInView = useInView(containerRef, { once: true, margin: "-10%" });
-
-  // Smooth spring for the reveal sweep
-  const springX = useSpring(mouseX, { damping: 40, stiffness: 300 });
-  
-  // Create a clip-path that follows the spring
-  const insetRight = useTransform(springX, [0, containerWidth || 1], ["100%", "0%"]);
-  const clipPath = useMotionTemplate`inset(0 ${insetRight} 0 0)`;
-
-  useEffect(() => {
-    const updateWidth = () => {
-      if (containerRef.current) {
-        setContainerWidth(containerRef.current.offsetWidth);
-      }
-    };
-    updateWidth();
-    window.addEventListener("resize", updateWidth);
-    return () => window.removeEventListener("resize", updateWidth);
-  }, []);
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
-    mouseX.set(x);
-  };
 
   // Variants for the "Industry Level" sliding entrance
   const wordVariants = {
@@ -72,13 +45,13 @@ function ProgressiveLightReveal({
   };
 
   // Helper to wrap characters/words for the entrance reveal
-  const renderContent = (extraClass = "") => {
+  const renderContent = () => {
     return (
       <motion.div 
         variants={containerVariants}
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
-        className={`flex flex-wrap justify-center py-1 ${extraClass}`}
+        className="flex flex-wrap justify-center py-1"
       >
         {processContent(children, wordVariants)}
       </motion.div>
@@ -88,31 +61,19 @@ function ProgressiveLightReveal({
   return (
     <div 
       ref={containerRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={() => mouseX.set(0)}
-      className={`relative grid grid-cols-1 grid-rows-1 ${className} cursor-default select-none`}
+      className={`relative group ${className} cursor-default select-none`}
     >
-      {/* 1. Background layer: Dimmed/Static State */}
-      <div className="col-start-1 row-start-1 opacity-50 transition-opacity duration-500 text-center">
-        {renderContent()}
-      </div>
-
-      {/* 2. Sleek Highlight Bar (The "Stretching Block") */}
-      <div className="col-start-1 row-start-1 relative pointer-events-none overflow-hidden">
-        <motion.div
-          className={`absolute left-0 top-[20%] h-[60%] ${activeColor} rounded-full blur-[4px]`}
-          style={{ width: springX }}
+      {/* 1. Background layer: Highlight bar is now always present and full width */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+        <div 
+          className={`h-[120%] w-[110%] rounded-full blur-[15px] transition-all duration-700 opacity-70 ${activeColor} group-hover:opacity-100 group-hover:scale-110 group-hover:brightness-110 group-hover:saturate-150`}
         />
       </div>
 
-      {/* 3. Reveal layer: The "Lit Up" State (Full color and opacity) */}
-      <motion.div
-        className="col-start-1 row-start-1 z-10 pointer-events-none overflow-hidden text-center"
-        style={{ clipPath }}
-      >
-        {/* Same content, perfectly synced */}
+      {/* 2. Content layer: Full opacity from start (following entrance animation) */}
+      <div className="relative z-10 text-center">
         {renderContent()}
-      </motion.div>
+      </div>
     </div>
   );
 }
@@ -225,7 +186,7 @@ export default function ProblemsSection() {
         {/* Section Header */}
         <div className="text-center mb-20 lg:mb-24">
           <ProgressiveLightReveal 
-            activeColor="bg-red-500/10"
+            activeColor="bg-gradient-to-r from-red-500/20 via-red-500/10 to-transparent"
             className="mb-3"
           >
             <p className="text-sm lg:text-base font-semibold text-red-600 uppercase tracking-wider">
@@ -234,15 +195,25 @@ export default function ProblemsSection() {
           </ProgressiveLightReveal>
           
           <ProgressiveLightReveal 
-            activeColor="bg-blue-600/10"
-            className="max-w-4xl mx-auto"
+            activeColor="bg-gradient-to-r from-blue-600/20 via-blue-600/10 to-transparent"
+            className="max-w-5xl mx-auto mb-6"
             delay={0.1}
           >
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
-              Real estate teams dial{" "}
-              <span className="text-blue-600">50+ numbers</span> to find just{" "}
-              <span className="text-red-600">3 prospects</span>
+            <h2 className="text-3xl lg:text-5xl font-bold text-gray-900 leading-tight px-4">
+              Real estate <span className="text-blue-600">Investors and Wholesalers</span> call{" "}
+              <span className="text-red-600">80-100 leads</span> to close one deal.
             </h2>
+          </ProgressiveLightReveal>
+
+          <ProgressiveLightReveal 
+            activeColor="bg-gradient-to-r from-blue-600/10 via-blue-600/5 to-transparent"
+            className="max-w-4xl mx-auto"
+            delay={0.2}
+          >
+            <p className="text-lg lg:text-2xl text-gray-600 font-medium px-4 leading-relaxed">
+              At 3 minutes per call, that&apos;s{" "}
+              <span className="text-red-600">5 hours of calling</span> for every contact you sign.
+            </p>
           </ProgressiveLightReveal>
         </div>
 

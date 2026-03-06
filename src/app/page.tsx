@@ -788,10 +788,10 @@ export default function Home() {
           </motion.div>
           <motion.div
             className="space-y-6"
-            variants={containerVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
+            variants={containerVariants}
           >
             {[
               {
@@ -862,11 +862,13 @@ export default function Home() {
                 q: "Can I cancel anytime and get my data back?",
                 a: "Yes. Our plans are month-to-month with no long-term contracts. If you decide to cancel, you can export all your leads, call recordings, and transcriptions at any time before your account closes.",
               },
-            ].slice(0, showAllFaqs ? 99 : 5).map((faq, i) => (
+            ].map((faq, i) => (
               <motion.details
-                key={i}
+                key={faq.q}
                 variants={itemVariants}
-                className="group bg-white border border-slate-200 rounded-xl open:border-blue-500/30 transition-all"
+                initial={false}
+                animate="visible"
+                className={`group bg-white border border-slate-200 rounded-xl open:border-blue-500/30 transition-all ${!showAllFaqs && i >= 5 ? "hidden" : "block"}`}
               >
                 <summary className="flex items-center justify-between p-8 cursor-pointer font-bold text-lg list-none text-slate-900 font-sans">
                   {faq.q}

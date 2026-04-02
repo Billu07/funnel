@@ -12,10 +12,12 @@ export default function AnimatedHeader({
   text,
   className = "",
   delay = 0,
+  as: Tag = "h2",
 }: {
   text: string;
   className?: string;
   delay?: number;
+  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-10%" });
@@ -44,8 +46,10 @@ export default function AnimatedHeader({
     },
   };
 
+  const MotionTag = motion(Tag);
+
   return (
-    <motion.h2
+    <MotionTag
       ref={ref}
       variants={container}
       initial="hidden"
@@ -65,6 +69,6 @@ export default function AnimatedHeader({
           </span>
         ))}
       </span>
-    </motion.h2>
+    </MotionTag>
   );
 }

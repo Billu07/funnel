@@ -174,7 +174,7 @@ export default function Home() {
 
           {/* Desktop Navigation Links */}
           <div className="hidden md:flex items-center gap-8">
-            {["Features", "How it Works", "Pricing", "FAQ"].map((item) => (
+            {["Features", "How it Works", "FAQ"].map((item) => (
               <a
                 key={item}
                 href={`#${item.toLowerCase().replace(/\s+/g, "")}`}
@@ -218,7 +218,7 @@ export default function Home() {
         {/* Mobile Menu Overlay */}
         {isMobileMenuOpen && (
           <div className="md:hidden absolute top-full left-0 w-full bg-white/95 backdrop-blur-md border-b border-[#d2d2d7] p-6 flex flex-col gap-6 shadow-sm shadow-slate-200/50 animate-fade-in-down">
-            {["Features", "How it Works", "Pricing", "FAQ"].map((item) => (
+            {["Features", "How it Works", "FAQ"].map((item) => (
               <a
                 key={item}
                 href={`#${item.toLowerCase().replace(/\s+/g, "")}`}
@@ -611,149 +611,6 @@ export default function Home() {
               </div>
             </motion.div>
           </div>
-        </div>
-      </section>
-
-      {/* ================= 9. PRICING ================= */}
-      <section
-        id="pricing"
-        className="py-32 px-6 bg-white border-b border-slate-200"
-      >
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            className="text-center mb-20"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <motion.p
-              variants={itemVariants}
-              className="text-sm lg:text-base font-semibold text-blue-600 uppercase tracking-wider mb-3"
-            >
-              Simple Plans
-            </motion.p>
-            <AnimatedHeader
-              text="Scalable Pricing"
-              className="text-4xl lg:text-5xl font-bold tracking-tight mb-6 text-gray-900"
-            />
-          </motion.div>
-          <motion.div
-            className="grid md:grid-cols-3 gap-8 items-stretch"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            {/* Starter */}
-            <motion.div
-              variants={itemVariants}
-              className="p-10 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col hover:border-blue-500/30 transition-all hover:shadow-xl group"
-            >
-              <h3 className="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors font-sans">
-                Starter Plan
-              </h3>
-              <div className="text-4xl font-bold mt-6 mb-2 text-slate-900 font-sans">
-                $990
-                <span className="text-lg font-normal text-slate-500">/mo</span>
-              </div>
-              <p className="text-sm text-slate-500 mb-10 font-sans">
-                (No Setup Charge)
-              </p>
-              <ul className="space-y-5 mb-10 text-slate-700 flex-1 font-sans">
-                {[
-                  "AI Calling Engine",
-                  "Unlimited Calls (Mon-Sat)",
-                  "Daily Transcription Reports",
-                ].map((text, i) => (
-                  <li key={i} className="flex items-center gap-3">
-                    <Check className="w-5 h-5 text-blue-600" strokeWidth={3} />
-                    <span className="text-base font-medium">{text}</span>
-                  </li>
-                ))}
-              </ul>
-              <button
-                onClick={openBooking}
-                className="w-full py-4 border-2 border-slate-900 text-slate-900 rounded-lg font-bold hover:bg-slate-900 hover:text-white transition-all duration-300 font-sans"
-              >
-                Book a Live Demo
-              </button>
-            </motion.div>
-
-            {/* Growth - Featured */}
-            <motion.div
-              variants={itemVariants}
-              className="p-10 rounded-2xl bg-white border-2 border-[#0000FF] relative transform lg:-translate-y-6 shadow-2xl flex flex-col"
-            >
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#0000FF] text-white text-xs font-bold px-6 py-2 rounded-full uppercase tracking-widest font-sans">
-                Most Popular
-              </div>
-              <h3 className="text-2xl font-bold text-slate-900 mt-2 font-sans">
-                Growth Plan
-              </h3>
-              <div className="text-5xl font-bold mt-6 mb-2 text-[#0000FF] font-sans">
-                $1770
-                <span className="text-lg font-normal text-slate-500">/mo</span>
-              </div>
-              <p className="text-sm text-blue-600/80 mb-10 font-medium font-sans">
-                (No Setup Charge)
-              </p>
-              <ul className="space-y-5 mb-10 text-slate-700 flex-1 font-sans">
-                {[
-                  "Everything in Starter",
-                  "Lead Scoring + Dashboard",
-                  "CRM + Analytics",
-                  "Full Automation Workflow",
-                ].map((text, i) => (
-                  <li key={i} className="flex items-center gap-3">
-                    <Check className="w-5 h-5 text-blue-600" strokeWidth={3} />
-                    <span className="text-base font-semibold">{text}</span>
-                  </li>
-                ))}
-              </ul>
-              <button
-                onClick={scrollToContact}
-                className="w-full py-5 bg-[#0000FF] text-white rounded-lg font-bold hover:bg-blue-800 transition-all duration-300 shadow-lg shadow-blue-500/20 font-sans"
-              >
-                Start 2-Day Free Trial
-              </button>
-            </motion.div>
-
-            {/* Scale */}
-            <motion.div
-              variants={itemVariants}
-              className="p-10 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col hover:border-blue-500/30 transition-all hover:shadow-xl group"
-            >
-              <h3 className="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors font-sans">
-                Enterprise
-              </h3>
-              <div className="text-4xl font-bold mt-6 mb-2 text-slate-900 font-sans">
-                Custom
-              </div>
-              <p className="text-sm text-slate-500 mb-10 font-sans">
-                For large teams
-              </p>
-              <ul className="space-y-5 mb-10 text-slate-700 flex-1 font-sans">
-                {[
-                  "Custom Workflows",
-                  "Dedicated Setup",
-                  "Multi-team Usage",
-                  "Priority Support",
-                ].map((text, i) => (
-                  <li key={i} className="flex items-center gap-3">
-                    <Check className="w-5 h-5 text-blue-600" strokeWidth={3} />
-                    <span className="text-base font-medium">{text}</span>
-                  </li>
-                ))}
-              </ul>
-              <button
-                onClick={openBooking}
-                className="w-full py-4 border-2 border-slate-900 text-slate-900 rounded-lg font-bold hover:bg-slate-900 hover:text-white transition-all duration-300 font-sans"
-              >
-                Contact Sales
-              </button>
-            </motion.div>
-          </motion.div>
         </div>
       </section>
 

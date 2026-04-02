@@ -20,8 +20,46 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Voicium - Premium Real Estate AI Lead Qualification",
-  description: "Stop calling dead leads. Voicium's AI calls, analyzes, and delivers only motivated real estate prospects.",
+  metadataBase: new URL("https://voicium.live"),
+  title: "Voicium | AI-Powered Real Estate Lead Qualification",
+  description: "Stop calling dead leads. Voicium's AI calls, analyzes, and delivers only highly motivated real estate prospects directly to your pipeline.",
+  keywords: [
+    "real estate ai",
+    "lead qualification ai",
+    "ai outbound calling",
+    "motivated seller leads",
+    "real estate automation",
+    "voicium",
+    "ai lead scoring",
+    "real estate prospecting ai"
+  ],
+  authors: [{ name: "Autolinium" }],
+  openGraph: {
+    title: "Voicium | AI-Powered Real Estate Lead Qualification",
+    description: "Automate your outbound calling. Talk only to motivated sellers with our advanced AI lead qualification engine.",
+    url: "https://voicium.live",
+    siteName: "Voicium",
+    images: [
+      {
+        url: "/images/logo.png",
+        width: 800,
+        height: 600,
+        alt: "Voicium Logo",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Voicium | AI-Powered Real Estate Lead Qualification",
+    description: "Stop calling dead leads. Get qualified prospects delivered to your pipeline by our AI.",
+    images: ["/images/logo.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

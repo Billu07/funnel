@@ -35,7 +35,7 @@ function getWebhookUrl(): string {
 
 async function forwardToWebhook(
   webhookUrl: string,
-  payload: unknown,
+  payload: Record<string, unknown>,
   source: string,
 ): Promise<Response> {
   const webhookSecret = process.env.N8N_WEBHOOK_SECRET;

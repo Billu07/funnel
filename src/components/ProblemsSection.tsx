@@ -25,19 +25,19 @@ function ProgressiveLightReveal({
   const isInView = useInView(containerRef, { once: true, margin: "-10%" });
 
   // Variants for the "Industry Level" sliding entrance
-  const wordVariants = {
+  const wordVariants: Variants = {
     hidden: { y: "110%" },
     visible: { 
       y: 0, 
       transition: { 
         duration: 0.8, 
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.22, 1, 0.36, 1] as const,
         delay: delay 
       } 
     }
   };
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     visible: {
       transition: {
         staggerChildren: 0.05

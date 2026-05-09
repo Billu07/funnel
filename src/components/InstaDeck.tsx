@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import {
@@ -56,10 +56,10 @@ export default function InstaDeck() {
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % items.length);
     setIsLiked(false); // Reset like for next slide
-  };
+  }, []);
 
   const handlePrev = () => {
     setCurrentIndex((prev) => (prev - 1 + items.length) % items.length);
@@ -72,7 +72,6 @@ export default function InstaDeck() {
       handleNext();
     }, 5000); // 5 seconds per slide
     return () => clearInterval(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex, handleNext]);
 
   const activeItem = items[currentIndex];

@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Design scratchpad not part of app runtime.
+    "inspiration.tsx",
   ]),
 ]);
 

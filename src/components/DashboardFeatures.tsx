@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import {
   UploadCloud,
@@ -58,7 +58,7 @@ const features = [
     title: "Flexible Data Options",
     label: "Premium Add-on",
     description:
-      "If you already have a list, upload it and start right away. If you don’t, we’ll generate high-quality, targeted leads for your campaign as an add-on service. Either way, your outreach begins fast.",
+      "If you already have a list, upload it and start right away. If you don't, we'll generate high-quality, targeted leads for your campaign as an add-on service. Either way, your outreach begins fast.",
     bullets: [
       "Upload CSV / Excel files",
       "Automatic data cleanup",
@@ -74,6 +74,19 @@ const features = [
 
 export default function DashboardFeatures() {
   const [activeImage, setActiveImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!activeImage) return;
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setActiveImage(null);
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [activeImage]);
 
   return (
     <div className="space-y-20 md:space-y-40">
@@ -193,6 +206,7 @@ export default function DashboardFeatures() {
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              onClick={(event) => event.stopPropagation()}
               className="relative w-full h-full max-w-7xl flex items-center justify-center"
             >
               <div className="relative w-full h-full">
@@ -207,6 +221,8 @@ export default function DashboardFeatures() {
               <button 
                 className="absolute top-0 right-0 m-4 w-12 h-12 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-900 hover:bg-slate-200 transition-colors shadow-lg"
                 onClick={() => setActiveImage(null)}
+                type="button"
+                aria-label="Close screenshot preview"
               >
                 <span className="text-2xl font-light">&times;</span>
               </button>
@@ -217,3 +233,4 @@ export default function DashboardFeatures() {
     </div>
   );
 }
+

@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Voicium Funnel
 
-## Getting Started
+Marketing funnel built with Next.js App Router for:
+- trial signup capture
+- instant demo call requests
+- live Vapi voice demo
 
-First, run the development server:
+## Setup
 
+1. Install dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Copy env template and fill values:
+```bash
+cp .env.example .env.local
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Run locally:
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Environment Variables
 
-## Learn More
+Public:
+- `NEXT_PUBLIC_CALENDAR_LINK`
+- `NEXT_PUBLIC_VAPI_PUBLIC_KEY`
+- `NEXT_PUBLIC_VAPI_ASSISTANT_ID`
 
-To learn more about Next.js, take a look at the following resources:
+Server only:
+- `N8N_WEBHOOK_TRIAL_URL`
+- `N8N_WEBHOOK_CALL_URL`
+- `N8N_WEBHOOK_URL` (optional fallback)
+- `N8N_WEBHOOK_SECRET` (optional)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## API Routes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `POST /api/trial-signup`
+  - validates/sanitizes trial form input
+  - applies IP rate limiting
+  - forwards payload to configured webhook
 
-## Deploy on Vercel
+- `POST /api/demo-call`
+  - validates/sanitizes callback request
+  - applies stricter IP rate limiting
+  - forwards payload to configured webhook
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Security Controls Included
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- server-side webhook proxy (no direct webhook calls from browser)
+- payload size limits on API routes
+- honeypot field support for bot filtering
+- IP-based in-memory rate limiting
+- security headers (`X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`)
+- API responses marked `no-store`

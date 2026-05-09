@@ -1,6 +1,7 @@
 "use client";
-import { motion, useSpring, useMotionValue, useMotionTemplate, useTransform, useInView } from "framer-motion";
-import React, { useRef, useState, useEffect } from "react";
+import Image from "next/image";
+import { motion, useInView, type Variants } from "framer-motion";
+import React, { useRef } from "react";
 
 /**
  * ProgressiveLightReveal Component
@@ -81,7 +82,7 @@ function ProgressiveLightReveal({
 /**
  * Recursively process children to split strings into words while preserving tags.
  */
-function processContent(node: React.ReactNode, variants: any): React.ReactNode {
+function processContent(node: React.ReactNode, variants: Variants): React.ReactNode {
   if (typeof node === "string") {
     const words = node.trim().split(/\s+/);
     return words.map((word, i) => (
@@ -99,8 +100,11 @@ function processContent(node: React.ReactNode, variants: any): React.ReactNode {
     return node.map((child, i) => <React.Fragment key={i}>{processContent(child, variants)}</React.Fragment>);
   }
   if (node && typeof node === "object" && "props" in node) {
-    const element = node as React.ReactElement;
-    const props = element.props as any;
+    const element = node as React.ReactElement<{
+      children?: React.ReactNode;
+      className?: string;
+    }>;
+    const props = element.props;
     return React.cloneElement(element, {
       ...props,
       children: processContent(props.children, variants),
@@ -176,9 +180,11 @@ export default function ProblemsSection() {
   return (
     <section className="w-full pt-24 lg:pt-32 pb-12 lg:pb-16 bg-white relative overflow-hidden">
       {/* Decorative Left Accent - Brick Pattern */}
-      <img
+      <Image
         src="https://d2xsxph8kpxj0f.cloudfront.net/310519663063245286/4NbDCkjGg5zEcuxt8PVxUE/svg-accent-brick-pattern-5Zc85zQmGUB8whjirStcYx.webp"
         alt="Decorative brick pattern"
+        width={384}
+        height={384}
         className="absolute top-0 -left-10 opacity-30 pointer-events-none z-0 w-64 h-64 md:w-96 md:h-96 animate-[breathe_7s_ease-in-out_infinite_alternate]"
       />
 
@@ -244,9 +250,11 @@ export default function ProblemsSection() {
 
               {/* Icon */}
               <div className="relative z-10 mb-10 h-20 lg:h-24 flex items-center">
-                <img
+                <Image
                   src={problem.icon}
                   alt={problem.title}
+                  width={96}
+                  height={96}
                   className="h-full w-auto object-contain opacity-85 group-hover:opacity-95 transition-opacity duration-300"
                 />
               </div>

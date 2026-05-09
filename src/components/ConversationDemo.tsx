@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { Play, Pause, ChevronLeft, ChevronRight, User } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import AnimatedHeader from "./AnimatedHeader";
 
 const DEMO_CALLS = [
@@ -50,11 +50,11 @@ const itemVariants = {
 };
 
 export default function ConversationDemo() {
+  const shouldReduceMotion = useReducedMotion();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const progressBarRef = useRef<HTMLDivElement | null>(null);
 
   const currentCall = DEMO_CALLS[currentIndex];
 
@@ -93,17 +93,11 @@ export default function ConversationDemo() {
     }
   };
 
-  const handleSeek = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!progressBarRef.current || !audioRef.current) return;
-
-    const rect = progressBarRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const percentage = Math.max(0, Math.min(1, x / rect.width));
-
-    if (audioRef.current.duration) {
-      audioRef.current.currentTime = percentage * audioRef.current.duration;
-      setProgress(percentage * 100);
-    }
+  const handleSeekChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!audioRef.current || !audioRef.current.duration) return;
+    const nextProgress = Number(e.target.value);
+    audioRef.current.currentTime = (nextProgress / 100) * audioRef.current.duration;
+    setProgress(nextProgress);
   };
 
   const nextSlide = () => {
@@ -166,19 +160,23 @@ export default function ConversationDemo() {
               <button
                 onClick={prevSlide}
                 className="absolute left-4 top-[40%] -translate-y-1/2 z-50 bg-white/80 hover:bg-white text-slate-900 p-3 rounded-none backdrop-blur-md transition-all hover:scale-110 border border-slate-200 shadow-sm group"
+                type="button"
+                aria-label="Previous demo call"
               >
                 <ChevronLeft
                   size={28}
-                  className="group-hover:-translate-x-0.5 transition-"
+                  className="group-hover:-translate-x-0.5 transition-transform"
                 />
               </button>
               <button
                 onClick={nextSlide}
                 className="absolute right-4 top-[40%] -translate-y-1/2 z-50 bg-white/80 hover:bg-white text-slate-900 p-3 rounded-none backdrop-blur-md transition-all hover:scale-110 border border-slate-200 shadow-sm group"
+                type="button"
+                aria-label="Next demo call"
               >
                 <ChevronRight
                   size={28}
-                  className="group-hover:translate-x-0.5 transition-"
+                  className="group-hover:translate-x-0.5 transition-transform"
                 />
               </button>
 
@@ -212,12 +210,20 @@ export default function ConversationDemo() {
                             <motion.div
                               key={i}
                               className="w-1.5 bg-slate-900 rounded-full"
-                              animate={{ height: [8, 24, 12, 28, 8] }}
-                              transition={{
-                                duration: 0.8,
-                                repeat: Infinity,
-                                delay: i * 0.1,
-                              }}
+                              animate={
+                                shouldReduceMotion
+                                  ? { height: 12 }
+                                  : { height: [8, 24, 12, 28, 8] }
+                              }
+                              transition={
+                                shouldReduceMotion
+                                  ? { duration: 0 }
+                                  : {
+                                      duration: 0.8,
+                                      repeat: Infinity,
+                                      delay: i * 0.1,
+                                    }
+                              }
                             />
                           ))}
                         </div>
@@ -233,7 +239,7 @@ export default function ConversationDemo() {
                     <div className="flex-1 relative rounded-sm overflow-hidden border border-slate-200 bg-slate-50 shadow-sm flex items-center justify-center">
                       <div className="flex flex-col items-center gap-4">
                         <div className="p-8 rounded-none bg-slate-900 border border-slate-200">
-                          <User size={64} className="text-slate-900" />
+                          <User size={64} className="text-white" />
                         </div>
                         <span className="text-slate-900 font-bold text-[10px] uppercase tracking-widest">
                           Privacy Protected
@@ -245,12 +251,20 @@ export default function ConversationDemo() {
                             <motion.div
                               key={i}
                               className="w-1.5 bg-slate-500 rounded-full"
-                              animate={{ height: [12, 8, 28, 16, 12] }}
-                              transition={{
-                                duration: 1,
-                                repeat: Infinity,
-                                delay: i * 0.15,
-                              }}
+                              animate={
+                                shouldReduceMotion
+                                  ? { height: 12 }
+                                  : { height: [12, 8, 28, 16, 12] }
+                              }
+                              transition={
+                                shouldReduceMotion
+                                  ? { duration: 0 }
+                                  : {
+                                      duration: 1,
+                                      repeat: Infinity,
+                                      delay: i * 0.15,
+                                    }
+                              }
                             />
                           ))}
                         </div>
@@ -268,7 +282,9 @@ export default function ConversationDemo() {
                 <div className="flex items-center gap-6">
                   <button
                     onClick={togglePlay}
-                    className="flex-shrink-0 w-12 h-12 rounded-none bg-slate-900 text-white flex items-center justify-center  transition- shadow-sm"
+                    className="flex-shrink-0 w-12 h-12 rounded-none bg-slate-900 text-white flex items-center justify-center transition-colors shadow-sm hover:bg-slate-800"
+                    type="button"
+                    aria-label={isPlaying ? "Pause audio demo" : "Play audio demo"}
                   >
                     {isPlaying ? (
                       <Pause size={20} fill="currentColor" />
@@ -287,17 +303,21 @@ export default function ConversationDemo() {
                       </span>
                     </div>
                     {/* SEEKABLE PROGRESS BAR */}
-                    <div
-                      ref={progressBarRef}
-                      onClick={handleSeek}
-                      className="h-2 bg-slate-100 rounded-none overflow-hidden cursor-pointer relative group"
-                    >
+                    <div className="h-2 bg-slate-100 rounded-none overflow-hidden cursor-pointer relative group">
                       <motion.div
-                        className="h-full bg-slate-500 relative"
+                        className="h-full bg-slate-500 relative pointer-events-none"
                         style={{ width: `${progress}%` }}
-                      >
-                        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-none shadow-sm opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </motion.div>
+                      />
+                      <input
+                        type="range"
+                        min={0}
+                        max={100}
+                        step={1}
+                        value={Number.isFinite(progress) ? progress : 0}
+                        onChange={handleSeekChange}
+                        aria-label="Seek demo audio position"
+                        className="absolute inset-0 opacity-0 cursor-pointer"
+                      />
                     </div>
                   </div>
                 </div>
@@ -315,6 +335,8 @@ export default function ConversationDemo() {
                   setIsPlaying(false);
                   setProgress(0);
                 }}
+                type="button"
+                aria-label={`View demo call ${idx + 1}`}
                 className={`h-2 rounded-none transition-all duration-300 ${
                   idx === currentIndex
                     ? "bg-slate-900 w-10"

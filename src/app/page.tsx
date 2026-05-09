@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import VoiceAgent from "@/components/VoiceAgent";
 import DashboardFeatures from "@/components/DashboardFeatures";
@@ -12,6 +12,7 @@ import FloatingElement from "@/components/FloatingElement";
 import CustomVideoPlayer from "@/components/CustomVideoPlayer";
 import { motion } from "framer-motion";
 import AnimatedHeader from "@/components/AnimatedHeader";
+import { trackFunnelEvent } from "@/lib/analytics";
 import { Check, ArrowRight, Menu, X, Mail, Linkedin } from "lucide-react";
 
 const DASHBOARD_URL = "https://dashboard.voicium.live";
@@ -42,22 +43,145 @@ export default function Home() {
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showAllFaqs, setShowAllFaqs] = useState(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
+  const [notification, setNotification] = useState<{
+    text: string;
+    tone: "info" | "success";
+  } | null>(null);
+  const onboardingDialogRef = useRef<HTMLDivElement | null>(null);
+  const onboardingTriggerRef = useRef<HTMLElement | null>(null);
+  const notificationTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const showNotification = (text: string, tone: "info" | "success" = "info") =>
+    setNotification({ text, tone });
 
   // Helper function to open modal
-  const openOnboarding = () => {
+  const openOnboarding = (
+    event?: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    trackFunnelEvent("onboarding_opened", {
+      source: event?.currentTarget?.dataset?.ctaSource || "unknown",
+    });
+    onboardingTriggerRef.current = event?.currentTarget ?? null;
+    setIsRedirecting(false);
     setIsOnboardingOpen(true);
     setIsMobileMenuOpen(false);
+  };
+
+  const closeOnboarding = () => {
+    setIsOnboardingOpen(false);
+    setIsRedirecting(false);
   };
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
   const continueToDashboard = () => {
+    trackFunnelEvent("dashboard_continue_clicked", {
+      source: "onboarding_modal",
+    });
+    setIsRedirecting(true);
+    showNotification("Redirecting to dashboard...", "success");
     window.location.href = DASHBOARD_URL;
   };
 
   const openCalendar = () => {
+    trackFunnelEvent("calendar_cta_clicked", { location: "video_section" });
     window.open(CALENDAR_LINK, "_blank", "noopener,noreferrer");
+    showNotification("Opening calendar in a new tab...");
   };
+
+  useEffect(() => {
+    if (!notification?.text) return;
+
+    if (notificationTimerRef.current) {
+      clearTimeout(notificationTimerRef.current);
+    }
+
+    notificationTimerRef.current = setTimeout(() => {
+      setNotification(null);
+    }, 2800);
+
+    return () => {
+      if (notificationTimerRef.current) {
+        clearTimeout(notificationTimerRef.current);
+      }
+    };
+  }, [notification?.text]);
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+    const originalBodyOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = originalBodyOverflow;
+    };
+  }, [isMobileMenuOpen]);
+
+  useEffect(() => {
+    if (!isOnboardingOpen) {
+      onboardingTriggerRef.current?.focus();
+      return;
+    }
+
+    const dialog = onboardingDialogRef.current;
+    if (!dialog) return;
+
+    const originalBodyOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const focusableSelectors = [
+      'button:not([disabled])',
+      'a[href]',
+      'input:not([disabled])',
+      'select:not([disabled])',
+      'textarea:not([disabled])',
+      '[tabindex]:not([tabindex="-1"])',
+    ];
+
+    const getFocusableElements = () =>
+      Array.from(
+        dialog.querySelectorAll<HTMLElement>(focusableSelectors.join(",")),
+      );
+
+    const focusableElements = getFocusableElements();
+    focusableElements[0]?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setIsOnboardingOpen(false);
+        setIsRedirecting(false);
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+
+      const currentFocusable = getFocusableElements();
+      if (currentFocusable.length === 0) {
+        event.preventDefault();
+        return;
+      }
+
+      const first = currentFocusable[0];
+      const last = currentFocusable[currentFocusable.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+
+      if (event.shiftKey && active === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalBodyOverflow;
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOnboardingOpen]);
 
   // Animation variants from inspiration
   const containerVariants = {
@@ -128,7 +252,7 @@ export default function Home() {
                     : "text-slate-800 hover:text-black"
                 }`}
               >
-                {item === "HowitWorks" ? "How it Works" : item}
+                {item}
               </a>
             ))}
           </div>
@@ -136,6 +260,8 @@ export default function Home() {
           <div className="hidden md:block">
             <button
               onClick={openOnboarding}
+              data-cta-source="nav_desktop"
+              type="button"
               className={`px-6 py-2 rounded-lg font-sans font-semibold transition-all   ${
                 isScrolled
                   ? "bg-blue-900 text-white hover:bg-blue-800 shadow-lg"
@@ -154,6 +280,10 @@ export default function Home() {
                 : "text-slate-800 hover:text-black"
             }`}
             onClick={toggleMobileMenu}
+            type="button"
+            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-nav-menu"
           >
             {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
@@ -161,7 +291,10 @@ export default function Home() {
 
         {/* Mobile Menu Overlay */}
         {isMobileMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 w-full bg-white/95 backdrop-blur-md border-b border-[#d2d2d7] p-6 flex flex-col gap-6 shadow-sm shadow-slate-200/50 animate-fade-in-down">
+          <div
+            id="mobile-nav-menu"
+            className="md:hidden absolute top-full left-0 w-full bg-white/95 backdrop-blur-md border-b border-[#d2d2d7] p-6 flex flex-col gap-6 shadow-sm shadow-slate-200/50 animate-fade-in-down"
+          >
             {["Features", "How it Works", "FAQ"].map((item) => (
               <a
                 key={item}
@@ -169,11 +302,13 @@ export default function Home() {
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="text-lg font-medium text-slate-700 hover:text-cyan-glow transition-colors"
               >
-                {item === "HowitWorks" ? "How it Works" : item}
+                {item}
               </a>
             ))}
             <button
               onClick={openOnboarding}
+              data-cta-source="nav_mobile"
+              type="button"
               className="w-full bg-blue-900 text-white hover:bg-blue-800 px-6 py-4 rounded-lg font-sans font-semibold hover:shadow-[0_0_20px_rgba(30,58,138,0.4)] transition-all"
             >
               Start Your Free Trial
@@ -182,13 +317,42 @@ export default function Home() {
         )}
       </nav>
 
+      <div aria-live="polite" aria-atomic="true" className="sr-only">
+        {notification?.text || ""}
+      </div>
+      {notification && (
+        <div
+          className={`fixed top-6 right-6 z-[80] px-4 py-3 rounded-lg text-sm font-medium shadow-xl border ${
+            notification.tone === "success"
+              ? "bg-emerald-700 text-white border-emerald-600"
+              : "bg-slate-900 text-white border-slate-700"
+          }`}
+        >
+          {notification.text}
+        </div>
+      )}
+
       {isOnboardingOpen && (
-        <div className="fixed inset-0 z-[70] bg-slate-950/50 backdrop-blur-sm flex items-center justify-center p-6">
-          <div className="w-full max-w-lg bg-white rounded-2xl border border-slate-200 shadow-2xl p-8">
-            <h3 className="text-2xl font-bold text-slate-900 mb-2">
+        <div
+          className="fixed inset-0 z-[70] bg-slate-950/50 backdrop-blur-sm flex items-center justify-center p-6"
+          onClick={closeOnboarding}
+        >
+          <div
+            ref={onboardingDialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="onboarding-title"
+            aria-describedby="onboarding-desc"
+            className="w-full max-w-lg bg-white rounded-2xl border border-slate-200 shadow-2xl p-8"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <h3
+              id="onboarding-title"
+              className="text-2xl font-bold text-slate-900 mb-2"
+            >
               Start Your Free Trial
             </h3>
-            <p className="text-slate-600 mb-6">
+            <p id="onboarding-desc" className="text-slate-600 mb-6">
               Quick onboarding before you launch your first campaign.
             </p>
             <ol className="space-y-3 mb-8">
@@ -203,16 +367,20 @@ export default function Home() {
             </ol>
             <div className="flex flex-col sm:flex-row gap-3">
               <button
-                onClick={() => setIsOnboardingOpen(false)}
+                onClick={closeOnboarding}
+                type="button"
                 className="w-full sm:w-auto px-6 py-3 rounded-lg border border-slate-300 text-slate-700 font-semibold hover:bg-slate-100 transition-colors"
               >
                 Close
               </button>
               <button
                 onClick={continueToDashboard}
+                type="button"
+                disabled={isRedirecting}
                 className="w-full sm:flex-1 px-6 py-3 rounded-lg bg-blue-900 text-white font-semibold hover:bg-blue-800 transition-colors inline-flex items-center justify-center gap-2"
               >
-                Continue to Dashboard <ArrowRight size={18} />
+                {isRedirecting ? "Redirecting..." : "Continue to Dashboard"}
+                {!isRedirecting && <ArrowRight size={18} />}
               </button>
             </div>
           </div>
@@ -287,6 +455,8 @@ export default function Home() {
           >
             <button
               onClick={openOnboarding}
+              data-cta-source="hero"
+              type="button"
               className="w-full sm:w-auto px-10 py-5 text-lg font-bold bg-[#003375] hover:bg-blue-800 text-white rounded-xl transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] inline-flex items-center justify-center gap-2"
             >
               Start Your Free Trial <ArrowRight size={20} />
@@ -462,6 +632,7 @@ export default function Home() {
               <motion.div variants={itemVariants} className="flex justify-center w-full">
                 <button 
                   onClick={openCalendar}
+                  type="button"
                   className="inline-flex items-center justify-center gap-3 px-10 py-5 bg-slate-900 text-white rounded-xl text-lg font-bold hover:bg-slate-800 transition-all shadow-xl hover:shadow-2xl group"
                 >
                   Let&apos;s Have a Talk <ArrowRight size={20} className="transition-transform group-hover:translate-x-1" />
@@ -717,7 +888,14 @@ export default function Home() {
             {/* See More Button */}
             <motion.div variants={itemVariants} className="pt-8 flex justify-center">
               <button
-                onClick={() => setShowAllFaqs(!showAllFaqs)}
+                onClick={() => {
+                  const nextValue = !showAllFaqs;
+                  setShowAllFaqs(nextValue);
+                  trackFunnelEvent("faq_toggle_clicked", {
+                    state: nextValue ? "expanded" : "collapsed",
+                  });
+                }}
+                type="button"
                 className="group flex items-center gap-2 px-8 py-4 bg-white border-2 border-slate-200 rounded-xl font-bold text-slate-900 hover:border-blue-600 hover:text-blue-600 transition-all duration-300"
               >
                 {showAllFaqs ? "Show Less" : "See More Questions"}
@@ -773,6 +951,8 @@ export default function Home() {
             <motion.div variants={itemVariants} className="flex">
               <button
                 onClick={openOnboarding}
+                data-cta-source="final_cta"
+                type="button"
                 className="bg-slate-900 text-white px-10 py-5 rounded-lg text-lg font-bold hover:bg-slate-800 transition-all shadow-xl hover:shadow-2xl font-sans inline-flex items-center gap-2"
               >
                 Start Your Free Trial <ArrowRight size={20} />
@@ -810,6 +990,11 @@ export default function Home() {
             </ul>
             <a
               href={DASHBOARD_URL}
+              onClick={() =>
+                trackFunnelEvent("dashboard_link_clicked", {
+                  source: "trial_includes_card",
+                })
+              }
               className="mt-8 w-full bg-blue-900 text-white font-bold py-4 rounded-lg hover:bg-blue-800 transition-all inline-flex items-center justify-center gap-2"
             >
               Open Dashboard <ArrowRight size={18} />

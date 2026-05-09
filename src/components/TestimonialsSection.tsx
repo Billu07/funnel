@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
 import Image from "next/image";
 
@@ -65,11 +65,12 @@ export default function TestimonialsSection() {
   const [selectedId, setSelectedId] = useState<number>(1);
   const [hoveredId, setHoveredId] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
   const selectedTestimonial = testimonials.find((t) => t.id === selectedId);
 
   // Auto-cycle logic
   useEffect(() => {
-    if (hoveredId !== null) return;
+    if (hoveredId !== null || shouldReduceMotion) return;
 
     const interval = setInterval(() => {
       setSelectedId((current) => {
@@ -80,7 +81,7 @@ export default function TestimonialsSection() {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [hoveredId]);
+  }, [hoveredId, shouldReduceMotion]);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -149,8 +150,8 @@ export default function TestimonialsSection() {
         <div className="relative flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-8 min-h-[300px] md:min-h-[400px]">
           <div className="relative w-full lg:w-1/2 h-[250px] md:h-[350px] flex items-center justify-center">
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none scale-75 md:scale-100">
-              <div className="w-[200px] h-[200px] md:w-[280px] md:h-[280px] border border-dashed border-slate-200 rounded-full opacity-50 animate-[spin_60s_linear_infinite]" />
-              <div className="w-[350px] h-[350px] md:w-[450px] md:h-[450px] border border-dashed border-slate-100 rounded-full opacity-30 animate-[spin_90s_linear_infinite_reverse]" />
+              <div className="w-[200px] h-[200px] md:w-[280px] md:h-[280px] border border-dashed border-slate-200 rounded-full opacity-50 animate-[spin_60s_linear_infinite] motion-reduce:animate-none" />
+              <div className="w-[350px] h-[350px] md:w-[450px] md:h-[450px] border border-dashed border-slate-100 rounded-full opacity-30 animate-[spin_90s_linear_infinite_reverse] motion-reduce:animate-none" />
             </div>
 
             <div className="relative w-full h-full flex items-center justify-center">
@@ -224,15 +225,15 @@ export default function TestimonialsSection() {
                               key={i}
                               initial={{ opacity: 0, scale: 0 }}
                               animate={{
-                                opacity: [0.2, 0.8, 0.2],
-                                scale: [1, 1.3, 1],
+                                opacity: shouldReduceMotion ? 0.35 : [0.2, 0.8, 0.2],
+                                scale: shouldReduceMotion ? 1 : [1, 1.3, 1],
                                 x: spark.x,
                                 y: spark.y,
                               }}
                               transition={{
-                                duration: 1.2 + i * 0.2,
-                                repeat: Infinity,
-                                ease: "easeInOut",
+                                duration: shouldReduceMotion ? 0 : 1.2 + i * 0.2,
+                                repeat: shouldReduceMotion ? 0 : Infinity,
+                                ease: shouldReduceMotion ? "linear" : "easeInOut",
                               }}
                               className="absolute left-1/2 top-1/2 w-1 h-1 bg-blue-600 rounded-sm"
                             />
@@ -242,6 +243,9 @@ export default function TestimonialsSection() {
                       {/* Logo selection area */}
                       <button
                         onClick={() => setSelectedId(testimonial.id)}
+                        type="button"
+                        aria-label={`Show testimonial from ${testimonial.company}`}
+                        aria-pressed={isSelected}
                         className="relative focus:outline-none rounded-full group pointer-events-auto"
                       >
                         <motion.div

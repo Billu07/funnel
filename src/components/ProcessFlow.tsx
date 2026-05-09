@@ -1,7 +1,7 @@
 "use client";
 import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent, useReducedMotion } from "framer-motion";
 
 interface Step {
   id: number;
@@ -48,6 +48,7 @@ export default function ProcessFlow() {
   const [direction, setDirection] = useState(0);
   const [isMaximized, setIsMaximized] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 1024);
@@ -56,13 +57,26 @@ export default function ProcessFlow() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  useEffect(() => {
+    if (!isMaximized) return;
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsMaximized(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [isMaximized]);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    if (isMobile) return;
+    if (isMobile || shouldReduceMotion) return;
     let newIndex = 0;
     if (latest < 0.2) newIndex = 0;
     else if (latest < 0.4) newIndex = 1;
@@ -209,8 +223,12 @@ export default function ProcessFlow() {
                    
                    <motion.div 
                      className="relative w-full h-full rounded-2xl overflow-hidden border-[6px] border-white shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] transition-transform duration-500 group-hover:scale-[1.02]"
-                     animate={{ y: [0, -10, 0] }}
-                     transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                     animate={shouldReduceMotion ? { y: 0 } : { y: [0, -10, 0] }}
+                     transition={
+                       shouldReduceMotion
+                         ? { duration: 0 }
+                         : { duration: 6, repeat: Infinity, ease: "easeInOut" }
+                     }
                    >
                      <div className="absolute inset-0 border border-blue-600/20 rounded-xl z-10 pointer-events-none" />
                      
@@ -266,6 +284,7 @@ export default function ProcessFlow() {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(event) => event.stopPropagation()}
               className="relative w-full max-w-6xl aspect-[4/3] rounded-2xl overflow-hidden border-[8px] border-white shadow-2xl bg-white"
             >
               <Image
@@ -275,7 +294,12 @@ export default function ProcessFlow() {
                 className="object-contain p-8"
               />
               <div className="absolute top-6 right-6">
-                <button className="w-12 h-12 rounded-full bg-black/50 backdrop-blur-md text-white flex items-center justify-center border border-white/20 hover:bg-black/70 transition-colors">
+                <button
+                  className="w-12 h-12 rounded-full bg-black/50 backdrop-blur-md text-white flex items-center justify-center border border-white/20 hover:bg-black/70 transition-colors"
+                  onClick={() => setIsMaximized(false)}
+                  type="button"
+                  aria-label="Close image preview"
+                >
                   <span className="text-2xl">&times;</span>
                 </button>
               </div>

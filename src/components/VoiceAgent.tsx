@@ -1,10 +1,10 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Vapi from "@vapi-ai/web";
 import { Mic, PhoneOff, Loader2, AlertCircle, Phone, ArrowRight, CheckCircle2, User, MapPin } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-
-const N8N_WEBHOOK_URL = "https://walkermusic.app.n8n.cloud/webhook/demo";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { formatUsPhoneInput } from "@/lib/funnel-validation";
+import { trackFunnelEvent } from "@/lib/analytics";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -27,32 +27,42 @@ const itemVariants = {
 };
 
 export default function VoiceAgent() {
-  const [vapi, setVapi] = useState<Vapi | null>(null);
+  const shouldReduceMotion = useReducedMotion();
+  const vapiPublicKey = process.env.NEXT_PUBLIC_VAPI_PUBLIC_KEY;
+  const assistantId = process.env.NEXT_PUBLIC_VAPI_ASSISTANT_ID;
+  const isVoiceDemoConfigured = Boolean(vapiPublicKey && assistantId);
+  const vapi = useMemo(
+    () => (vapiPublicKey ? new Vapi(vapiPublicKey) : null),
+    [vapiPublicKey],
+  );
+
   const [callStatus, setCallStatus] = useState<"idle" | "connecting" | "active">("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const phoneStatusResetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // --- Phone Call State ---
   const [formData, setFormData] = useState({
     name: "",
     address: "",
-    phone: "+1 ",
+    phone: "+1",
+    website: "",
   });
   const [phoneCallStatus, setPhoneCallStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [phoneCallError, setPhoneCallError] = useState<string | null>(null);
 
   useEffect(() => {
-    const vapiInstance = new Vapi(process.env.NEXT_PUBLIC_VAPI_PUBLIC_KEY || "");
-    setVapi(vapiInstance);
+    if (!vapi) return;
 
-    vapiInstance.on("call-start", () => {
+    vapi.on("call-start", () => {
       setCallStatus("active");
       setErrorMessage(null);
     });
 
-    vapiInstance.on("call-end", () => {
+    vapi.on("call-end", () => {
       setCallStatus("idle");
     });
 
-    vapiInstance.on("error", (e: unknown) => {
+    vapi.on("error", (e: unknown) => {
       console.error("Vapi Error:", e);
       setCallStatus("idle");
       if (JSON.stringify(e).includes("NotReadableError") || JSON.stringify(e).includes("audio source")) {
@@ -61,17 +71,41 @@ export default function VoiceAgent() {
     });
 
     return () => {
-      vapiInstance.stop();
+      vapi.stop();
+    };
+  }, [vapi]);
+
+  useEffect(() => {
+    return () => {
+      if (phoneStatusResetTimerRef.current) {
+        clearTimeout(phoneStatusResetTimerRef.current);
+      }
     };
   }, []);
 
   const handleStartCall = async () => {
-    if (!vapi) return;
+    if (!vapi || !assistantId || !isVoiceDemoConfigured) {
+      setErrorMessage("Live voice demo is temporarily unavailable.");
+      trackFunnelEvent("voice_demo_start_failed", {
+        reason: "not_configured",
+      });
+      return;
+    }
+
+    if (!navigator.mediaDevices?.getUserMedia) {
+      setErrorMessage("Browser does not support microphone access.");
+      trackFunnelEvent("voice_demo_start_failed", {
+        reason: "unsupported_browser",
+      });
+      return;
+    }
+
+    trackFunnelEvent("voice_demo_start_clicked");
     setErrorMessage(null);
     setCallStatus("connecting");
     try {
       await navigator.mediaDevices.getUserMedia({ audio: true });
-      await vapi.start(process.env.NEXT_PUBLIC_VAPI_ASSISTANT_ID || "");
+      await vapi.start(assistantId);
     } catch (err: unknown) {
       console.error("Connection Failed:", err);
       setCallStatus("idle");
@@ -83,45 +117,72 @@ export default function VoiceAgent() {
       } else {
         setErrorMessage("Failed to connect. Check console.");
       }
+      trackFunnelEvent("voice_demo_start_failed", {
+        reason: errorObj.name || "unknown_error",
+      });
     }
   };
 
   const handleHangUp = () => {
     if (!vapi) return;
+    trackFunnelEvent("voice_demo_ended");
     vapi.stop();
     setCallStatus("idle");
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
     if (name === "phone") {
-       if (!value.startsWith("+1 ")) return;
-       const numberPart = value.substring(3);
-       if (!/^[\d\s]*$/.test(numberPart)) return;
+      setFormData((prev) => ({ ...prev, phone: formatUsPhoneInput(value) }));
+      return;
     }
-    setFormData(prev => ({ ...prev, [name]: value }));
+
+    const field = name as keyof typeof formData;
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handlePhoneSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setPhoneCallError(null);
     setPhoneCallStatus("sending");
+    trackFunnelEvent("demo_call_submit_clicked");
+
     try {
-      const response = await fetch(N8N_WEBHOOK_URL, {
+      const response = await fetch("/api/demo-call", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-      
+
       if (response.ok) {
         setPhoneCallStatus("success");
-        setFormData({ name: "", address: "", phone: "+1 " });
-        setTimeout(() => setPhoneCallStatus("idle"), 5000);
+        trackFunnelEvent("demo_call_submit_succeeded");
+        setFormData({ name: "", address: "", phone: "+1", website: "" });
+
+        if (phoneStatusResetTimerRef.current) {
+          clearTimeout(phoneStatusResetTimerRef.current);
+        }
+        phoneStatusResetTimerRef.current = setTimeout(() => {
+          setPhoneCallStatus("idle");
+        }, 5000);
       } else {
+        const result = (await response.json().catch(() => null)) as
+          | { error?: string }
+          | null;
+        setPhoneCallError(result?.error || "Submission failed. Please try again.");
         setPhoneCallStatus("error");
+        trackFunnelEvent("demo_call_submit_failed", {
+          status: response.status,
+        });
       }
     } catch (error) {
       console.error("Phone submission error:", error);
+      setPhoneCallError("Network error. Please try again.");
       setPhoneCallStatus("error");
+      trackFunnelEvent("demo_call_submit_failed", {
+        status: "network_error",
+      });
     }
   };
 
@@ -152,8 +213,16 @@ export default function VoiceAgent() {
               {callStatus === "active" && (
                 <motion.div
                   initial={{ opacity: 0, scale: 1 }}
-                  animate={{ opacity: [0.3, 0], scale: 1.5 }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
+                  animate={
+                    shouldReduceMotion
+                      ? { opacity: 0.15, scale: 1 }
+                      : { opacity: [0.3, 0], scale: 1.5 }
+                  }
+                  transition={
+                    shouldReduceMotion
+                      ? { duration: 0 }
+                      : { duration: 1.5, repeat: Infinity }
+                  }
                   className="absolute inset-0 rounded-none bg-slate-500"
                 />
               )}
@@ -164,6 +233,8 @@ export default function VoiceAgent() {
                 onClick={handleHangUp}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
+                type="button"
+                aria-label="End live voice demo call"
                 className="relative z-10 w-24 h-24 rounded-none flex items-center justify-center shadow-sm bg-slate-500 text-white border-4 border-slate-200"
               >
                 <PhoneOff className="w-10 h-10 fill-current" />
@@ -171,12 +242,18 @@ export default function VoiceAgent() {
             ) : (
               <motion.button
                 onClick={handleStartCall}
-                disabled={callStatus === "connecting"}
+                disabled={callStatus === "connecting" || !isVoiceDemoConfigured}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
+                type="button"
+                aria-label={
+                  callStatus === "connecting"
+                    ? "Connecting live voice demo"
+                    : "Start live voice demo call"
+                }
                 className={`
                   relative z-10 w-24 h-24 rounded-none flex items-center justify-center shadow-sm border-4 transition-colors
-                  ${callStatus === "connecting" 
+                  ${callStatus === "connecting" || !isVoiceDemoConfigured
                     ? "bg-slate-100 border-slate-200 cursor-wait text-slate-400" 
                     : "bg-slate-900 hover:bg-black border-slate-200 text-white"}
                 `}
@@ -191,7 +268,11 @@ export default function VoiceAgent() {
           </div>
 
           {errorMessage && (
-            <div className="mt-6 flex items-center gap-2 text-red-600 bg-slate-50 px-4 py-2 rounded-lg border border-slate-200 relative z-10">
+            <div
+              role="alert"
+              aria-live="assertive"
+              className="mt-6 flex items-center gap-2 text-red-600 bg-slate-50 px-4 py-2 rounded-lg border border-slate-200 relative z-10"
+            >
               <AlertCircle size={16} />
               <span className="text-sm font-medium">{errorMessage}</span>
             </div>
@@ -199,17 +280,24 @@ export default function VoiceAgent() {
 
            {/* Visualizer / Status */}
           {!errorMessage && (
-            <div className="mt-8 h-8 flex items-end gap-1.5 justify-center relative z-10">
+            <div
+              aria-live="polite"
+              className="mt-8 h-8 flex items-end gap-1.5 justify-center relative z-10"
+            >
               {callStatus === "active" ? (
                 [1, 2, 3, 4, 5].map((i) => (
                   <motion.div
                     key={i}
-                    animate={{ height: [8, 32, 8] }}
-                    transition={{
-                      duration: 0.5 + i * 0.1,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    }}
+                    animate={shouldReduceMotion ? { height: 8 } : { height: [8, 32, 8] }}
+                    transition={
+                      shouldReduceMotion
+                        ? { duration: 0 }
+                        : {
+                            duration: 0.5 + i * 0.1,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                          }
+                    }
                     className="w-1.5 bg-slate-500 rounded-full"
                   />
                 ))
@@ -240,15 +328,19 @@ export default function VoiceAgent() {
 
           <form onSubmit={handlePhoneSubmit} className="space-y-4 relative z-10 w-full max-w-sm mx-auto">
             <div>
-              <label className="text-xs uppercase tracking-widest text-slate-700 font-semibold block mb-1">
+              <label htmlFor="callback-name" className="text-xs uppercase tracking-widest text-slate-700 font-semibold block mb-1">
                 Your Name
               </label>
               <div className="relative">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
                 <input
+                  id="callback-name"
                   type="text"
                   name="name"
                   required
+                  minLength={2}
+                  maxLength={80}
+                  autoComplete="name"
                   placeholder="John Doe"
                   value={formData.name}
                   onChange={handleInputChange}
@@ -258,15 +350,19 @@ export default function VoiceAgent() {
             </div>
 
             <div>
-              <label className="text-xs uppercase tracking-widest text-slate-700 font-semibold block mb-1">
+              <label htmlFor="callback-address" className="text-xs uppercase tracking-widest text-slate-700 font-semibold block mb-1">
                 Address (for context)
               </label>
               <div className="relative">
                 <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
                 <input
+                  id="callback-address"
                   type="text"
                   name="address"
                   required
+                  minLength={5}
+                  maxLength={200}
+                  autoComplete="street-address"
                   placeholder="123 Main St"
                   value={formData.address}
                   onChange={handleInputChange}
@@ -276,21 +372,37 @@ export default function VoiceAgent() {
             </div>
 
             <div>
-              <label className="text-xs uppercase tracking-widest text-slate-700 font-semibold block mb-1">
+              <label htmlFor="callback-phone" className="text-xs uppercase tracking-widest text-slate-700 font-semibold block mb-1">
                 Phone Number
               </label>
               <div className="relative">
                 <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
                 <input
-                  type="text"
+                  id="callback-phone"
+                  type="tel"
                   name="phone"
                   required
+                  inputMode="tel"
+                  maxLength={16}
+                  autoComplete="tel"
+                  placeholder="+1 555 123 4567"
                   value={formData.phone}
                   onChange={handleInputChange}
                   className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-10 pr-4 py-3 text-slate-900 focus:outline-none focus:border-slate-200 focus:ring-1 focus:ring-blue-500 transition-all placeholder:text-slate-400 font-mono text-sm"
                 />
               </div>
             </div>
+
+            <input
+              type="text"
+              name="website"
+              tabIndex={-1}
+              autoComplete="off"
+              value={formData.website}
+              onChange={handleInputChange}
+              className="hidden"
+              aria-hidden="true"
+            />
 
             <button
               type="submit"
@@ -317,7 +429,18 @@ export default function VoiceAgent() {
             </button>
 
             {phoneCallStatus === "error" && (
-              <p className="text-slate-900 text-xs text-center mt-2 font-medium">Submission failed. Please try again.</p>
+              <p
+                role="alert"
+                aria-live="assertive"
+                className="text-slate-900 text-xs text-center mt-2 font-medium"
+              >
+                {phoneCallError || "Submission failed. Please try again."}
+              </p>
+            )}
+            {phoneCallStatus === "success" && (
+              <p aria-live="polite" className="text-slate-900 text-xs text-center mt-2 font-medium">
+                Demo call request accepted. You should receive a call shortly.
+              </p>
             )}
           </form>
         </motion.div>

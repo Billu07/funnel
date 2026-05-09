@@ -8,6 +8,15 @@ import { useRef } from "react";
  * Provides an "Industry Level" text reveal effect.
  * Each word is wrapped in an overflow-hidden container and slides up.
  */
+const motionHeadingByTag = {
+  h1: motion.h1,
+  h2: motion.h2,
+  h3: motion.h3,
+  h4: motion.h4,
+  h5: motion.h5,
+  h6: motion.h6,
+} as const;
+
 export default function AnimatedHeader({
   text,
   className = "",
@@ -46,7 +55,7 @@ export default function AnimatedHeader({
     },
   };
 
-  const MotionTag = motion(Tag);
+  const MotionTag = motionHeadingByTag[Tag];
 
   return (
     <MotionTag

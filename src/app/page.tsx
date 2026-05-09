@@ -7,20 +7,23 @@ import ClientTrustBlock from "@/components/ClientTrustBlock";
 import ConversationDemo from "@/components/ConversationDemo";
 import ProcessFlow from "@/components/ProcessFlow";
 import TestimonialsSection from "@/components/TestimonialsSection";
-import BookingModal from "@/components/BookingModal";
 import ProblemsSection from "@/components/ProblemsSection";
 import FloatingElement from "@/components/FloatingElement";
-import AnimatedDemoBg from "@/components/AnimatedDemoBg";
 import CustomVideoPlayer from "@/components/CustomVideoPlayer";
 import { motion } from "framer-motion";
 import AnimatedHeader from "@/components/AnimatedHeader";
 import { Check, ArrowRight, Menu, X, Mail, Linkedin } from "lucide-react";
 
-// 👈 Your Cal.com Link
-const CALENDAR_LINK = "https://cal.com/autolinium-bd6vkq";
-
-// 🔴 REPLACE THIS WITH YOUR N8N WEBHOOK URL
-const N8N_WEBHOOK_URL = "https://walkermusic.app.n8n.cloud/webhook/demo"; // Fallback demo webhook, adjust as necessary
+const DASHBOARD_URL = "https://dashboard.voicium.live";
+const CALENDAR_LINK =
+  process.env.NEXT_PUBLIC_CALENDAR_LINK || "https://cal.com/autolinium-bd6vkq";
+const onboardingSteps = [
+  "Create Account",
+  "Select Market",
+  "Setup Your Agent",
+  "Upload Data",
+  "Start Calling",
+];
 
 export default function Home() {
   // 👈 State to control the scroll behavior
@@ -36,77 +39,25 @@ export default function Home() {
   }, []);
 
   // 👈 State to control the Modal
-  const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showAllFaqs, setShowAllFaqs] = useState(false);
 
   // Helper function to open modal
-  const openBooking = () => {
-    setIsBookingOpen(true);
-    setIsMobileMenuOpen(false); // Close mobile menu if open
+  const openOnboarding = () => {
+    setIsOnboardingOpen(true);
+    setIsMobileMenuOpen(false);
   };
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
-  // ================= FORM STATE LOGIC (New) =================
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    company: "",
-    businessType: "",
-    knowledgeBase: "",
-    volume: "",
-    message: "",
-  });
-  const [formStatus, setFormStatus] = useState<
-    "idle" | "loading" | "success" | "error"
-  >("idle");
-
-  const handleFormChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const continueToDashboard = () => {
+    window.location.href = DASHBOARD_URL;
   };
 
-  const scrollToContact = () => {
-    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-    setIsMobileMenuOpen(false);
+  const openCalendar = () => {
+    window.open(CALENDAR_LINK, "_blank", "noopener,noreferrer");
   };
-
-  const handleFormSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setFormStatus("loading");
-
-    try {
-      const response = await fetch(N8N_WEBHOOK_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        setFormStatus("success");
-        setFormData({
-          fullName: "",
-          email: "",
-          company: "",
-          businessType: "",
-          knowledgeBase: "",
-          volume: "",
-          message: "",
-        }); // Clear form
-
-        // Optional: Reset success message after 5 seconds
-        setTimeout(() => setFormStatus("idle"), 5000);
-      } else {
-        setFormStatus("error");
-      }
-    } catch (error) {
-      console.error("Submission error:", error);
-      setFormStatus("error");
-    }
-  };
-  // ==========================================================
 
   // Animation variants from inspiration
   const containerVariants = {
@@ -131,13 +82,6 @@ export default function Home() {
 
   return (
     <main className="bg-slate-50 text-slate-900 min-h-screen font-sans selection:bg-cyan-glow selection:text-white overflow-clip scrollbar-hide">
-      {/* ================= BOOKING MODAL COMPONENT ================= */}
-      <BookingModal
-        isOpen={isBookingOpen}
-        onClose={() => setIsBookingOpen(false)}
-        calendarUrl={CALENDAR_LINK}
-      />
-
       {/* ================= NAVBAR ================= */}
       <nav
         className={`fixed w-full top-0 z-50 transition-all duration-300 ${
@@ -191,14 +135,14 @@ export default function Home() {
 
           <div className="hidden md:block">
             <button
-              onClick={openBooking}
+              onClick={openOnboarding}
               className={`px-6 py-2 rounded-lg font-sans font-semibold transition-all   ${
                 isScrolled
                   ? "bg-blue-900 text-white hover:bg-blue-800 shadow-lg"
                   : "bg-blue-900 text-white hover:bg-blue-800"
               }`}
             >
-              Book Strategy Call
+              Start Your Free Trial
             </button>
           </div>
 
@@ -229,14 +173,51 @@ export default function Home() {
               </a>
             ))}
             <button
-              onClick={openBooking}
+              onClick={openOnboarding}
               className="w-full bg-blue-900 text-white hover:bg-blue-800 px-6 py-4 rounded-lg font-sans font-semibold hover:shadow-[0_0_20px_rgba(30,58,138,0.4)] transition-all"
             >
-              Book Strategy Call
+              Start Your Free Trial
             </button>
           </div>
         )}
       </nav>
+
+      {isOnboardingOpen && (
+        <div className="fixed inset-0 z-[70] bg-slate-950/50 backdrop-blur-sm flex items-center justify-center p-6">
+          <div className="w-full max-w-lg bg-white rounded-2xl border border-slate-200 shadow-2xl p-8">
+            <h3 className="text-2xl font-bold text-slate-900 mb-2">
+              Start Your Free Trial
+            </h3>
+            <p className="text-slate-600 mb-6">
+              Quick onboarding before you launch your first campaign.
+            </p>
+            <ol className="space-y-3 mb-8">
+              {onboardingSteps.map((step, index) => (
+                <li key={step} className="flex items-center gap-3">
+                  <span className="w-7 h-7 rounded-full bg-blue-900 text-white text-sm font-bold flex items-center justify-center">
+                    {index + 1}
+                  </span>
+                  <span className="font-medium text-slate-800">{step}</span>
+                </li>
+              ))}
+            </ol>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button
+                onClick={() => setIsOnboardingOpen(false)}
+                className="w-full sm:w-auto px-6 py-3 rounded-lg border border-slate-300 text-slate-700 font-semibold hover:bg-slate-100 transition-colors"
+              >
+                Close
+              </button>
+              <button
+                onClick={continueToDashboard}
+                className="w-full sm:flex-1 px-6 py-3 rounded-lg bg-blue-900 text-white font-semibold hover:bg-blue-800 transition-colors inline-flex items-center justify-center gap-2"
+              >
+                Continue to Dashboard <ArrowRight size={18} />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ================= HERO SECTION ================= */}
       <header className="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
@@ -299,22 +280,16 @@ export default function Home() {
             </p>
           </motion.div>
 
-          {/* CTA Buttons */}
+          {/* CTA */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-col sm:flex-row gap-4 lg:gap-8 justify-center items-center"
+            className="flex justify-center items-center"
           >
             <button
-              onClick={openBooking}
-              className="w-full sm:w-auto px-10 py-5 text-lg font-bold bg-[#003375] hover:bg-blue-800 text-white rounded-xl transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98]"
+              onClick={openOnboarding}
+              className="w-full sm:w-auto px-10 py-5 text-lg font-bold bg-[#003375] hover:bg-blue-800 text-white rounded-xl transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] inline-flex items-center justify-center gap-2"
             >
-              Book a Live Demo
-            </button>
-            <button
-              onClick={scrollToContact}
-              className="w-full sm:w-auto px-10 py-5 text-lg font-bold border-2 border-[#0000FF] text-[#0000FF] hover:bg-blue-50 rounded-xl transition-all duration-300 flex items-center justify-center gap-2"
-            >
-              Start 2 Days Free Trial <ArrowRight size={20} />
+              Start Your Free Trial <ArrowRight size={20} />
             </button>
           </motion.div>
         </motion.div>
@@ -486,10 +461,10 @@ export default function Home() {
 
               <motion.div variants={itemVariants} className="flex justify-center w-full">
                 <button 
-                  onClick={openBooking}
+                  onClick={openCalendar}
                   className="inline-flex items-center justify-center gap-3 px-10 py-5 bg-slate-900 text-white rounded-xl text-lg font-bold hover:bg-slate-800 transition-all shadow-xl hover:shadow-2xl group"
                 >
-                  Let&apos;s have a talk <ArrowRight size={20} className="transition-transform group-hover:translate-x-1" />
+                  Let&apos;s Have a Talk <ArrowRight size={20} className="transition-transform group-hover:translate-x-1" />
                 </button>
               </motion.div>
             </motion.div>
@@ -688,12 +663,12 @@ export default function Home() {
                 a: "You can upload your own lead lists (CSV/XLS) directly into the platform. We also offer integrations with popular skip-tracing services and data providers if you need help sourcing fresh, high-intent leads.",
               },
               {
-                q: "What happens after my 2-day free trial? Am I automatically charged?",
-                a: "No. We don't believe in 'gotcha' billing. At the end of your 2-day trial, the system will pause. You'll have the option to choose a plan and activate your account manually if you're satisfied with the results.",
+                q: "What happens after my free trial? Am I automatically charged?",
+                a: "No automatic billing. You can explore the dashboard trial with included free calls and decide when to upgrade.",
               },
               {
                 q: "What's included in the free trial? Can I run a real campaign?",
-                a: "The 2-day trial includes a fully functional AI agent customized for your business and a limited number of outbound minutes. You can upload a segment of your own leads and see the AI in action, qualifying real prospects in real-time.",
+                a: "Every trial account includes 20 free calls plus 3 test calls to your own number. You can configure your agent, upload your own lead data, and start a real campaign from dashboard.voicium.live.",
               },
               {
                 q: "What happens if someone asks to be removed during the call?",
@@ -758,12 +733,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ================= 11. FINAL CTA SECTION & FORM ================= */}
-      <section
-        id="contact"
-        className="py-32 bg-slate-50 relative overflow-hidden"
-      >
-        {/* Decorative Bottom Accent - Structural Framework */}
+      {/* ================= 11. FINAL CTA SECTION ================= */}
+      <section id="contact" className="py-32 bg-slate-50 relative overflow-hidden">
         <Image
           src="https://d2xsxph8kpxj0f.cloudfront.net/310519663063245286/4NbDCkjGg5zEcuxt8PVxUE/svg-accent-structural-framework-jr7Hx5UibBvkmRA3Gvrmqr.webp"
           alt="Decorative structural framework"
@@ -773,7 +744,6 @@ export default function Home() {
         />
 
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center relative z-10">
-          {/* Left: CTA Text */}
           <motion.div
             className="text-left"
             variants={containerVariants}
@@ -786,34 +756,30 @@ export default function Home() {
               className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-blue-500/20 bg-blue-500/5 text-blue-600 text-sm font-bold mb-8 font-sans"
             >
               <span className="animate-pulse h-2.5 w-2.5 rounded-full bg-blue-600 shadow-[0_0_10px_rgba(37,99,235,0.4)]"></span>
-              2-Day Free Trial
+              Free Trial Live
             </motion.div>
             <AnimatedHeader
-              text="Get Your Custom AI Demo Agent."
+              text="Launch Your First Calling Campaign"
               className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-8 leading-[1.1] text-gray-900 !text-left"
             />
             <motion.p
               variants={itemVariants}
               className="text-slate-700 text-xl mb-10 leading-relaxed font-light font-sans"
             >
-              Fill out the form, and we&apos;ll build a demo agent specifically
-              for your business. We&apos;ll email you a link to talk to it live
-              within 24 hours.
+              Your dashboard is ready with call logs, qualified leads, market
+              upload, and campaign controls. Start with trial credits and go live
+              immediately.
             </motion.p>
-            <motion.div
-              variants={itemVariants}
-              className="flex flex-col sm:flex-row gap-6"
-            >
+            <motion.div variants={itemVariants} className="flex">
               <button
-                onClick={openBooking}
-                className="bg-slate-900 text-white px-10 py-5 rounded-lg text-lg font-bold hover:bg-slate-800 transition-all shadow-xl hover:shadow-2xl font-sans"
+                onClick={openOnboarding}
+                className="bg-slate-900 text-white px-10 py-5 rounded-lg text-lg font-bold hover:bg-slate-800 transition-all shadow-xl hover:shadow-2xl font-sans inline-flex items-center gap-2"
               >
-                Book a Live Demo
+                Start Your Free Trial <ArrowRight size={20} />
               </button>
             </motion.div>
           </motion.div>
 
-          {/* Right: Contact Form */}
           <motion.div
             className="bg-white border border-slate-200 p-10 rounded-2xl shadow-2xl relative z-10"
             variants={itemVariants}
@@ -822,131 +788,32 @@ export default function Home() {
             viewport={{ once: true }}
           >
             <h3 className="text-3xl font-bold tracking-tight mb-8 text-gray-900">
-              Claim Your Free Trial
+              Trial Includes
             </h3>
-            <form onSubmit={handleFormSubmit} className="space-y-6">
-              <div className="grid grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-xs uppercase tracking-[0.2em] text-slate-500 font-bold mb-2 font-sans">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    name="fullName"
-                    value={formData.fullName}
-                    onChange={handleFormChange}
-                    required
-                    placeholder="John Doe"
-                    className="w-full bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all placeholder:text-slate-400 font-medium font-sans"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs uppercase tracking-[0.2em] text-slate-500 font-bold mb-2 font-sans">
-                    Business Email
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleFormChange}
-                    required
-                    placeholder="john@company.com"
-                    className="w-full bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all placeholder:text-slate-400 font-medium font-sans"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-xs uppercase tracking-[0.2em] text-slate-500 font-bold mb-2 font-sans">
-                    Company
-                  </label>
-                  <input
-                    type="text"
-                    name="company"
-                    value={formData.company}
-                    onChange={handleFormChange}
-                    placeholder="Real Estate Co."
-                    className="w-full bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all placeholder:text-slate-400 font-medium font-sans"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs uppercase tracking-[0.2em] text-slate-500 font-bold mb-2 font-sans">
-                    Business Type
-                  </label>
-                  <input
-                    type="text"
-                    name="businessType"
-                    value={formData.businessType}
-                    onChange={handleFormChange}
-                    placeholder="e.g. Real Estate, SaaS"
-                    className="w-full bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all placeholder:text-slate-400 font-medium font-sans"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs uppercase tracking-[0.2em] text-slate-500 font-bold mb-2 font-sans">
-                  Knowledge Base / Website URL
-                </label>
-                <input
-                  type="text"
-                  name="knowledgeBase"
-                  value={formData.knowledgeBase}
-                  onChange={handleFormChange}
-                  placeholder="Link to your website or documentation"
-                  className="w-full bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all placeholder:text-slate-400 font-medium font-sans"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs uppercase tracking-[0.2em] text-slate-500 font-bold mb-2 font-sans">
-                  Lead Volume / Month
-                </label>
-                <input
-                  type="text"
-                  name="volume"
-                  value={formData.volume}
-                  onChange={handleFormChange}
-                  placeholder="e.g. 500 leads"
-                  className="w-full bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all placeholder:text-slate-400 font-medium font-sans"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs uppercase tracking-[0.2em] text-slate-500 font-bold mb-2 font-sans">
-                  Message
-                </label>
-                <textarea
-                  name="message"
-                  value={formData.message}
-                  onChange={handleFormChange}
-                  rows={3}
-                  placeholder="Tell us about your needs..."
-                  className="w-full bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all placeholder:text-slate-400 font-medium resize-none font-sans"
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={formStatus === "loading"}
-                className="w-full bg-[#0000FF] text-white font-bold py-5 rounded-lg hover:bg-blue-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 shadow-lg shadow-blue-500/20 font-sans"
-              >
-                {formStatus === "loading" ? "Sending..." : "Send Message"}
-                {!formStatus.startsWith("load") && <ArrowRight size={20} />}
-              </button>
-
-              {formStatus === "success" && (
-                <p className="text-green-600 text-center font-bold text-sm bg-green-50 py-3 rounded-lg animate-fade-in border border-green-200 font-sans">
-                  Message sent successfully!
-                </p>
-              )}
-              {formStatus === "error" && (
-                <p className="text-red-600 text-center font-bold text-sm bg-red-50 py-3 rounded-lg animate-fade-in border border-red-200 font-sans">
-                  Error sending message. Please try again.
-                </p>
-              )}
-            </form>
+            <ul className="space-y-4">
+              <li className="flex items-center gap-3 text-slate-800">
+                <Check className="w-5 h-5 text-blue-700" />
+                20 free calls for every trial account
+              </li>
+              <li className="flex items-center gap-3 text-slate-800">
+                <Check className="w-5 h-5 text-blue-700" />
+                3 test calls to your own number
+              </li>
+              <li className="flex items-center gap-3 text-slate-800">
+                <Check className="w-5 h-5 text-blue-700" />
+                Call logs and qualified lead tracking
+              </li>
+              <li className="flex items-center gap-3 text-slate-800">
+                <Check className="w-5 h-5 text-blue-700" />
+                Data upload and one-click campaign start
+              </li>
+            </ul>
+            <a
+              href={DASHBOARD_URL}
+              className="mt-8 w-full bg-blue-900 text-white font-bold py-4 rounded-lg hover:bg-blue-800 transition-all inline-flex items-center justify-center gap-2"
+            >
+              Open Dashboard <ArrowRight size={18} />
+            </a>
           </motion.div>
         </div>
       </section>
